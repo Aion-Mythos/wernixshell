@@ -84,11 +84,6 @@ StyledListView {
 
     state: screenState.launcher ? requestedState : displayState
 
-    onStateChanged: {
-        if (state === "scheme" || state === "variant")
-            Schemes.reload();
-    }
-
     Component.onCompleted: displayText = search.text
 
     states: [

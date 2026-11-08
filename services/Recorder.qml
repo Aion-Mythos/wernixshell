@@ -52,17 +52,14 @@ Singleton {
             const running = code === 0;
 
             if (running && root.needsStop) {
-                commandProc.exec(["vsm", "record"]);
-                props.running = false;
-                props.paused = false;
+                // TODO: stop the recording; this was an external CLI call that has been removed
+                console.warn("Recorder: stopping recordings is not implemented yet");
             } else if (running && root.needsPause) {
-                commandProc.exec(["vsm", "record", "-p"]);
-                props.paused = !props.paused;
+                // TODO: pause the recording; this was an external CLI call that has been removed
+                console.warn("Recorder: pausing recordings is not implemented yet");
             } else if (!running && root.needsStart) {
-                commandProc.exec(["vsm", "record", ...root.startArgs]);
-                props.running = true;
-                props.paused = false;
-                props.elapsed = 0;
+                // TODO: start a recording with root.startArgs; this was an external CLI call that has been removed
+                console.warn("Recorder: starting recordings is not implemented yet");
             } else if (running !== props.running && !commandProc.running) {
                 // The recording was started/stopped outside the shell (e.g. via
                 // keybind), or our command finished without reaching the optimistic state
@@ -80,9 +77,7 @@ Singleton {
     Process {
         id: commandProc
 
-        // The command owns the transition: `vsm record` blocks on slurp for
-        // region captures, and waits for the recorder to finalise the file when
-        // stopping. Reconcile once it has actually finished.
+        // Reconcile once the command has actually finished (unused until recording is implemented)
         onExited: checkProc.running = true
     }
 

@@ -12,7 +12,6 @@ Searcher {
     id: root
 
     readonly property string currentNamePath: `${Paths.state}/wallpaper/path.txt`
-    readonly property list<string> smartArg: GlobalConfig.services.smartScheme ? [] : ["--no-smart"]
     readonly property string fallback: Quickshell.shellPath("assets/wallpaper.webp")
 
     property bool showPreview: false
@@ -30,12 +29,14 @@ Searcher {
     }
 
     function setRandom(): void {
-        Quickshell.execDetached(["vsm", "wallpaper", "-r", ...smartArg]);
+        const choices = list.filter(w => w.path !== actualCurrent);
+        if (choices.length > 0)
+            setWallpaper(choices[Math.floor(Math.random() * choices.length)].path);
     }
 
     function setWallpaper(path: string): void {
         actualCurrent = path;
-        Quickshell.execDetached(["vsm", "wallpaper", "-f", path, ...smartArg]);
+        Paths.writeText(pathFile, path); // The FileView below picks the change up, and the dynamic scheme follows
     }
 
     function preview(path: string): void {
@@ -43,7 +44,7 @@ Searcher {
         showPreview = true;
 
         if (Colours.scheme === "dynamic")
-            getPreviewColoursProc.running = true;
+            Themes.preview(path);
     }
 
     function stopPreview(): void {
@@ -83,15 +84,19 @@ Searcher {
     }
 
     FileView {
+        id: pathFile
+
         path: root.currentNamePath
         watchChanges: true
         printErrors: false
+        atomicWrites: true
         onFileChanged: reload()
+        onSaved: reload() // A file that didn't exist yet can't be watched
         onLoaded: {
             let wall = text().trim();
             if (!wall) {
                 wall = root.fallback;
-                Quickshell.execDetached(["vsm", "wallpaper", "-f", root.fallback, ...root.smartArg]);
+                Paths.writeText(pathFile, wall);
             }
             root.actualCurrent = wall;
             root.previewColourLock = false;
@@ -99,7 +104,7 @@ Searcher {
         onLoadFailed: {
             root.actualCurrent = root.fallback;
             root.previewColourLock = false;
-            Quickshell.execDetached(["vsm", "wallpaper", "-f", root.fallback, ...root.smartArg]);
+            Paths.writeText(pathFile, root.fallback);
         }
     }
 
@@ -109,17 +114,5 @@ Searcher {
         recursive: true
         path: Paths.wallsdir
         filter: FileSystemModel.Images | FileSystemModel.Videos
-    }
-
-    Process {
-        id: getPreviewColoursProc
-
-        command: ["vsm", "wallpaper", "-p", root.previewPath, ...root.smartArg]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                Colours.load(text, true);
-                Colours.showPreview = true;
-            }
-        }
     }
 }

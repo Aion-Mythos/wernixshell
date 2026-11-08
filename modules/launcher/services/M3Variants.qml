@@ -5,6 +5,7 @@ import QtQuick
 import Quickshell
 import Vaxison.Config
 import Vaxison.I18n
+import qs.services
 import qs.utils
 
 Searcher {
@@ -40,24 +41,6 @@ Searcher {
             description: Tr.tr("Matches the seed colour, even if the seed colour is very bright (high chroma).")
         },
         Variant {
-            variant: "content"
-            icon: "sentiment_calm"
-            name: Tr.trCtx("Content", "M3 scheme variant name")
-            description: Tr.tr("Almost identical to fidelity.")
-        },
-        Variant {
-            variant: "fruitsalad"
-            icon: "nutrition"
-            name: Tr.trCtx("Fruit Salad", "M3 scheme variant name")
-            description: Tr.tr("A playful theme - the seed colour's hue does not appear in the theme.")
-        },
-        Variant {
-            variant: "rainbow"
-            icon: "looks"
-            name: Tr.trCtx("Rainbow", "M3 scheme variant name")
-            description: Tr.tr("A playful theme - the seed colour's hue does not appear in the theme.")
-        },
-        Variant {
             variant: "neutral"
             icon: "contrast"
             name: Tr.trCtx("Neutral", "M3 scheme variant name")
@@ -80,7 +63,7 @@ Searcher {
 
         function onClicked(list: AppList): void {
             list.screenState.launcher = false;
-            Quickshell.execDetached(["vsm", "scheme", "set", "-v", variant]);
+            Themes.setVariant(variant);
         }
     }
 }

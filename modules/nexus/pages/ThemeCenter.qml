@@ -15,50 +15,13 @@ import qs.modules.nexus.pages.themecenter
 PageBase {
     id: root
 
-    readonly property bool dynamicActive: Colours.scheme === "dynamic"
-    // Group the flat scheme list by name; "vexilion" first, "dynamic" has its own card
-    readonly property var themes: {
-        const byName = {};
-        for (const s of Schemes.list) {
-            if (s.name === "dynamic")
-                continue;
-            if (!byName[s.name])
-                byName[s.name] = [];
-            byName[s.name].push({
-                flavour: s.flavour,
-                colours: s.colours
-            });
-        }
-        const pin = n => n === "vexilion" ? 0 : 1;
-        return Object.entries(byName).map(([name, flavours]) => ({
-                    name,
-                    flavours
-                })).sort((a, b) => pin(a.name) - pin(b.name) || a.name.localeCompare(b.name));
-    }
-
-    function apply(args: list<string>): void {
-        Quickshell.execDetached(["vsm", "scheme", "set", ...args]);
-        refresh.restart();
-    }
-
     title: Tr.tr("Theme Center")
-    Component.onCompleted: {
-        Schemes.reload();
-        Schemes.reloadList();
-    }
 
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         width: root.cappedWidth
         spacing: Tokens.spacing.small
-
-        Timer { // vsm writes the scheme file asynchronously
-            id: refresh
-
-            interval: 800
-            onTriggered: Schemes.reload()
-        }
 
         SectionHeader {
             first: true
@@ -68,7 +31,7 @@ PageBase {
         ConnectedRect {
             Layout.fillWidth: true
             first: true
-            color: root.dynamicActive ? Colours.palette.m3primaryContainer : Colours.tPalette.m3surfaceContainer
+            color: Themes.dynamicActive ? Colours.palette.m3primaryContainer : Colours.tPalette.m3surfaceContainer
             implicitHeight: dynRow.implicitHeight + Tokens.padding.large * 2
 
             RowLayout {
@@ -81,7 +44,7 @@ PageBase {
 
                 MaterialIcon {
                     text: "wallpaper"
-                    color: root.dynamicActive ? Colours.palette.m3onPrimaryContainer : Colours.palette.m3primary
+                    color: Themes.dynamicActive ? Colours.palette.m3onPrimaryContainer : Colours.palette.m3primary
                     fontStyle: Tokens.font.icon.large
                 }
 
@@ -91,14 +54,14 @@ PageBase {
 
                     StyledText {
                         text: Tr.tr("Dynamic")
-                        color: root.dynamicActive ? Colours.palette.m3onPrimaryContainer : Colours.palette.m3onSurface
+                        color: Themes.dynamicActive ? Colours.palette.m3onPrimaryContainer : Colours.palette.m3onSurface
                         font: Tokens.font.body.large
                     }
 
                     StyledText {
                         Layout.fillWidth: true
                         text: Tr.tr("Colours generated from your wallpaper")
-                        color: root.dynamicActive ? Colours.palette.m3onPrimaryContainer : Colours.palette.m3outline
+                        color: Themes.dynamicActive ? Colours.palette.m3onPrimaryContainer : Colours.palette.m3outline
                         font: Tokens.font.label.small
                         elide: Text.ElideRight
                     }
@@ -107,15 +70,15 @@ PageBase {
 
             StateLayer {
                 radius: parent.topLeftRadius
-                onClicked: root.apply(["-n", "dynamic"])
+                onClicked: Themes.applyDynamic()
             }
         }
 
         SelectRow {
             label: Tr.tr("Variant")
             subtext: Tr.tr("How the wallpaper colours are turned into a palette")
-            active: menuItems.find(i => i.modelData?.variant === Schemes.currentVariant) ?? menuItems[0]
-            onSelected: item => root.apply(["-v", item.modelData.variant]) // qmllint disable missing-property
+            active: menuItems.find(i => i.modelData?.variant === Colours.variant) ?? menuItems[0]
+            onSelected: item => Themes.setVariant(item.modelData.variant) // qmllint disable missing-property
 
             menuItems: variants.instances
 
@@ -137,17 +100,48 @@ PageBase {
             last: true
             text: Tr.tr("Dark theme")
             checked: !Colours.light
-            onToggled: Colours.setMode(checked ? "dark" : "light")
+            onToggled: Themes.setMode(checked ? "dark" : "light")
+        }
+
+        // Why the last action failed, e.g. matugen missing for the dynamic theme
+        ConnectedRect {
+            Layout.fillWidth: true
+            Layout.topMargin: Tokens.spacing.small
+            visible: Themes.error
+            first: true
+            last: true
+            implicitHeight: errRow.implicitHeight + Tokens.padding.large * 2
+
+            RowLayout {
+                id: errRow
+
+                anchors.fill: parent
+                anchors.margins: Tokens.padding.large
+                anchors.leftMargin: Tokens.padding.largeIncreased
+                spacing: Tokens.spacing.medium
+
+                MaterialIcon {
+                    text: "error"
+                    color: Colours.palette.m3error
+                    fontStyle: Tokens.font.icon.large
+                }
+
+                StyledText {
+                    Layout.fillWidth: true
+                    text: Themes.error
+                    wrapMode: Text.Wrap
+                    font: Tokens.font.body.small
+                }
+            }
         }
 
         SectionHeader {
             text: Tr.tr("Themes")
         }
 
-        // Shown instead of the grid when vsm gave no themes, so a missing vsm never fails silently
         ConnectedRect {
             Layout.fillWidth: true
-            visible: root.themes.length === 0
+            visible: Themes.themes.length === 0
             first: true
             last: true
             implicitHeight: emptyRow.implicitHeight + Tokens.padding.large * 2
@@ -161,50 +155,29 @@ PageBase {
                 spacing: Tokens.spacing.medium
 
                 MaterialIcon {
-                    text: "error"
-                    color: Colours.palette.m3error
+                    text: "palette"
+                    color: Colours.palette.m3outline
                     fontStyle: Tokens.font.icon.large
                 }
 
-                ColumnLayout {
+                StyledText {
                     Layout.fillWidth: true
-                    spacing: 0
-
-                    StyledText {
-                        Layout.fillWidth: true
-                        text: Tr.tr("No themes found: is vsm installed?")
-                        font: Tokens.font.body.large
-                        wrapMode: Text.Wrap
-                    }
-
-                    StyledText {
-                        Layout.fillWidth: true
-                        visible: Schemes.error
-                        text: Schemes.error
-                        color: Colours.palette.m3outline
-                        font: Tokens.font.label.small
-                        wrapMode: Text.Wrap
-                    }
-                }
-
-                IconTextButton {
-                    icon: "refresh"
-                    text: Tr.tr("Retry")
-                    type: IconTextButton.Tonal
-                    onClicked: Schemes.reloadList()
+                    text: Tr.tr("No themes found: the data/schemes folder is missing or empty")
+                    wrapMode: Text.Wrap
+                    font: Tokens.font.body.large
                 }
             }
         }
 
         GridLayout {
             Layout.fillWidth: true
-            visible: root.themes.length > 0
+            visible: Themes.themes.length > 0
             columns: Math.max(2, Math.floor(width / 180))
             columnSpacing: Tokens.spacing.large
             rowSpacing: Tokens.spacing.small
 
             Repeater {
-                model: root.themes
+                model: Themes.themes
 
                 ThemeCard {
                     required property var modelData
@@ -213,7 +186,7 @@ PageBase {
                     flavours: modelData.flavours
                     active: Colours.scheme === modelData.name
                     activeFlavour: Colours.flavour
-                    onPicked: flavour => root.apply(["-n", name, "-f", flavour])
+                    onPicked: flavour => Themes.apply(name, flavour)
                 }
             }
         }

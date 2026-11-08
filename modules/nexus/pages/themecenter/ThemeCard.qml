@@ -53,7 +53,7 @@ Item {
                     StyledRect {
                         required property string modelData
 
-                        width: (parent.width - parent.spacing * 3) / 4
+                        width: ((parent?.width ?? 0) - (parent?.spacing ?? 0) * 3) / 4
                         height: Tokens.padding.large
                         radius: Tokens.rounding.full
                         color: root.colour(modelData, "primary")

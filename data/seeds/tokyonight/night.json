@@ -1,0 +1,5 @@
+{
+  "mode": "dark", "background": "1a1b26", "surface": "1a1b26",
+  "primary": "7aa2f7", "secondary": "bb9af7", "tertiary": "7dcfff",
+  "error": "f7768e", "success": "9ece6a", "warning": "e0af68", "text": "c0caf5"
+}

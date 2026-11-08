@@ -15,6 +15,7 @@ Singleton {
     property bool showPreview
     property string scheme
     property string flavour
+    property string variant: "tonalspot"
     readonly property bool light: showPreview ? previewLight : currentLight
     property bool currentLight
     property bool previewLight
@@ -66,6 +67,7 @@ Singleton {
         if (!isPreview) {
             root.scheme = scheme.name;
             flavour = scheme.flavour;
+            variant = scheme.variant ?? "tonalspot";
             currentLight = scheme.mode === "light";
         } else {
             previewLight = scheme.mode === "light";
@@ -78,8 +80,12 @@ Singleton {
         }
     }
 
+    function reloadScheme(): void {
+        schemeFile.reload();
+    }
+
     function setMode(mode: string): void {
-        Quickshell.execDetached(["vsm", "scheme", "set", "--notify", "-m", mode]);
+        Themes.setMode(mode);
     }
 
     function reloadHyprRules(): void {
@@ -114,11 +120,14 @@ Singleton {
     }
 
     FileView {
+        id: schemeFile
+
         path: `${Paths.state}/scheme.json`
         watchChanges: true
+        printErrors: false
         onFileChanged: reload()
         onLoaded: root.load(text(), false)
-        onLoadFailed: fallbackScheme.path = `${Quickshell.shellDir}/data/schemes/vexilion.json` // First run, before vsm has written a scheme
+        onLoadFailed: fallbackScheme.path = `${Quickshell.shellDir}/data/schemes/vexilion/dark.json` // First run, before a scheme was applied
     }
 
     // The bundled default scheme: used until the scheme file exists
@@ -127,12 +136,7 @@ Singleton {
 
         onLoaded: {
             if (!root.scheme)
-                root.load(JSON.stringify({
-                    name: "vexilion",
-                    flavour: "dark",
-                    mode: "dark",
-                    colours: JSON.parse(text()).vexilion.dark
-                }), false);
+                root.load(text(), false);
         }
     }
 

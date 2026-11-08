@@ -9,7 +9,7 @@ by GPL-3.0 section 5(a).
 - Renamed every `caelestia` identifier to `vaxison` (QML modules `Vaxison.*`, CMake targets
   and `VAXISON_*` variables, XDG paths, layer namespaces) with `scripts/rebrand.sh`;
   `scripts/check-rebrand.sh` verifies nothing is left.
-- All calls to the `caelestia` CLI now call `vsm`.
+- All calls to the `caelestia` CLI were removed (see Phase 3 for the replacements).
 - Replaced the logo with a placeholder (`components/Logo.qml`, `assets/logo.svg`).
 - Removed `flake.nix`, `flake.lock` and `nix/` (Arch only).
 - Removed upstream badges, donation/Discord links and install docs from the README.
@@ -18,15 +18,21 @@ by GPL-3.0 section 5(a).
 
 - Removed the "Updates" and "Plugins" placeholder pages from the settings registry,
   and the "Plugins" section from the About page.
-- About page shows VexilionOS / Vaxison branding; `vsm --version` is parsed more loosely.
+- About page shows VexilionOS / Vaxison branding; the CLI version row was removed.
 - Removed the colour picker (`ColourSelect.qml`) and its button from "Wallpaper & style".
 
 ## Phase 3: Theme Center
 
-- New "Theme Center" settings page (Appearance): Dynamic card with variant picker, dark/light
-  toggle, and a grid of theme cards with flavour chips ("vexilion" pinned first when present).
-  It drives `vsm scheme list|get|set`; no theming engine in the shell.
-- Added `scripts/vsm-shim`, a dev stub faking `vsm scheme list|get|set`.
+- New "Theme Center" settings page (Appearance): Dynamic card with variant picker, dark/light toggle, and a
+  grid of theme cards with flavour chips ("vexilion" pinned first).
+- New `services/Themes.qml`: scans the bundled schemes in `data/schemes/<name>/<flavour>.json`, applies one by
+  writing `scheme.json`, generates the Dynamic scheme from the wallpaper with `matugen`, runs the optional
+  `~/.config/vaxison/hooks/on-theme-change` hook, and has an IPC handler (`theme set|mode|variant|get|list`).
+- `scripts/gen-scheme.py` builds the bundled schemes from the seeds in `data/seeds/`: vexilion (dark, light),
+  catppuccin (mocha, latte) and tokyonight (night). vexilion is the default until a scheme is applied.
+- Wallpapers (set, random, preview) no longer call an external CLI; the dynamic scheme follows wallpaper changes.
+- Launcher actions "Random" and "Settings" are now internal commands (`randomWallpaper`, `openSettings`).
+- Screen recording (`services/Recorder.qml`) used an external CLI that was removed; it is marked TODO and inactive.
 - Bar nexus popout now maps pages by explicit index (the new page shifts the others).
 - Added the "vexilion" scheme (`data/schemes/vexilion.json`, dark and light, from the VexilionOS
   palette) and made it the default until a scheme file exists.
@@ -46,5 +52,3 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
   shows nothing there. Users can still point them at their own files.
 - Replaced `assets/wallpaper.webp` with a generated VexilionOS-palette gradient.
 
-- Theme Center: the scheme list is reloaded each time the page opens, and when `vsm` is missing or fails
-  the page shows "No themes found: is vsm installed?" with the error and a Retry button.

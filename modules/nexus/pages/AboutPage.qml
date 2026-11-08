@@ -13,7 +13,6 @@ PageBase {
     id: root
 
     property string quickshellVersion
-    property string cliVersion
 
     title: Tr.tr("About")
 
@@ -29,18 +28,6 @@ PageBase {
             command: ["quickshell", "--version"]
             stdout: StdioCollector {
                 onStreamFinished: root.quickshellVersion = text.trim().split(" ")[1] ?? ""
-            }
-        }
-
-        // The sh wrapper avoids a warning when vsm isn't installed
-        Process {
-            running: true
-            command: ["sh", "-c", "vsm --version 2>/dev/null"]
-            stdout: StdioCollector {
-                onStreamFinished: {
-                    const m = text.match(/\d+(?:\.\d+)+/);
-                    root.cliVersion = m ? m[0] : "";
-                }
             }
         }
 
@@ -129,11 +116,6 @@ PageBase {
             first: true
             label: Tr.trCtx("Shell", "the vaxison shell itself, not a unix shell")
             value: CUtils.version || "…"
-        }
-
-        InfoRow {
-            label: Tr.trCtx("CLI", "the vsm command line tool")
-            value: root.cliVersion || "…"
         }
 
         InfoRow {

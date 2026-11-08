@@ -2,6 +2,7 @@ pragma Singleton
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Vaxison
 import Vaxison.Config
 
@@ -23,6 +24,8 @@ Singleton {
     readonly property string recsdir: Quickshell.env("VAXISON_RECORDINGS_DIR") || `${videos}/Recordings`
     readonly property string libdir: Quickshell.env("VAXISON_LIB_DIR") || "/usr/lib/vaxison"
 
+    property var pendingWrites: []
+
     function toLocalFile(path: url): string {
         path = Qt.resolvedUrl(path);
         return path.toString() ? CUtils.toLocalFile(path) : "";
@@ -34,5 +37,22 @@ Singleton {
 
     function shortenHome(path: string): string {
         return path.replace(home, "~");
+    }
+
+    // Writes to a FileView in the state dir, creating the dir first (FileView doesn't)
+    function writeText(view: FileView, text: string): void {
+        pendingWrites.push([view, text]);
+        mkdirState.running = true;
+    }
+
+    Process {
+        id: mkdirState
+
+        command: ["mkdir", "-p", `${root.state}/wallpaper`]
+        onExited: {
+            for (const [view, text] of root.pendingWrites)
+                view.setText(text);
+            root.pendingWrites = [];
+        }
     }
 }
