@@ -167,9 +167,10 @@ Item {
 
         Logo {
             implicitWidth: Tokens.sizes.dashboard.logoSize
-            implicitHeight: Tokens.sizes.dashboard.logoSize
+            implicitHeight: implicitWidth * designHeight / designWidth
             topColour: Colours.palette.m3primary
             bottomColour: Colours.palette.m3onPrimaryContainer
+            holeColour: Colours.palette.m3primaryContainer
         }
     }
 

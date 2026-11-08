@@ -8,8 +8,9 @@ import qs.utils
 Item {
     id: root
 
-    implicitWidth: Math.round(Tokens.font.body.large.pointSize * 1.2)
-    implicitHeight: Math.round(Tokens.font.body.large.pointSize * 1.2)
+    // The wide vxs logo fills the bar's width; distro icons are square
+    implicitWidth: SysInfo.isDefaultLogo ? Tokens.sizes.bar.innerWidth - Tokens.padding.small : Math.round(Tokens.font.body.large.pointSize * 1.2)
+    implicitHeight: SysInfo.isDefaultLogo ? Math.round(implicitWidth * 52 / 160) : Math.round(Tokens.font.body.large.pointSize * 1.2)
 
     MouseArea {
         anchors.fill: parent
@@ -30,8 +31,8 @@ Item {
         id: vxsLogo
 
         Logo {
-            implicitWidth: Math.round(Tokens.font.body.large.pointSize * 1.6)
-            implicitHeight: Math.round(Tokens.font.body.large.pointSize * 1.6)
+            implicitWidth: root.implicitWidth
+            implicitHeight: root.implicitHeight
         }
     }
 

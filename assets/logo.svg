@@ -1,5 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Placeholder VexilionOS "vxs" logo; replace with the real one. -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
-  <path d="M16 24 L40 24 L64 80 L88 24 L112 24 L72 108 L56 108 Z" fill="#9ccbfb"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="156" viewBox="-6 -6 160 52" role="img" aria-label="VexilionOS vxs logo"><g fill="none" stroke="#FAFAFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="0,0 20,40 40,0"/><line x1="-4" y1="0" x2="9" y2="0"/><circle cx="20" cy="40" r="3.15" fill="#956BFF" stroke="none"/></g><g transform="translate(54 0)" fill="none" stroke="#FAFAFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="0" y1="0" x2="40" y2="40"/><line x1="40" y1="0" x2="0" y2="40"/><circle cx="20" cy="20" r="6" fill="#1C1C1C" stroke="#956BFF"/></g><g transform="translate(108 0)" fill="none" stroke="#FAFAFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M40,0 H9 A9,9 0 0 0 0,9 V11 A9,9 0 0 0 9,20 H31 A9,9 0 0 1 40,29 V31 A9,9 0 0 1 31,40 H0"/></g></svg>

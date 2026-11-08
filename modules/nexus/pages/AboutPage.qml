@@ -47,8 +47,8 @@ PageBase {
 
                 Logo {
                     Layout.alignment: Qt.AlignHCenter
-                    implicitWidth: 128
-                    implicitHeight: 90.38
+                    implicitWidth: 240
+                    implicitHeight: 78
                 }
 
                 StyledText {

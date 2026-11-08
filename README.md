@@ -347,7 +347,7 @@ For example, to automatically hide the bar on the monitor named `DP-1`:
         }
     },
     "general": {
-        "logo": "",
+        "logo": "vexilion",
         "showOverFullscreen": false,
         "mediaGifSpeedAdjustment": 300,
         "sessionGifSpeed": 0.7,

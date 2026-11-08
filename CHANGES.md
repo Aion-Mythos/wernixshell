@@ -43,7 +43,7 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
 
 ## Phase 1b: logo
 
-- The About-page logo is the shared vxs logo component instead of the original artwork; the `general.logo` config value for the default logo is now `vexilion`.
+- The logo is the official vxs logo (`assets/logo.svg`, drawn with theme colours by `components/Logo.qml`) in the bar, lock screen, dashboard and About page; the `general.logo` config value for the default logo is now `vexilion`.
 - README: removed leftover links to upstream repositories.
 
 - Removed the bundled upstream GIFs and picture (`kurukuru.gif`, `bongocat.gif`, `dino.png`); their config

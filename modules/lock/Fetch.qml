@@ -162,7 +162,7 @@ StyledRect {
         id: vxsLogo
 
         Logo {
-            width: height
+            width: height * designWidth / designHeight
         }
     }
 

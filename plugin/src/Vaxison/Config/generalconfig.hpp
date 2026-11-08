@@ -102,7 +102,7 @@ class GeneralBattery : public settings::ObjectNode {
 class GeneralConfig : public settings::ObjectNode {
     CONFIG_NODE(GeneralConfig, settings::ObjectNode)
 
-    CONFIG_GLOBAL_PROPERTY(QString, logo, {})
+    CONFIG_GLOBAL_PROPERTY(QString, logo, u"vexilion"_s)
     CONFIG_GLOBAL_PROPERTY(QString, language, {})
     CONFIG_PROPERTY(bool, showOverFullscreen, false)
     CONFIG_PROPERTY(qreal, mediaGifSpeedAdjustment, 300)
