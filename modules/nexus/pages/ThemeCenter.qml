@@ -42,7 +42,10 @@ PageBase {
     }
 
     title: Tr.tr("Theme Center")
-    Component.onCompleted: Schemes.reload()
+    Component.onCompleted: {
+        Schemes.reload();
+        Schemes.reloadList();
+    }
 
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
@@ -141,8 +144,61 @@ PageBase {
             text: Tr.tr("Themes")
         }
 
+        // Shown instead of the grid when vsm gave no themes, so a missing vsm never fails silently
+        ConnectedRect {
+            Layout.fillWidth: true
+            visible: root.themes.length === 0
+            first: true
+            last: true
+            implicitHeight: emptyRow.implicitHeight + Tokens.padding.large * 2
+
+            RowLayout {
+                id: emptyRow
+
+                anchors.fill: parent
+                anchors.margins: Tokens.padding.large
+                anchors.leftMargin: Tokens.padding.largeIncreased
+                spacing: Tokens.spacing.medium
+
+                MaterialIcon {
+                    text: "error"
+                    color: Colours.palette.m3error
+                    fontStyle: Tokens.font.icon.large
+                }
+
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    spacing: 0
+
+                    StyledText {
+                        Layout.fillWidth: true
+                        text: Tr.tr("No themes found: is vsm installed?")
+                        font: Tokens.font.body.large
+                        wrapMode: Text.Wrap
+                    }
+
+                    StyledText {
+                        Layout.fillWidth: true
+                        visible: Schemes.error
+                        text: Schemes.error
+                        color: Colours.palette.m3outline
+                        font: Tokens.font.label.small
+                        wrapMode: Text.Wrap
+                    }
+                }
+
+                IconTextButton {
+                    icon: "refresh"
+                    text: Tr.tr("Retry")
+                    type: IconTextButton.Tonal
+                    onClicked: Schemes.reloadList()
+                }
+            }
+        }
+
         GridLayout {
             Layout.fillWidth: true
+            visible: root.themes.length > 0
             columns: Math.max(2, Math.floor(width / 180))
             columnSpacing: Tokens.spacing.large
             rowSpacing: Tokens.spacing.small

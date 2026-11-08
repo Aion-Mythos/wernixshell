@@ -45,3 +45,6 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
   defaults (`paths.sessionGif`, `mediaGif`, `noNotifsPic`, `lockNoNotifsPic`) are now empty and the UI
   shows nothing there. Users can still point them at their own files.
 - Replaced `assets/wallpaper.webp` with a generated VexilionOS-palette gradient.
+
+- Theme Center: the scheme list is reloaded each time the page opens, and when `vsm` is missing or fails
+  the page shows "No themes found: is vsm installed?" with the error and a Retry button.

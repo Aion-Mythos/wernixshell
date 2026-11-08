@@ -5,6 +5,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Vaxison.Config
+import Vaxison.I18n
 import qs.utils
 
 Searcher {
@@ -12,6 +13,8 @@ Searcher {
 
     property string currentScheme
     property string currentVariant
+    property string error // Why the list is empty, for the Theme Center to show
+    property bool listExited
 
     function transformSearch(search: string): string {
         return search.slice(`${GlobalConfig.launcher.actionPrefix}scheme `.length);
@@ -23,6 +26,35 @@ Searcher {
 
     function reload(): void {
         getCurrent.running = true;
+    }
+
+    function reloadList(): void {
+        error = "";
+        listExited = false;
+        getSchemes.running = true;
+    }
+
+    function parseList(text: string): void {
+        let schemeData;
+        try {
+            schemeData = JSON.parse(text);
+        } catch (e) {
+            error = text.trim() ? Tr.tr("Invalid JSON from vsm: %1").arg(e.message) : Tr.tr("`vsm scheme list` printed nothing");
+            return;
+        }
+
+        const list = Object.entries(schemeData).map(([name, f]) => Object.entries(f).map(([flavour, colours]) => ({
+                        name,
+                        flavour,
+                        colours
+                    })));
+
+        const flat = [];
+        for (const s of list)
+            for (const f of s)
+                flat.push(f);
+
+        schemes.model = flat.sort((a, b) => String(a.name + a.flavour).localeCompare((b.name + b.flavour)));
     }
 
     list: schemes.instances
@@ -42,21 +74,20 @@ Searcher {
         running: true
         command: ["vsm", "scheme", "list"]
         stdout: StdioCollector {
-            onStreamFinished: {
-                const schemeData = JSON.parse(text);
-                const list = Object.entries(schemeData).map(([name, f]) => Object.entries(f).map(([flavour, colours]) => ({
-                                name,
-                                flavour,
-                                colours
-                            })));
-
-                const flat = [];
-                for (const s of list)
-                    for (const f of s)
-                        flat.push(f);
-
-                schemes.model = flat.sort((a, b) => String(a.name + a.flavour).localeCompare((b.name + b.flavour)));
-            }
+            onStreamFinished: root.parseList(text)
+        }
+        stderr: StdioCollector {
+            id: listErr
+        }
+        onExited: code => {
+            root.listExited = true;
+            if (code !== 0)
+                root.error = listErr.text.trim() || Tr.tr("vsm exited with code %1").arg(code);
+        }
+        // Stopping without ever exiting means the process could not be started
+        onRunningChanged: {
+            if (!running && !root.listExited)
+                root.error = Tr.tr("Could not run `vsm`; it is not on the PATH of this session");
         }
     }
 
