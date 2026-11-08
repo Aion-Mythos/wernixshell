@@ -118,6 +118,22 @@ Singleton {
         watchChanges: true
         onFileChanged: reload()
         onLoaded: root.load(text(), false)
+        onLoadFailed: fallbackScheme.path = `${Quickshell.shellDir}/data/schemes/vexilion.json` // First run, before vsm has written a scheme
+    }
+
+    // The bundled default scheme: used until the scheme file exists
+    FileView {
+        id: fallbackScheme
+
+        onLoaded: {
+            if (!root.scheme)
+                root.load(JSON.stringify({
+                    name: "vexilion",
+                    flavour: "dark",
+                    mode: "dark",
+                    colours: JSON.parse(text()).vexilion.dark
+                }), false);
+        }
     }
 
     ImageAnalyser {

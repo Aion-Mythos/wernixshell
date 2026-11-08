@@ -26,5 +26,11 @@ by GPL-3.0 section 5(a).
 - New "Theme Center" settings page (Appearance): Dynamic card with variant picker, dark/light
   toggle, and a grid of theme cards with flavour chips ("vexilion" pinned first when present).
   It drives `vsm scheme list|get|set`; no theming engine in the shell.
-- Added `scripts/vsm-shim`, a dev stand-in for `vsm` that forwards to another CLI and copies its state.
+- Added `scripts/vsm-shim`, a dev stub faking `vsm scheme list|get|set`.
 - Bar nexus popout now maps pages by explicit index (the new page shifts the others).
+- Added the "vexilion" scheme (`data/schemes/vexilion.json`, dark and light, from the VexilionOS
+  palette) and made it the default until a scheme file exists.
+
+## Bar position (reverted)
+
+An experiment adding `bar.position` and horizontal bars was built and reverted; the bar stays on the left.

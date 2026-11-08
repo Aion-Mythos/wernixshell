@@ -1,16 +1,71 @@
-#!/bin/sh
+#!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-3.0-only
-# Dev shim: stands in for `vsm` until it exists by forwarding every call to another CLI
-# with the same interface (default: the installed caelestia CLI; override with VSM_SHIM_TARGET).
-# That CLI writes its state under $XDG_STATE_HOME/caelestia, but the shell watches
-# $XDG_STATE_HOME/vaxison, so state is copied across after each call.
-# Use: ln -s "$PWD/scripts/vsm-shim" ~/.local/bin/vsm
-# shortcut: one-way copy of the whole state dir, drop this when the real vsm is installed.
-target=${VSM_SHIM_TARGET:-caelestia}
-"$target" "$@"
-rc=$?
-state=${XDG_STATE_HOME:-$HOME/.local/state}
-if [ -d "$state/caelestia" ]; then
-    mkdir -p "$state/vaxison" && cp -a "$state/caelestia/." "$state/vaxison/"
-fi
-exit $rc
+"""Dev stub for `vsm` until the real CLI exists: fakes `vsm scheme list|get|set` with the bundled
+vexilion scheme plus a few sample schemes. Put it on PATH as `vsm`:
+    ln -s "$PWD/scripts/vsm-shim" ~/.local/bin/vsm
+It only writes $XDG_STATE_HOME/vaxison/scheme.json, which the shell watches."""
+import json
+import os
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+STATE = Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state")) / "vaxison" / "scheme.json"
+VEXILION = json.loads((ROOT / "data/schemes/vexilion.json").read_text())["vexilion"]
+
+# name -> flavour -> a few base colours; the rest of the palette comes from vexilion dark
+SAMPLES = {
+    "nord": {"medium": dict(background="2e3440", surface="2e3440", primary="88c0d0", secondary="81a1c1", tertiary="b48ead", primaryContainer="5e81ac")},
+    "dracula": {"medium": dict(background="282a36", surface="282a36", primary="bd93f9", secondary="ff79c6", tertiary="50fa7b", primaryContainer="6272a4")},
+    "gruvbox": {
+        "hard": dict(background="1d2021", surface="1d2021", primary="d79921", secondary="689d6a", tertiary="b16286", primaryContainer="7c6f64"),
+        "soft": dict(background="32302f", surface="32302f", primary="d79921", secondary="689d6a", tertiary="b16286", primaryContainer="7c6f64"),
+    },
+}
+
+
+def schemes():
+    out = {"vexilion": VEXILION}
+    for name, flavours in SAMPLES.items():
+        out[name] = {f: {**VEXILION["dark"], **c} for f, c in flavours.items()}
+    out["dynamic"] = {"default": VEXILION["dark"]}  # No wallpaper analysis in the stub
+    return out
+
+
+def current():
+    try:
+        return json.loads(STATE.read_text())
+    except (OSError, ValueError):
+        return {"name": "vexilion", "flavour": "dark", "mode": "dark", "variant": "tonalspot"}
+
+
+def opt(args, flag):
+    return args[args.index(flag) + 1] if flag in args and args.index(flag) + 1 < len(args) else None
+
+
+def main(argv):
+    if argv[:2] == ["scheme", "list"]:
+        print(json.dumps(schemes()))
+    elif argv[:2] == ["scheme", "get"]:
+        cur = current()
+        print("\n".join(cur.get(k, "") for k in ("name", "flavour", "variant")))
+    elif argv[:2] == ["scheme", "set"]:
+        args, cur, all_schemes = argv[2:], current(), schemes()
+        name = opt(args, "-n") or cur["name"]
+        flavour = opt(args, "-f") or cur["flavour"]
+        mode = opt(args, "-m")
+        if mode and name in all_schemes and mode in all_schemes[name] and not opt(args, "-f"):
+            flavour = mode  # vexilion flavours are named after the mode
+        if name not in all_schemes or flavour not in all_schemes[name]:
+            flavour = next(iter(all_schemes.get(name, {})), None)
+            if flavour is None:
+                sys.exit(f"vsm-shim: unknown scheme {name}")
+        mode = mode or ("light" if flavour == "light" else cur.get("mode", "dark"))
+        STATE.parent.mkdir(parents=True, exist_ok=True)
+        STATE.write_text(json.dumps({"name": name, "flavour": flavour, "mode": mode, "variant": opt(args, "-v") or cur.get("variant", "tonalspot"), "colours": all_schemes[name][flavour]}))
+    else:
+        sys.exit("vsm-shim: only `scheme list|get|set` is faked")
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

@@ -62,8 +62,10 @@ Rules:
 
 - New Appearance page. `vsm scheme list|get -nfv|set [-n -f -v -m --notify]`, same interface
   as the caelestia CLI; shell keeps watching the scheme file via `services/Colours.qml`.
-- `scripts/vsm-shim`: sh script forwarding `vsm scheme ...` to the installed `caelestia`
-  (until real `vsm` exists). Not installed by the shell; for dev use via PATH.
+- `scripts/vsm-shim`: stub faking `vsm scheme list|get|set` with the vexilion scheme and a few
+  samples (until real `vsm` exists). Not installed by the shell; for dev use via PATH.
+- `data/schemes/vexilion.json`: the "vexilion" scheme (dark + light) from the VexilionOS palette, in
+  the `scheme list` shape for vsm to consume. `services/Colours.qml` loads it when no scheme file exists.
 - UI: Dynamic card (variant picker + dark/light toggle) on top, then grid of theme cards
   (mini preview: background + primary/secondary/tertiary/accent strip, name, flavour chips),
   "vexilion" pinned first, active scheme highlighted from `scheme get`, click applies
@@ -71,12 +73,10 @@ Rules:
 - Launcher `>scheme` / `>variant` keep working (they only change CLI name in phase 1).
 - No theming engine in the shell.
 
-## Phase 4: Bar position
+## Out of scope
 
-- New config `bar.position` = left|right|top|bottom (default left), exposed in Settings > Panels > Taskbar.
-- Horizontal layout for top/bottom; popouts, drawers border/frame (Regions, Interactions,
-  Exclusions, Panels) and exclusive zones follow the edge; live change, no restart.
-- Out of scope: floating bar, free placement, bar-only mode.
+Bar placement (the bar stays fixed on the left, as upstream), floating bar, bar-only mode,
+Updates/Plugins pages, new dashboard layout. Phase 4 (bar position) was built and then reverted.
 
 ## Constraints
 
