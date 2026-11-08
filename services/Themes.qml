@@ -22,7 +22,8 @@ Singleton {
 
     // Every bundled scheme flavour: { name, flavour, mode, colours }
     readonly property var flat: files.instances.filter(f => f.data).map(f => f.data)
-    // The same grouped by scheme: { name, flavours: [flat entries] }, "vexilion" first
+    // The same grouped by scheme: { name, flavours: [flat entries] }, "vexilion" first. A flavour that
+    // has both a dark and a light version (e.g. gruvbox hard) appears once, as the one for the active mode.
     readonly property var themes: {
         const byName = {};
         for (const s of flat) {
@@ -31,17 +32,22 @@ Singleton {
             byName[s.name].push(s);
         }
         const pin = n => n === "vexilion" ? 0 : 1;
-        return Object.entries(byName).map(([name, flavours]) => ({
+        const pick = (name, flavour) => {
+            const matches = byName[name].filter(s => s.flavour === flavour);
+            return matches.find(s => s.mode === activeMode) ?? matches[0];
+        };
+        return Object.entries(byName).map(([name, entries]) => ({
                     name,
-                    flavours: flavours.sort((a, b) => (a.mode === b.mode ? 0 : a.mode === "dark" ? -1 : 1) || a.flavour.localeCompare(b.flavour))
+                    flavours: [...new Set(entries.map(s => s.flavour))].sort().map(flavour => pick(name, flavour))
                 })).sort((a, b) => pin(a.name) - pin(b.name) || a.name.localeCompare(b.name));
     }
 
     readonly property bool dynamicActive: Colours.scheme === "dynamic"
     readonly property string activeMode: Colours.currentLight ? "light" : "dark"
 
-    function apply(name: string, flavour: string, variant = ""): void {
-        const s = flat.find(f => f.name === name && f.flavour === flavour);
+    function apply(name: string, flavour: string, variant = "", mode = ""): void {
+        const matches = flat.filter(f => f.name === name && f.flavour === flavour);
+        const s = matches.find(f => f.mode === (mode || activeMode)) ?? matches[0];
         if (!s) {
             error = Tr.tr("Unknown theme %1 %2").arg(name).arg(flavour);
             return;
@@ -84,9 +90,10 @@ Singleton {
             applyDynamic(Colours.variant, mode);
             return;
         }
-        const match = flat.find(f => f.name === Colours.scheme && f.mode === mode);
+        // The same flavour in the other mode if there is one, else any flavour of the scheme in that mode
+        const match = flat.find(f => f.name === Colours.scheme && f.flavour === Colours.flavour && f.mode === mode) ?? flat.find(f => f.name === Colours.scheme && f.mode === mode);
         if (match)
-            apply(match.name, match.flavour);
+            apply(match.name, match.flavour, "", mode);
         else
             error = Tr.tr("%1 has no %2 flavour").arg(Colours.scheme).arg(mode);
     }

@@ -57,3 +57,13 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
 - The About page plays an animated GIF of the official logo (`assets/vxs-anim.gif`, `vxs-anim-light.gif` on
   light schemes), generated from `assets/logo.svg` by `scripts/make-logo-gif.py`, and no longer shows the
   "Vaxison" title; the other places keep the static logo.
+
+## Bundled themes
+
+- `data/schemes/` now holds 10 themes: `vexilion` (generated from `data/seeds/` by `scripts/gen-scheme.py`)
+  and nine copied from caelestia-cli's data with all their variants: catppuccin (frappe, latte, macchiato,
+  mocha), gruvbox (hard, medium, soft, each dark and light), rosepine (dawn, main, moon), everforest (hard,
+  medium, soft; medium also light), tokyonight, nord, dracula, onedark and solarized. The mode toggle keeps the
+  flavour when the scheme has the other mode (gruvbox hard dark <-> hard light), else switches to a flavour that has it.
+- Removed my generated catppuccin and tokyonight seeds; darkgreen, shadotheme, oldworld, everblush and the
+  upstream default scheme are not included.
