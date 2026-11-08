@@ -162,7 +162,7 @@ Item {
     }
 
     AnimatedImage {
-        id: bongocat
+        id: mediaImage
 
         anchors.top: controls.bottom
         anchors.bottom: parent.bottom
@@ -174,7 +174,7 @@ Item {
 
         playing: Players.active?.isPlaying ?? false
         speed: Audio.beatTracker.bpm / Config.general.mediaGifSpeedAdjustment
-        source: Paths.absolutePath(Config.paths.mediaGif)
+        source: Config.paths.mediaGif ? Paths.absolutePath(Config.paths.mediaGif) : ""
         asynchronous: true
         fillMode: AnimatedImage.PreserveAspectFit
     }

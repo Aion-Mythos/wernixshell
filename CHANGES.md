@@ -40,3 +40,8 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
 - The animated About-page logo (`AnimatedLogo.qml`) now animates the shared vxs logo instead of the
   original artwork; the `general.logo` config value for the default logo is now `vexilion`.
 - README: removed leftover links to upstream repositories.
+
+- Removed the bundled upstream GIFs and picture (`kurukuru.gif`, `bongocat.gif`, `dino.png`); their config
+  defaults (`paths.sessionGif`, `mediaGif`, `noNotifsPic`, `lockNoNotifsPic`) are now empty and the UI
+  shows nothing there. Users can still point them at their own files.
+- Replaced `assets/wallpaper.webp` with a generated VexilionOS-palette gradient.

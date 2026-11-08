@@ -97,7 +97,7 @@ Item {
 
                 Image {
                     asynchronous: true
-                    source: Paths.absolutePath(Config.paths.noNotifsPic)
+                    source: Config.paths.noNotifsPic ? Paths.absolutePath(Config.paths.noNotifsPic) : ""
                     fillMode: Image.PreserveAspectFit
                     sourceSize.width: clipRect.width * 0.8 * ((QsWindow.window as QsWindow)?.devicePixelRatio ?? 1)
 
