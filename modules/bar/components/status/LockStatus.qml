@@ -3,17 +3,21 @@ import QtQuick.Layouts
 import qs.components
 import qs.services
 
-ColumnLayout {
+GridLayout {
     id: root
 
+    required property bool vertical
     required property color colour
     required property int parentSpacing
 
     property real gap: Hypr.capsLock && Hypr.numLock ? parentSpacing : 0
-    property real capsHeight: Hypr.capsLock ? capslockIcon.implicitHeight : 0
-    property real numHeight: Hypr.numLock ? numlockIcon.implicitHeight : 0
+    // Size of each icon's slot along the bar's axis
+    property real capsHeight: Hypr.capsLock ? (vertical ? capslockIcon.implicitHeight : capslockIcon.implicitWidth) : 0
+    property real numHeight: Hypr.numLock ? (vertical ? numlockIcon.implicitHeight : numlockIcon.implicitWidth) : 0
 
-    spacing: Math.round(gap)
+    columns: vertical ? 1 : 1000
+    rowSpacing: Math.round(gap)
+    columnSpacing: Math.round(gap)
 
     Behavior on gap {
         Anim {
@@ -34,8 +38,8 @@ ColumnLayout {
     }
 
     Item {
-        implicitWidth: capslockIcon.implicitWidth
-        implicitHeight: Math.round(root.capsHeight)
+        implicitWidth: root.vertical ? capslockIcon.implicitWidth : Math.round(root.capsHeight)
+        implicitHeight: root.vertical ? Math.round(root.capsHeight) : capslockIcon.implicitHeight
 
         MaterialIcon {
             id: capslockIcon
@@ -63,8 +67,8 @@ ColumnLayout {
     }
 
     Item {
-        implicitWidth: numlockIcon.implicitWidth
-        implicitHeight: Math.round(root.numHeight)
+        implicitWidth: root.vertical ? numlockIcon.implicitWidth : Math.round(root.numHeight)
+        implicitHeight: root.vertical ? Math.round(root.numHeight) : numlockIcon.implicitHeight
 
         MaterialIcon {
             id: numlockIcon

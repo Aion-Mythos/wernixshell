@@ -10,6 +10,7 @@ import qs.services
 StyledRect {
     id: root
 
+    required property bool vertical
     readonly property color colour: Colours.palette.m3tertiary
     readonly property int padding: Config.bar.clock.background ? Tokens.padding.medium : Tokens.padding.extraSmall
     readonly property var font: Tokens.font.body.builders.small.scale(1.1)
@@ -20,16 +21,45 @@ StyledRect {
         return root.font.width(scale * 100).letterSpacing(scale).build();
     }
 
-    implicitWidth: Tokens.sizes.bar.innerWidth
-    implicitHeight: layout.implicitHeight + root.padding * 2
+    implicitWidth: vertical ? Tokens.sizes.bar.innerWidth : row.implicitWidth + root.padding * 2 + Tokens.padding.small
+    implicitHeight: vertical ? layout.implicitHeight + root.padding * 2 : Tokens.sizes.bar.innerWidth
 
     color: Qt.alpha(Colours.tPalette.m3surfaceContainer, Config.bar.clock.background ? Colours.tPalette.m3surfaceContainer.a : 0)
     radius: Tokens.rounding.full
+
+    // Horizontal bars show everything on one line
+    RowLayout {
+        id: row
+
+        anchors.centerIn: parent
+        visible: !root.vertical
+        spacing: Tokens.spacing.small
+
+        MaterialIcon {
+            visible: Config.bar.clock.showIcon
+            text: "calendar_month"
+            color: root.colour
+        }
+
+        StyledText {
+            visible: Config.bar.clock.showDate
+            text: Time.format("ddd d")
+            font: root.font.build()
+            color: root.colour
+        }
+
+        StyledText {
+            text: `${Time.hourStr}:${Time.minuteStr}${Config.bar.clock.showSeconds ? `:${Time.format("ss")}` : ""}${Units.twelveHourClock ? ` ${Time.amPmStr.toLowerCase()}` : ""}`
+            font: root.font.build()
+            color: root.colour
+        }
+    }
 
     ColumnLayout {
         id: layout
 
         anchors.centerIn: parent
+        visible: root.vertical
         spacing: Tokens.spacing.extraSmall
 
         Loader {

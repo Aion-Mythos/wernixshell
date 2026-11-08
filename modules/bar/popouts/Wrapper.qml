@@ -24,6 +24,7 @@ Item {
     readonly property real nonAnimHeight: children.find(c => c.shouldBeActive)?.implicitHeight ?? content.implicitHeight
     readonly property Item current: (content.item as Content)?.current ?? null
     readonly property bool isDetached: detachedMode.length > 0
+    readonly property bool vertical: Config.bar.position === BarPosition.Left || Config.bar.position === BarPosition.Right
 
     property alias currentName: popoutState.currentName
     property alias hasCurrent: popoutState.hasCurrent
@@ -151,6 +152,8 @@ Item {
     }
 
     Behavior on implicitWidth {
+        enabled: root.vertical || root.offsetScale < 1
+
         Anim {
             duration: root.animLength
             easing: root.animCurve
@@ -158,7 +161,7 @@ Item {
     }
 
     Behavior on implicitHeight {
-        enabled: root.offsetScale < 1
+        enabled: !root.vertical || root.offsetScale < 1
 
         Anim {
             duration: root.animLength

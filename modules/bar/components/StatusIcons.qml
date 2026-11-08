@@ -12,6 +12,7 @@ import qs.modules.bar.components.status
 StyledRect {
     id: root
 
+    required property bool vertical
     property color colour: Colours.palette.m3secondary
     readonly property alias items: iconColumn
 
@@ -44,18 +45,21 @@ StyledRect {
     radius: Tokens.rounding.full
 
     clip: true
-    implicitWidth: Tokens.sizes.bar.innerWidth
-    implicitHeight: iconColumn.implicitHeight + Tokens.padding.medium * 2
+    implicitWidth: vertical ? Tokens.sizes.bar.innerWidth : iconColumn.implicitWidth + Tokens.padding.medium * 2
+    implicitHeight: vertical ? iconColumn.implicitHeight + Tokens.padding.medium * 2 : Tokens.sizes.bar.innerWidth
 
-    ColumnLayout {
+    // A column on vertical bars, a row on horizontal ones
+    GridLayout {
         id: iconColumn
 
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: Tokens.padding.medium
+        // Stuck to the end of the bar's axis (bottom or right)
+        x: root.vertical ? 0 : parent.width - width - Tokens.padding.medium
+        y: root.vertical ? parent.height - height - Tokens.padding.medium : (parent.height - height) / 2
+        width: root.vertical ? parent.width : implicitWidth
 
-        spacing: 0
+        columns: root.vertical ? 1 : 1000
+        rowSpacing: 0
+        columnSpacing: 0
 
         Repeater {
             model: ScriptModel {
@@ -71,6 +75,7 @@ StyledRect {
                     roleValue: "lockStatus"
                     delegate: EntryWrapper {
                         LockStatus {
+                            vertical: root.vertical
                             colour: root.colour
                             parentSpacing: root.spacing
                         }
@@ -130,6 +135,7 @@ StyledRect {
                     roleValue: "bluetooth"
                     delegate: EntryWrapper {
                         BluetoothStatus {
+                            vertical: root.vertical
                             colour: root.colour
                         }
                     }
@@ -156,9 +162,11 @@ StyledRect {
         default property Item item
         property string name: modelData.id.toLowerCase()
 
-        Layout.topMargin: Math.round(topGap)
-        Layout.bottomMargin: Math.round(bottomGap)
-        Layout.alignment: Qt.AlignHCenter
+        Layout.topMargin: root.vertical ? Math.round(topGap) : 0
+        Layout.bottomMargin: root.vertical ? Math.round(bottomGap) : 0
+        Layout.leftMargin: root.vertical ? 0 : Math.round(topGap)
+        Layout.rightMargin: root.vertical ? 0 : Math.round(bottomGap)
+        Layout.alignment: root.vertical ? Qt.AlignHCenter : Qt.AlignVCenter
 
         implicitWidth: item?.implicitWidth ?? 0
         implicitHeight: item?.implicitHeight ?? 0

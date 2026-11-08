@@ -10,14 +10,27 @@ import qs.components
 import qs.services
 import qs.modules.bar.popouts as BarPopouts
 
-ColumnLayout {
+GridLayout {
     id: root
 
+    required property bool vertical
     required property ShellScreen screen
     required property ScreenState screenState
     required property BarPopouts.Wrapper popouts
     required property bool fullscreen
-    readonly property int vPadding: Tokens.padding.large
+    readonly property int vPadding: Tokens.padding.large // Padding at the start and end of the bar
+    property real spacing: Tokens.spacing.medium
+
+    // Position of the centre of an item along the bar, in our coordinates
+    function centre(item: Item): real {
+        const p = item.mapToItem(root, item.implicitWidth / 2, item.implicitHeight / 2);
+        return vertical ? p.y : p.x;
+    }
+
+    // Entry under a position along the bar
+    function entryAt(pos: real): var {
+        return (vertical ? childAt(width / 2, pos) : childAt(pos, height / 2)) as EntryWrapper;
+    }
 
     function closeTray(): void {
         if (!Config.bar.tray.compact)
@@ -30,8 +43,8 @@ ColumnLayout {
         }
     }
 
-    function checkPopout(y: real): void {
-        const ch = childAt(width / 2, y) as EntryWrapper;
+    function checkPopout(pos: real): void {
+        const ch = entryAt(pos);
 
         if (ch?.entryId !== "tray")
             closeTray();
@@ -42,24 +55,26 @@ ColumnLayout {
         }
 
         const id = ch.entryId;
-        const top = ch.y;
+        const start = vertical ? ch.y : ch.x;
 
         if (id === "statusIcons" && Config.bar.popouts.statusIcons) {
             const items = (ch.item as StatusIcons).items;
-            const icon = items.childAt(items.width / 2, mapToItem(items, 0, y).y);
+            const local = mapToItem(items, pos, pos);
+            const icon = vertical ? items.childAt(items.width / 2, local.y) : items.childAt(local.x, items.height / 2);
             if (icon) {
                 popouts.currentName = icon.name;
-                popouts.currentCenter = Qt.binding(() => icon.mapToItem(root, 0, icon.implicitHeight / 2).y);
+                popouts.currentCenter = Qt.binding(() => root.centre(icon));
                 popouts.hasCurrent = true;
             }
         } else if (id === "tray" && Config.bar.popouts.tray) {
             const tray = ch.item as Tray;
-            if (!Config.bar.tray.compact || (tray.expanded && !tray.expandIcon.contains(mapToItem(tray.expandIcon, tray.implicitWidth / 2, y)))) {
-                const index = Math.floor(((y - top - tray.padding * 2 + tray.spacing) / tray.layout.implicitHeight) * tray.items.count);
+            const expandLocal = mapToItem(tray.expandIcon, vertical ? tray.implicitWidth / 2 : pos, vertical ? pos : tray.implicitHeight / 2);
+            if (!Config.bar.tray.compact || (tray.expanded && !tray.expandIcon.contains(expandLocal))) {
+                const index = Math.floor(((pos - start - tray.padding * 2 + tray.spacing) / tray.layoutLength) * tray.items.count);
                 const trayItem = tray.items.itemAt(index);
                 if (trayItem) {
                     popouts.currentName = `traymenu${index}`;
-                    popouts.currentCenter = Qt.binding(() => trayItem.mapToItem(root, 0, trayItem.implicitHeight / 2).y);
+                    popouts.currentCenter = Qt.binding(() => root.centre(trayItem));
                     popouts.hasCurrent = true;
                 } else {
                     popouts.hasCurrent = false;
@@ -70,13 +85,13 @@ ColumnLayout {
             }
         } else if (id === "activeWindow" && Config.bar.popouts.activeWindow && Config.bar.activeWindow.showOnHover) {
             popouts.currentName = id.toLowerCase();
-            popouts.currentCenter = (ch.item as Item).mapToItem(root, 0, (ch.item as Item).implicitHeight / 2).y ?? 0;
+            popouts.currentCenter = root.centre(ch.item as Item);
             popouts.hasCurrent = true;
         }
     }
 
-    function handleWheel(y: real, angleDelta: point): void {
-        const ch = childAt(width / 2, y) as EntryWrapper;
+    function handleWheel(pos: real, angleDelta: point): void {
+        const ch = entryAt(pos);
         if (ch?.entryId === "workspaces" && Config.bar.scrollActions.workspaces) {
             // Workspace scroll
             const mon = Hypr.monitorFor(screen);
@@ -85,14 +100,14 @@ ColumnLayout {
                 Hypr.dispatch(Hypr.usingLua ? `hl.dsp.workspace.toggle_special("${specialWs.slice(8)}")` : `togglespecialworkspace ${specialWs.slice(8)}`);
             else if (angleDelta.y < 0 || mon.activeWorkspace?.id > 1)
                 Hypr.dispatch(Hypr.usingLua ? `hl.dsp.focus({ workspace = "r${angleDelta.y > 0 ? "-" : "+"}1" })` : `workspace r${angleDelta.y > 0 ? "-" : "+"}1`);
-        } else if (y < screen.height / 2 && Config.bar.scrollActions.volume) {
-            // Volume scroll on top half
+        } else if (pos < (vertical ? screen.height : screen.width) / 2 && Config.bar.scrollActions.volume) {
+            // Volume scroll on top (or left) half
             if (angleDelta.y > 0)
                 Audio.incrementVolume();
             else if (angleDelta.y < 0)
                 Audio.decrementVolume();
         } else if (Config.bar.scrollActions.brightness) {
-            // Brightness scroll on bottom half
+            // Brightness scroll on bottom (or right) half
             const monitor = Brightness.getMonitorForScreen(screen);
             if (angleDelta.y > 0)
                 monitor.setBrightness(monitor.brightness + GlobalConfig.services.brightnessIncrement);
@@ -101,7 +116,11 @@ ColumnLayout {
         }
     }
 
-    spacing: Tokens.spacing.medium
+    // One row or one column
+    columns: vertical ? 1 : Math.max(1, repeater.count)
+    rows: vertical ? Math.max(1, repeater.count) : 1
+    rowSpacing: spacing
+    columnSpacing: spacing
 
     Repeater {
         id: repeater
@@ -116,7 +135,8 @@ ColumnLayout {
             DelegateChoice {
                 roleValue: "spacer"
                 delegate: EntryWrapper {
-                    Layout.fillHeight: true
+                    Layout.fillHeight: root.vertical
+                    Layout.fillWidth: !root.vertical
                 }
             }
             DelegateChoice {
@@ -132,6 +152,7 @@ ColumnLayout {
                 delegate: EntryWrapper {
                     Workspaces {
                         objectName: "taskbarWorkspaces"
+                        vertical: root.vertical
                         screen: root.screen
                         fullscreen: root.fullscreen
                     }
@@ -142,6 +163,7 @@ ColumnLayout {
                 delegate: EntryWrapper {
                     ActiveWindow {
                         objectName: "taskbarActiveWindow"
+                        vertical: root.vertical
                         bar: root
                         monitor: Brightness.getMonitorForScreen(root.screen)
                     }
@@ -152,6 +174,7 @@ ColumnLayout {
                 delegate: EntryWrapper {
                     Tray {
                         objectName: "taskbarTray"
+                        vertical: root.vertical
                     }
                 }
             }
@@ -160,6 +183,7 @@ ColumnLayout {
                 delegate: EntryWrapper {
                     Clock {
                         objectName: "taskbarClock"
+                        vertical: root.vertical
                     }
                 }
             }
@@ -168,6 +192,7 @@ ColumnLayout {
                 delegate: EntryWrapper {
                     StatusIcons {
                         objectName: "taskbarStatusIcons"
+                        vertical: root.vertical
                     }
                 }
             }
@@ -189,9 +214,11 @@ ColumnLayout {
         default property Item item
         readonly property string entryId: modelData.id
 
-        Layout.topMargin: index === 0 ? root.vPadding : 0
-        Layout.bottomMargin: index === repeater.count - 1 ? root.vPadding : 0
-        Layout.alignment: Qt.AlignHCenter
+        Layout.topMargin: root.vertical && index === 0 ? root.vPadding : 0
+        Layout.bottomMargin: root.vertical && index === repeater.count - 1 ? root.vPadding : 0
+        Layout.leftMargin: !root.vertical && index === 0 ? root.vPadding : 0
+        Layout.rightMargin: !root.vertical && index === repeater.count - 1 ? root.vPadding : 0
+        Layout.alignment: root.vertical ? Qt.AlignHCenter : Qt.AlignVCenter
 
         implicitWidth: item?.implicitWidth ?? 0
         implicitHeight: item?.implicitHeight ?? 0

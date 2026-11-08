@@ -10,6 +10,7 @@ import qs.services
 StyledRect {
     id: root
 
+    required property bool vertical
     readonly property alias layout: layout
     readonly property alias items: items
     readonly property alias expandIcon: expandIcon
@@ -19,30 +20,34 @@ StyledRect {
 
     property bool expanded
 
-    readonly property real nonAnimHeight: {
+    // Size of the icons along the bar's axis, and of the tray without animations
+    readonly property real layoutLength: vertical ? layout.implicitHeight : layout.implicitWidth
+    readonly property real expandLength: vertical ? expandIcon.implicitHeight : expandIcon.implicitWidth
+    readonly property real nonAnimLength: {
         if (!Config.bar.tray.compact)
-            return layout.implicitHeight + padding * 2;
+            return layoutLength + padding * 2;
         const pad = (Config.bar.tray.background ? Tokens.padding.extraSmall : 0) + padding;
         if (expanded)
-            return expandIcon.implicitHeight + layout.implicitHeight + spacing + pad;
-        return Math.max(Config.bar.tray.background ? width : 0, expandIcon.implicitHeight + pad);
+            return expandLength + layoutLength + spacing + pad;
+        return Math.max(Config.bar.tray.background ? Tokens.sizes.bar.innerWidth : 0, expandLength + pad);
     }
 
     clip: true
-    visible: height > 0
+    visible: vertical ? height > 0 : width > 0
 
-    implicitWidth: Tokens.sizes.bar.innerWidth
-    implicitHeight: nonAnimHeight
+    implicitWidth: vertical ? Tokens.sizes.bar.innerWidth : nonAnimLength
+    implicitHeight: vertical ? nonAnimLength : Tokens.sizes.bar.innerWidth
 
     color: Qt.alpha(Colours.tPalette.m3surfaceContainer, (Config.bar.tray.background && items.count > 0) ? Colours.tPalette.m3surfaceContainer.a : 0)
     radius: Tokens.rounding.full
 
-    Column {
+    // A column on vertical bars, a row on horizontal ones
+    Grid {
         id: layout
 
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: root.padding
+        x: root.vertical ? (parent.width - width) / 2 : root.padding
+        y: root.vertical ? root.padding : (parent.height - height) / 2
+        columns: root.vertical ? 1 : Math.max(1, items.count)
         spacing: Tokens.spacing.small
 
         opacity: root.expanded || !Config.bar.tray.compact ? 1 : 0
@@ -89,8 +94,8 @@ StyledRect {
 
         asynchronous: true
 
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
+        x: root.vertical ? (parent.width - width) / 2 : parent.width - width
+        y: root.vertical ? parent.height - height : (parent.height - height) / 2
 
         active: Config.bar.tray.compact && items.count > 0
 
@@ -107,7 +112,7 @@ StyledRect {
                 text: "expand_less"
                 color: Colours.palette.m3onSurfaceVariant
                 fontStyle: Tokens.font.icon.medium
-                rotation: root.expanded ? 180 : 0
+                rotation: (root.vertical ? 0 : 90) + (root.expanded ? 180 : 0)
 
                 Behavior on rotation {
                     Anim {}
@@ -121,6 +126,14 @@ StyledRect {
     }
 
     Behavior on implicitHeight {
+        enabled: root.vertical
+
+        Anim {}
+    }
+
+    Behavior on implicitWidth {
+        enabled: !root.vertical
+
         Anim {}
     }
 }

@@ -3,10 +3,31 @@ pragma ComponentBehavior: Bound
 import QtQuick.Layouts
 import Vaxison.Config
 import Vaxison.I18n
+import qs.components.controls
 import qs.modules.nexus.common
 
 PageBase {
     id: root
+
+    // There must be one for each value of the BarPosition enum
+    readonly property list<MenuItem> positionItems: [
+        MenuItem {
+            text: Tr.tr("Left")
+            value: BarPosition.Left
+        },
+        MenuItem {
+            text: Tr.tr("Right")
+            value: BarPosition.Right
+        },
+        MenuItem {
+            text: Tr.tr("Top")
+            value: BarPosition.Top
+        },
+        MenuItem {
+            text: Tr.tr("Bottom")
+            value: BarPosition.Bottom
+        }
+    ]
 
     title: Tr.tr("Taskbar")
     isSubPage: true
@@ -23,8 +44,16 @@ PageBase {
             text: Tr.tr("Behaviour")
         }
 
-        ToggleRow {
+        SelectRow {
             first: true
+            label: Tr.tr("Position")
+            subtext: Tr.tr("Screen edge the bar sits on")
+            menuItems: root.positionItems
+            active: root.positionItems.find(i => i.value === GlobalConfig.bar.position)
+            onSelected: item => GlobalConfig.bar.position = item.value
+        }
+
+        ToggleRow {
             text: Tr.tr("Persistent")
             subtext: Tr.tr("Keep the bar visible at all times")
             checked: Config.bar.persistent

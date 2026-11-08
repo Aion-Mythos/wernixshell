@@ -13,6 +13,7 @@ import qs.services
 ClipRect {
     id: root
 
+    required property bool vertical
     required property ShellScreen screen
     required property bool fullscreen
 
@@ -65,8 +66,8 @@ ClipRect {
         return index % shown;
     }
 
-    implicitWidth: Tokens.sizes.bar.innerWidth
-    implicitHeight: workspaces.layoutHeight + workspaces.anchors.margins * 2
+    implicitWidth: vertical ? Tokens.sizes.bar.innerWidth : hRow.implicitWidth + Tokens.padding.large * 2
+    implicitHeight: vertical ? workspaces.layoutHeight + workspaces.anchors.margins * 2 : Tokens.sizes.bar.innerWidth
 
     color: Colours.tPalette.m3surfaceContainer
     radius: Tokens.rounding.full
@@ -75,7 +76,7 @@ ClipRect {
         anchors.fill: parent
         scale: root.onSpecial ? 0.8 : 1
         opacity: root.onSpecial ? 0.5 : 1
-        visible: !root.fullscreen
+        visible: !root.fullscreen && root.vertical
 
         layer.enabled: root.blur > 0
         layer.effect: MultiEffect {
@@ -199,7 +200,7 @@ ClipRect {
         anchors.fill: parent
 
         asynchronous: true
-        active: opacity > 0
+        active: root.vertical && opacity > 0
         opacity: root.onSpecial ? 1 : 0
 
         sourceComponent: Item {
@@ -236,7 +237,66 @@ ClipRect {
         }
     }
 
+    // Horizontal bars use a plain row of pills (the animated indicator is vertical only)
+    Row {
+        id: hRow
+
+        anchors.centerIn: parent
+        visible: !root.vertical && !root.fullscreen
+        spacing: Tokens.spacing.small
+        opacity: root.onSpecial ? 0.5 : 1
+
+        Repeater {
+            model: root.wsIds
+
+            StyledRect {
+                id: pill
+
+                required property int index
+                required property int modelData
+                readonly property int ws: Config.bar.workspaces.showUnoccupied ? root.groupOffset + index + 1 : modelData
+                readonly property bool focused: root.activeWsId === ws
+                readonly property bool occupied: Hypr.toplevelsForWs(ws, GlobalConfig.bar.workspaces.ignoredTags).length > 0
+
+                implicitHeight: Tokens.padding.large
+                implicitWidth: focused ? implicitHeight * 2.5 : implicitHeight
+                radius: Tokens.rounding.full
+                color: focused ? Colours.palette.m3primary : occupied ? Colours.palette.m3onSurfaceVariant : Colours.palette.m3outlineVariant
+
+                MouseArea {
+                    anchors.fill: parent
+                    anchors.margins: -Tokens.spacing.extraSmall
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: {
+                        if (Hypr.activeWsId !== pill.ws)
+                            Hypr.focusWorkspace(pill.ws);
+                        else
+                            Hypr.toggleSpecial("special");
+                    }
+                }
+
+                Behavior on implicitWidth {
+                    Anim {}
+                }
+            }
+        }
+
+        Behavior on opacity {
+            Anim {
+                type: Anim.DefaultEffects
+            }
+        }
+    }
+
     Behavior on implicitHeight {
+        enabled: root.vertical
+
+        Anim {}
+    }
+
+    Behavior on implicitWidth {
+        enabled: !root.vertical
+
         Anim {}
     }
 }

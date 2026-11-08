@@ -11,6 +11,7 @@ import qs.utils
 Item {
     id: root
 
+    required property bool vertical
     required property color colour
 
     implicitWidth: layout.implicitWidth
@@ -22,10 +23,18 @@ Item {
         }
     }
 
-    ColumnLayout {
+    Behavior on implicitWidth {
+        Anim {
+            type: Anim.DefaultEffects
+        }
+    }
+
+    GridLayout {
         id: layout
 
-        spacing: Tokens.spacing.medium / 2
+        columns: root.vertical ? 1 : 1000
+        rowSpacing: Tokens.spacing.medium / 2
+        columnSpacing: Tokens.spacing.medium / 2
 
         // Bluetooth icon
         MaterialIcon {

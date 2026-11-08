@@ -58,9 +58,19 @@ Item {
                 VisualiserBars {
                     id: bars
 
+                    // The bar's edge reserves the bar's space, the others only the border
+                    function margin(edge: int): real {
+                        const bar = ShellState.componentsFor(root.screen)?.bar;
+                        if (bar?.position !== edge)
+                            return Config.border.thickness;
+                        return bar.exclusiveZone + Tokens.spacing.small * Config.background.visualiser.spacing;
+                    }
+
                     anchors.fill: parent
-                    anchors.margins: Config.border.thickness
-                    anchors.leftMargin: (ShellState.componentsFor(root.screen)?.bar?.exclusiveZone ?? 0) + Tokens.spacing.small * Config.background.visualiser.spacing
+                    anchors.leftMargin: margin(BarPosition.Left)
+                    anchors.rightMargin: margin(BarPosition.Right)
+                    anchors.topMargin: margin(BarPosition.Top)
+                    anchors.bottomMargin: margin(BarPosition.Bottom)
 
                     values: Audio.cava.values
                     primaryColor: Qt.alpha(Colours.palette.m3primary, 0.7)
@@ -70,6 +80,18 @@ Item {
                     animationDuration: Tokens.anim.durations.normal
 
                     Behavior on anchors.leftMargin {
+                        Anim {}
+                    }
+
+                    Behavior on anchors.rightMargin {
+                        Anim {}
+                    }
+
+                    Behavior on anchors.topMargin {
+                        Anim {}
+                    }
+
+                    Behavior on anchors.bottomMargin {
                         Anim {}
                     }
                 }

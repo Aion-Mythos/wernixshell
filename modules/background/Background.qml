@@ -60,11 +60,17 @@ Variants {
         Loader {
             id: clockLoader
 
+            // Keep clear of the bar, whichever edge it is on
+            readonly property real barSpace: Tokens.sizes.bar.innerWidth + Math.max(Tokens.padding.small, Config.border.thickness)
+
             asynchronous: true
             active: Config.background.desktopClock.enabled
 
             anchors.margins: Tokens.padding.extraLargeIncreased
-            anchors.leftMargin: Tokens.padding.extraLargeIncreased + Tokens.sizes.bar.innerWidth + Math.max(Tokens.padding.small, Config.border.thickness)
+            anchors.leftMargin: Tokens.padding.extraLargeIncreased + (Config.bar.position === BarPosition.Left ? barSpace : 0)
+            anchors.rightMargin: Tokens.padding.extraLargeIncreased + (Config.bar.position === BarPosition.Right ? barSpace : 0)
+            anchors.topMargin: Tokens.padding.extraLargeIncreased + (Config.bar.position === BarPosition.Top ? barSpace : 0)
+            anchors.bottomMargin: Tokens.padding.extraLargeIncreased + (Config.bar.position === BarPosition.Bottom ? barSpace : 0)
 
             state: Config.background.desktopClock.position
             states: [

@@ -35,8 +35,10 @@ Item {
     readonly property alias sidebar: sidebar
 
     anchors.fill: parent
-    anchors.margins: borderThickness
-    anchors.leftMargin: bar.implicitWidth
+    anchors.leftMargin: bar.leftInset
+    anchors.rightMargin: bar.rightInset
+    anchors.topMargin: bar.topInset
+    anchors.bottomMargin: bar.bottomInset
 
     Item {
         id: osdWrapper
@@ -120,7 +122,8 @@ Item {
         id: popoutsWrapper
 
         screen: root.screen
-        borderThickness: root.borderThickness
+        leftInset: root.bar.leftInset
+        topInset: root.bar.topInset
     }
 
     Utilities.Wrapper {
