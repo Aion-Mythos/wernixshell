@@ -1,0 +1,16 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-only
+# Dev shim: stands in for `vsm` until it exists by forwarding every call to another CLI
+# with the same interface (default: the installed caelestia CLI; override with VSM_SHIM_TARGET).
+# That CLI writes its state under $XDG_STATE_HOME/caelestia, but the shell watches
+# $XDG_STATE_HOME/vaxison, so state is copied across after each call.
+# Use: ln -s "$PWD/scripts/vsm-shim" ~/.local/bin/vsm
+# shortcut: one-way copy of the whole state dir, drop this when the real vsm is installed.
+target=${VSM_SHIM_TARGET:-caelestia}
+"$target" "$@"
+rc=$?
+state=${XDG_STATE_HOME:-$HOME/.local/state}
+if [ -d "$state/caelestia" ]; then
+    mkdir -p "$state/vaxison" && cp -a "$state/caelestia/." "$state/vaxison/"
+fi
+exit $rc

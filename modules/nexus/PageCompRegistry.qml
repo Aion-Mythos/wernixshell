@@ -37,6 +37,15 @@ QtObject {
             }
         },
 
+        Component {
+            // Theme Center
+            StackPage {
+                Component {
+                    ThemeCenter {}
+                }
+            }
+        },
+
         // Connectivity
         Component {
             // Network

@@ -14,6 +14,12 @@ QtObject {
             description: Tr.tr("Wallpaper, transparency"),
             category: "appearance"
         },
+        {
+            label: Tr.tr("Theme Center"),
+            icon: "format_paint",
+            description: Tr.tr("Colour schemes, light and dark"),
+            category: "appearance"
+        },
 
         // Connectivity
         // TODO

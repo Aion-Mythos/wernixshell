@@ -20,3 +20,11 @@ by GPL-3.0 section 5(a).
   and the "Plugins" section from the About page.
 - About page shows VexilionOS / Vaxison branding; `vsm --version` is parsed more loosely.
 - Removed the colour picker (`ColourSelect.qml`) and its button from "Wallpaper & style".
+
+## Phase 3: Theme Center
+
+- New "Theme Center" settings page (Appearance): Dynamic card with variant picker, dark/light
+  toggle, and a grid of theme cards with flavour chips ("vexilion" pinned first when present).
+  It drives `vsm scheme list|get|set`; no theming engine in the shell.
+- Added `scripts/vsm-shim`, a dev stand-in for `vsm` that forwards to another CLI and copies its state.
+- Bar nexus popout now maps pages by explicit index (the new page shifts the others).

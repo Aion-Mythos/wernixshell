@@ -144,7 +144,7 @@ Item {
                 anchors.fill: parent
                 nState.screen: root.screen
                 nState.animatingContainer: nexus.opacity < 1
-                nState.currentPageIdx: ["appearance", "network", "bluetooth", "audio"].indexOf(root.queuedMode)
+                nState.currentPageIdx: ({appearance: 0, network: 2, bluetooth: 3, audio: 4})[root.queuedMode] ?? -1
                 onClose: root.close()
             }
         }
