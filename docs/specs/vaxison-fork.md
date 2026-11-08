@@ -56,7 +56,7 @@ Rules:
   components registry, ListEditor/ServicesPage hits to be checked, not blindly removed).
 - About page: VexilionOS / Vaxison branding, version from `vsm --version`.
 - Wallpaper & style: keep wallpaper picker, remove the colour/scheme picker
-  (`wallandstyle/ColourSelect.qml` and its use). Page description "Wallpaper, fonts, colours" updated.
+  (`wallandstyle/ColourSelect.qml` deleted, its sub-page and button removed). Page description "Wallpaper, fonts, colours" updated.
 
 ## Phase 3: Theme Center
 

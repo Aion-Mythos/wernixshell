@@ -12,9 +12,6 @@ import qs.modules.nexus.common
 PageBase {
     id: root
 
-    // Plugin support is not wired up yet; always 0 for now
-    readonly property int pluginCount: 0
-
     property string quickshellVersion
     property string cliVersion
 
@@ -35,15 +32,14 @@ PageBase {
             }
         }
 
-        // Parsed from the vaxison CLI's package listing; the sh wrapper avoids a
-        // warning when the (optional) CLI isn't installed
+        // The sh wrapper avoids a warning when vsm isn't installed
         Process {
             running: true
             command: ["sh", "-c", "vsm --version 2>/dev/null"]
             stdout: StdioCollector {
                 onStreamFinished: {
-                    const m = text.match(/vsm\S*\s+(\d+(?:\.\d+)*)/);
-                    root.cliVersion = m ? m[1] : "";
+                    const m = text.match(/\d+(?:\.\d+)+/);
+                    root.cliVersion = m ? m[0] : "";
                 }
             }
         }
@@ -73,6 +69,13 @@ PageBase {
                     Layout.topMargin: Tokens.spacing.small
                     text: "Vaxison"
                     font: Tokens.font.headline.builders.large.width(110).build()
+                }
+
+                StyledText {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: "VexilionOS"
+                    color: Colours.palette.m3primary
+                    font: Tokens.font.body.large
                 }
 
                 StyledText {
@@ -129,7 +132,7 @@ PageBase {
         }
 
         InfoRow {
-            label: Tr.trCtx("CLI", "the vaxison command line tool")
+            label: Tr.trCtx("CLI", "the vsm command line tool")
             value: root.cliVersion || "…"
         }
 
@@ -142,18 +145,6 @@ PageBase {
             last: true
             label: "Qt"
             value: CUtils.qtVersion || "…"
-        }
-
-        // Plugins
-        SectionHeader {
-            text: Tr.tr("Plugins")
-        }
-
-        InfoRow {
-            first: true
-            last: true
-            label: Tr.tr("Loaded plugins")
-            value: root.pluginCount.toString()
         }
     }
 }

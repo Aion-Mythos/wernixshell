@@ -11,7 +11,7 @@ QtObject {
         {
             label: Tr.tr("Wallpaper & style"),
             icon: "palette",
-            description: Tr.tr("Wallpaper, fonts, colours"),
+            description: Tr.tr("Wallpaper, transparency"),
             category: "appearance"
         },
 
@@ -41,20 +41,6 @@ QtObject {
             icon: "volume_up",
             description: Tr.tr("App volumes, sound devices"),
             category: "connectivity"
-        },
-
-        // System
-        {
-            label: Tr.tr("Updates"),
-            icon: "update",
-            description: Tr.tr("System updates"),
-            category: "system"
-        },
-        {
-            label: Tr.tr("Plugins"),
-            icon: "extension",
-            description: Tr.tr("Manage plugins"),
-            category: "system"
         },
 
         // Shell

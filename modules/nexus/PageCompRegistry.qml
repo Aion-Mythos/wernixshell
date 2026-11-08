@@ -34,9 +34,6 @@ QtObject {
                 Component {
                     WallpaperCategory {}
                 }
-                Component {
-                    ColourSelect {}
-                }
             }
         },
 
@@ -91,14 +88,6 @@ QtObject {
                     AppVolumes {}
                 }
             }
-        },
-
-        // System
-        Component {
-            PlaceholderComp {}
-        },
-        Component {
-            PlaceholderComp {}
         },
 
         // Shell

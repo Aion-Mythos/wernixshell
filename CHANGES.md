@@ -13,3 +13,10 @@ by GPL-3.0 section 5(a).
 - Replaced the logo with a placeholder (`components/Logo.qml`, `assets/logo.svg`).
 - Removed `flake.nix`, `flake.lock` and `nix/` (Arch only).
 - Removed upstream badges, donation/Discord links and install docs from the README.
+
+## Phase 2: Settings cleanup
+
+- Removed the "Updates" and "Plugins" placeholder pages from the settings registry,
+  and the "Plugins" section from the About page.
+- About page shows VexilionOS / Vaxison branding; `vsm --version` is parsed more loosely.
+- Removed the colour picker (`ColourSelect.qml`) and its button from "Wallpaper & style".
