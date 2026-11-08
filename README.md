@@ -1,76 +1,19 @@
-<h1 align=center>vaxison</h1>
+<h1 align=center>Vaxison</h1>
 
-<div align=center>
-
-![GitHub last commit](https://img.shields.io/github/last-commit/Aion-Mythos/-vexilion-vexison?style=for-the-badge&labelColor=101418&color=9ccbfb)
-![GitHub Repo stars](https://img.shields.io/github/stars/Aion-Mythos/-vexilion-vexison?style=for-the-badge&labelColor=101418&color=b9c8da)
-![GitHub repo size](https://img.shields.io/github/repo-size/Aion-Mythos/-vexilion-vexison?style=for-the-badge&labelColor=101418&color=d3bfe6)
-[![Ko-Fi donate](https://img.shields.io/badge/donate-kofi?style=for-the-badge&logo=ko-fi&logoColor=ffffff&label=ko-fi&labelColor=101418&color=f16061&link=https%3A%2F%2Fko-fi.com%2Fsoramane)](https://ko-fi.com/soramane)
-[![Discord invite](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fdiscordapp.com%2Fapi%2Finvites%2FBGDCFCmMBk%3Fwith_counts%3Dtrue&query=approximate_member_count&style=for-the-badge&logo=discord&logoColor=ffffff&label=discord&labelColor=101418&color=96f1f1&link=https%3A%2F%2Fdiscord.gg%2FBGDCFCmMBk)][discord]
-
-</div>
-
-https://github.com/user-attachments/assets/0840f496-575c-4ca6-83a8-87bb01a85c5f
+The Hyprland desktop shell of VexilionOS, built with Quickshell. Hard fork of an upstream project (see [NOTICE](NOTICE)).
 
 ## Components
 
 - Widgets: [`Quickshell`](https://quickshell.outfoxxed.me)
 - Window manager: [`Hyprland`](https://hypr.land)
-- Dots: [`vaxison`][dots-repo]
 
 ## Installation
-
-> [!NOTE]
-> This repo is for Vaxison's desktop shell only. If you want installation instructions
-> for the entire dotfiles (which include this shell), head to [the main repo][dots-repo] instead.
-
-### Arch Linux
-
-> [!WARNING]
-> If you want to make your own changes/tweaks to the shell, do NOT edit the files installed by the AUR
-> package. Instead, follow the instructions in the [manual installation section](#manual-installation).
-
-The shell is available from the AUR as `vaxison`. You can install it with an AUR helper (recommended),
-like [`paru`](https://github.com/morganamilo/paru), or by manually downloading the PKGBUILD and running `makepkg -si`.
-
-A package following the latest commit also exists as `vaxison-git`. This is bleeding-edge
-and likely to be unstable/have bugs. Regular users are recommended to use the stable package (`vaxison`).
-
-### Nix
-
-You can run the shell directly via `nix run`:
-
-```sh
-nix run github:Aion-Mythos/-vexilion-vexison#with-cli
-```
-
-Or add it to your system configuration:
-
-```nix
-{
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    vaxison = {
-      url = "github:Aion-Mythos/-vexilion-vexison";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-  };
-}
-```
-
-For full functionality, use `vaxison.packages.<system>.with-cli`, which can be added to your
-`environment.systemPackages`, `users.users.<username>.packages`, `home.packages` if using home-manager,
-or a devshell. The `default` package does not include the CLI.
-You can then run the shell with `vaxison`.
-
-For home-manager, you can also use Vaxison's Home Manager module (explained in [the configuration section](#home-manager-module)), which installs and configures the shell and CLI.
 
 ### Manual installation
 
 Dependencies:
 
-- [`vsm`](https://github.com/Aion-Mythos/cli)
+- `vsm` (VexilionOS CLI)
 - [`quickshell-git`](https://git.outfoxxed.me/quickshell/quickshell) - this has to be the git version, not the latest tagged version
 - `glibc`
 - `gcc-libs`
@@ -139,14 +82,11 @@ sudo cmake --install build
 You can start the shell by running `vsm shell -d` (preferred) or `qs -c vaxison -n -d`.
 You may omit `-d` from the command to keep the shell attached to the current terminal if necessary,
 though you likely want it to be detached (so it doesn't close when the terminal is closed).
-
-If using the [Vaxison dotfiles][dots-repo], the shell will be autostarted on login
 via a `hl.on("hyprland.start", ...)` function in the Hyprland config.
 
 ### Shortcuts/IPC
 
 All keybinds are accessible via Hyprland [global shortcuts](https://wiki.hypr.land/Configuring/Basics/Binds/#dbus-global-shortcuts).
-If using the [Vaxison dotfiles][dots-repo], the keybinds are already configured for you.
 Otherwise, the [`keybinds.lua`](https://github.com/Aion-Mythos/vaxison/blob/main/hypr/hyprland/keybinds.lua#L63-L67) file
 contains an example of how to use global shortcuts.
 
@@ -171,12 +111,6 @@ Alternatively, you can also use `vsm wallpaper -f <path_to_wallpaper>` to set th
 Use `vsm wallpaper -h` for more info about this command.
 
 ## Updating
-
-### Packaged install (AUR)
-
-If using the full dotfiles or the CLI, run `vsm update` to perform a full system update and
-update the dots.
-Otherwise, if you installed the shell on its own, update your system using your AUR helper (e.g., `paru`).
 
 ### Manual install
 
@@ -974,51 +908,7 @@ token values to produce the final computed values.
 Per-monitor token overrides are also available at
 `~/.config/vaxison/monitors/<monitor_name>/shell-tokens.json`.
 
-### Home Manager Module
-
-For NixOS users, a Home Manager module is also available.
-
-<details><summary><code>home.nix</code></summary>
-
-```nix
-programs.vaxison = {
-  enable = true;
-  systemd = {
-    enable = false; # if you prefer starting from your compositor
-    target = "graphical-session.target";
-    environment = [];
-  };
-  settings = {
-    bar.statusIcons = [
-      { id = "lockStatus"; enabled = true; }
-      { id = "network"; enabled = true; }
-      { id = "bluetooth"; enabled = true; }
-      { id = "battery"; enabled = false; }
-    ];
-    paths.wallpaperDir = "~/Images";
-  };
-  cli = {
-    enable = true; # Also add vsm to path
-    settings = {
-      theme.enableGtk = false;
-    };
-  };
-};
-```
-
-The module automatically adds the shell to the path with **full functionality**. The CLI is not required; however, you can enable and configure it.
-
-</details>
-
 ## FAQ
-
-### Need help or support?
-
-You can join the Vaxison Discord server for assistance and discussion [here][discord].
-
-### I want to make my own changes to the Hyprland config!
-
-Check out the configuring section on the [dots repo](https://github.com/Aion-Mythos/vaxison#configuring).
 
 ### I want to make my own changes to other stuff!
 
@@ -1059,16 +949,3 @@ which helped me a lot with learning how to use Quickshell.
 Finally, another thank you to all the configs I took inspiration from (only one for now):
 
 - [Axenide/Ax-Shell](https://github.com/Axenide/Ax-Shell)
-
-## Stonks 📈
-
-<a href="https://www.star-history.com/#Aion-Mythos/-vexilion-vexison&Date">
-    <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Aion-Mythos/-vexilion-vexison&type=Date&theme=dark" />
-        <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Aion-Mythos/-vexilion-vexison&type=Date" />
-        <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Aion-Mythos/-vexilion-vexison&type=Date" />
-    </picture>
-</a>
-
-[dots-repo]: https://github.com/Aion-Mythos/vaxison
-[discord]: https://vaxisonshell.com/discord

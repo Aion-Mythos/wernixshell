@@ -1,0 +1,6 @@
+Vaxison is a hard fork of caelestia-shell by the Caelestia contributors,
+forked at commit f80a98079b19f91f7d8a24218d068e77acc00025
+(https://github.com/caelestia-dots/shell).
+
+Upstream is not tracked after the fork. Original copyright notices are kept,
+and Vaxison is distributed under the same license (GPL-3.0, see LICENSE).
