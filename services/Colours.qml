@@ -109,7 +109,10 @@ Singleton {
         }
     }
 
-    Component.onCompleted: root.requestReloadHyprRules()
+    Component.onCompleted: {
+        root.requestReloadHyprRules();
+        Themes.error; // Singletons load lazily; this keeps Themes (its IPC handler, wallpaper hook) alive from startup
+    }
 
     Connections {
         function onConfigReloaded(): void {
