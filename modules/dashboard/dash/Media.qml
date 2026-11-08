@@ -174,7 +174,7 @@ Item {
 
         playing: Players.active?.isPlaying ?? false
         speed: Audio.beatTracker.bpm / Config.general.mediaGifSpeedAdjustment
-        source: Config.paths.mediaGif ? Paths.absolutePath(Config.paths.mediaGif) : ""
+        source: Config.paths.mediaGif ? Paths.gifFor(Config.paths.mediaGif, Colours.light) : ""
         asynchronous: true
         fillMode: AnimatedImage.PreserveAspectFit
     }

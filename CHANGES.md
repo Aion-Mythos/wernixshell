@@ -52,3 +52,10 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
   shows nothing there. Users can still point them at their own files.
 - Replaced `assets/wallpaper.webp` with a generated VexilionOS-palette gradient.
 
+
+## Animated logo GIFs
+
+- `assets/logo.svg` is now a thin-line placeholder (paths with ids `v`, `x`, `s`).
+- `scripts/make-logo-gif.py` renders the line-draw animation to `assets/vxs-anim-512.gif`, `vxs-anim-128.gif`
+  and their `-light` variants (3 s, 25 fps, 75 frames, 1-bit transparency, looping).
+- `paths.sessionGif` and `paths.mediaGif` default to these; light schemes use the `-light` files.

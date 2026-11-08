@@ -35,6 +35,12 @@ Singleton {
         return toLocalFile(path.replace(/~|(\$({?)HOME(}?))+/, home));
     }
 
+    // The light variant of a bundled logo GIF on light schemes; other files are used as given
+    function gifFor(path: string, light: bool): string {
+        const abs = absolutePath(path);
+        return light && abs.includes("vxs-anim-") ? abs.replace(/\.gif$/, "-light.gif") : abs;
+    }
+
     function shortenHome(path: string): string {
         return path.replace(home, "~");
     }

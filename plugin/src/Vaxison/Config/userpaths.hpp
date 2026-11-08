@@ -17,8 +17,8 @@ class UserPaths : public settings::ObjectNode {
         QString, wallpaperDir, QStandardPaths::writableLocation(QStandardPaths::PicturesLocation) + u"/Wallpapers"_s)
     CONFIG_GLOBAL_PROPERTY(
         QString, lyricsDir, QStandardPaths::writableLocation(QStandardPaths::MusicLocation) + u"/Lyrics/"_s)
-    CONFIG_PROPERTY(QString, sessionGif, {})
-    CONFIG_PROPERTY(QString, mediaGif, {})
+    CONFIG_PROPERTY(QString, sessionGif, u"root:/assets/vxs-anim-512.gif"_s)
+    CONFIG_PROPERTY(QString, mediaGif, u"root:/assets/vxs-anim-128.gif"_s)
     CONFIG_PROPERTY(QString, noNotifsPic, {})
     CONFIG_PROPERTY(QString, lockNoNotifsPic, {})
 };
