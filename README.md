@@ -879,8 +879,8 @@ For example, to automatically hide the bar on the monitor named `DP-1`:
     "paths": {
         "wallpaperDir": "~/Pictures/Wallpapers",
         "lyricsDir": "~/Music/lyrics/",
-        "sessionGif": "root:/assets/vxs-anim-512.gif",
-        "mediaGif": "root:/assets/vxs-anim-128.gif",
+        "sessionGif": "",
+        "mediaGif": "",
         "noNotifsPic": "",
         "lockNoNotifsPic": ""
     }

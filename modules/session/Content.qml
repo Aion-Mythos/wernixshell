@@ -60,7 +60,7 @@ Column {
             playing: visible
             asynchronous: true
             speed: Config.general.sessionGifSpeed
-            source: Paths.gifFor(Config.paths.sessionGif, Colours.light)
+            source: Paths.absolutePath(Config.paths.sessionGif)
             fillMode: AnimatedImage.PreserveAspectFit
         }
     }
