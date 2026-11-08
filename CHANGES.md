@@ -53,3 +53,7 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
 
 - Restored the bundled `kurukuru.gif` (power menu) and `bongocat.gif` (dashboard media card) as the defaults of
   `paths.sessionGif` and `paths.mediaGif`.
+
+- The About page plays an animated GIF of the official logo (`assets/vxs-anim.gif`, `vxs-anim-light.gif` on
+  light schemes), generated from `assets/logo.svg` by `scripts/make-logo-gif.py`, and no longer shows the
+  "Vaxison" title; the other places keep the static logo.

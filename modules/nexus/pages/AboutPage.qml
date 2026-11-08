@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import Quickshell
 import Quickshell.Io
 import Vaxison
 import Vaxison.Config
@@ -45,17 +46,15 @@ PageBase {
                 width: parent.width - Tokens.padding.largeIncreased * 2
                 spacing: Tokens.spacing.small
 
-                Logo {
+                // The animated logo (scripts/make-logo-gif.py), shown only here
+                AnimatedImage {
                     Layout.alignment: Qt.AlignHCenter
-                    implicitWidth: 240
-                    implicitHeight: 78
-                }
-
-                StyledText {
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.topMargin: Tokens.spacing.small
-                    text: "Vaxison"
-                    font: Tokens.font.headline.builders.large.width(110).build()
+                    Layout.preferredWidth: 280
+                    Layout.preferredHeight: 91
+                    source: Qt.resolvedUrl(`${Quickshell.shellDir}/assets/vxs-anim${Colours.light ? "-light" : ""}.gif`)
+                    fillMode: AnimatedImage.PreserveAspectFit
+                    playing: true
+                    asynchronous: true
                 }
 
                 StyledText {
