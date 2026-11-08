@@ -21,8 +21,8 @@ StyledRect {
     readonly property list<var> notifs: Notifs.list.filter(n => n.appName === modelData)
     readonly property list<var> activeNotifs: notifs.filter(n => !n.closed)
     readonly property int notifCount: activeNotifs.length
-    readonly property string image: activeNotifs.find(n => n.image.length > 0)?.image ?? ""
-    readonly property string appIcon: activeNotifs.find(n => n.appIcon.length > 0)?.appIcon ?? ""
+    readonly property string image: activeNotifs.find(n => n.resolvedImage.length > 0)?.resolvedImage ?? ""
+    readonly property string appIcon: activeNotifs.find(n => n.resolvedIcon.length > 0)?.resolvedIcon ?? ""
     readonly property int urgency: {
         if (activeNotifs.find(n => n.urgency === NotificationUrgency.Critical))
             return NotificationUrgency.Critical;
@@ -101,7 +101,7 @@ StyledRect {
 
                 ColouredIcon {
                     implicitSize: Math.round(TokenConfig.sizes.notifs.image * 0.6)
-                    source: Quickshell.iconPath(root.appIcon)
+                    source: root.appIcon
                     colour: root.urgency === NotificationUrgency.Critical ? Colours.palette.m3onError : root.urgency === NotificationUrgency.Low ? Colours.palette.m3onSurface : Colours.palette.m3onSecondaryContainer
                     layer.enabled: root.appIcon.endsWith("symbolic")
                 }
@@ -146,7 +146,7 @@ StyledRect {
                     ColouredIcon {
                         anchors.centerIn: parent
                         implicitSize: Math.round(Tokens.sizes.notifs.badge * 0.6)
-                        source: Quickshell.iconPath(root.appIcon)
+                        source: root.appIcon
                         colour: root.urgency === NotificationUrgency.Critical ? Colours.palette.m3onError : root.urgency === NotificationUrgency.Low ? Colours.palette.m3onSurface : Colours.palette.m3onSecondaryContainer
                         layer.enabled: root.appIcon.endsWith("symbolic")
                     }

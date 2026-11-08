@@ -16,8 +16,9 @@ StyledRect {
     id: root
 
     required property NotifData modelData
-    readonly property bool hasImage: modelData.image.length > 0
-    readonly property bool hasAppIcon: modelData.appIcon.length > 0
+    readonly property bool hasImage: modelData.resolvedImage.length > 0
+    readonly property string resolvedIcon: modelData.resolvedIcon // "" when nothing resolves
+    readonly property bool hasAppIcon: resolvedIcon.length > 0
     readonly property int bodyTextFormat: /[<*_`#\[\]]/.test(modelData.body) ? Text.MarkdownText : Text.PlainText
     readonly property int nonAnimHeight: summary.implicitHeight + (root.expanded ? Tokens.spacing.extraSmall * 2 + appName.height + body.height + actions.height + actions.anchors.topMargin : bodyPreview.height) + inner.anchors.margins * 2
     property bool expanded: Config.notifs.openExpanded
@@ -123,7 +124,7 @@ StyledRect {
 
                     Image {
                         anchors.fill: parent
-                        source: Qt.resolvedUrl(root.modelData.image)
+                        source: Qt.resolvedUrl(root.modelData.resolvedImage)
                         fillMode: Image.PreserveAspectCrop
                         sourceSize: {
                             const size = TokenConfig.sizes.notifs.image * ((QsWindow.window as QsWindow)?.devicePixelRatio ?? 1);
@@ -165,9 +166,9 @@ StyledRect {
 
                         sourceComponent: ColouredIcon {
                             anchors.fill: parent
-                            source: Quickshell.iconPath(root.modelData.appIcon)
+                            source: root.resolvedIcon
                             colour: root.modelData.urgency === NotificationUrgency.Critical ? Colours.palette.m3onError : root.modelData.urgency === NotificationUrgency.Low ? Colours.palette.m3onSurface : Colours.palette.m3onSecondaryContainer
-                            layer.enabled: root.modelData.appIcon.endsWith("symbolic")
+                            layer.enabled: root.resolvedIcon.endsWith("symbolic") // Only symbolic icons are tinted
                         }
                     }
 

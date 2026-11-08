@@ -9,6 +9,7 @@ import qs.components
 import qs.components.containers
 import qs.components.effects
 import qs.services
+import qs.utils
 
 Item {
     id: root
@@ -154,7 +155,7 @@ Item {
                         id: actionInner
 
                         anchors.centerIn: parent
-                        sourceComponent: action.modelData.isClose || action.modelData.isCopy ? iconBtn : root.notif?.hasActionIcons ? iconComp : textComp
+                        sourceComponent: action.modelData.isClose || action.modelData.isCopy ? iconBtn : root.notif?.hasActionIcons && Icons.resolveIcon(action.modelData.identifier) ? iconComp : textComp
                     }
 
                     Component {
@@ -172,7 +173,7 @@ Item {
 
                         IconImage {
                             asynchronous: true
-                            source: Quickshell.iconPath(action.modelData.identifier)
+                            source: Icons.resolveIcon(action.modelData.identifier)
                         }
                     }
 

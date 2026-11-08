@@ -75,3 +75,12 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
 - Added oxocarbon, kanagawa (wave, dragon, lotus), ayu (dark, mirage, light), github (dark, dimmed, light),
   monokai, nightfox (nightfox, carbonfox, dawnfox), flexoki and material-palenight, generated from their
   official palettes (see NOTICE) by `scripts/gen-scheme.py`; 18 themes in total are now bundled.
+
+## Notification icons
+
+- Notifications whose icon can't be found no longer show the magenta/black missing-image tile. Quickshell
+  passes the `notify-send -i` name as the notification image, so images of the form `image://icon/<name>` are
+  checked first (`Icons.resolveImage`); an unresolved one is dropped. The app icon is the icon name, absolute path
+  or `file://` URL if it exists, else the icon of the app's desktop entry (`Icons.notifIcon`), else the Material
+  icon. Only symbolic icons are tinted. Used by the popups, the sidebar and the lock screen; sidebar action
+  buttons fall back to text when their icon doesn't exist.

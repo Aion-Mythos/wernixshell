@@ -140,6 +140,30 @@ Singleton {
         return "";
     }
 
+    // Resolves an icon name, absolute path or file:// URL to a loadable source, or "" if it can't be found
+    function resolveIcon(name: string): string {
+        if (!name)
+            return "";
+        return Quickshell.iconPath(name.startsWith("file://") ? name.slice(7) : name, true);
+    }
+
+    // A notification image as shown: unchanged, except an icon-theme URL whose icon doesn't exist becomes ""
+    function resolveImage(image: string): string {
+        const prefix = "image://icon/";
+        if (!image.startsWith(prefix))
+            return image;
+        return resolveIcon(decodeURIComponent(image.slice(prefix.length))) ? image : "";
+    }
+
+    // The icon of a notification: its own, else the icon of the app's desktop entry, else "" (use a Material icon)
+    function notifIcon(appIcon: string, desktopEntry: string, appName: string): string {
+        const own = resolveIcon(appIcon);
+        if (own)
+            return own;
+        const entry = DesktopEntries.heuristicLookup(desktopEntry || appName);
+        return entry ? resolveIcon(entry.icon) : "";
+    }
+
     function getAppIcon(name: string, fallback: string): string {
         const icon = DesktopEntries.heuristicLookup(name)?.icon;
         if (fallback !== "undefined")
