@@ -3,9 +3,9 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Effects
 import Quickshell.Wayland
-import Caelestia.Config
-import Caelestia.Multimedia
-import Caelestia.State
+import Vaxison.Config
+import Vaxison.Multimedia
+import Vaxison.State
 import qs.components
 import qs.services
 

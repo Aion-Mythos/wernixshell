@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Update flake inputs
-        uses: caelestia-dots/.github/actions/nix-update@main
+        uses: Aion-Mythos/.github/actions/nix-update@main
         with:
           client-id: ${{ secrets.CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
@@ -30,9 +30,9 @@ jobs:
           nix profile install 'nixpkgs#sway'
           sway &
           sleep 3  # Give Sway some time to start
-          result/bin/caelestia-shell -d
+          result/bin/vaxison -d
           sleep 3  # Give the shell some time to start (and die)
           pgrep .quickshell-wra  # Fail job if shell died
 
-          result/bin/caelestia-shell kill
+          result/bin/vaxison kill
           killall sway  # Screw using IPC

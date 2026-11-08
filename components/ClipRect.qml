@@ -1,5 +1,5 @@
 import QtQuick
-import Caelestia.Components
+import Vaxison.Components
 
 Item {
     id: root

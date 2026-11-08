@@ -1,8 +1,8 @@
 import QtQuick
-import Caelestia.Config
-import Caelestia.Models
-import Caelestia.Multimedia
-import Caelestia.State
+import Vaxison.Config
+import Vaxison.Models
+import Vaxison.Multimedia
+import Vaxison.State
 import qs.components
 import qs.components.effects
 import qs.services

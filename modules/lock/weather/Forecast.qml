@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
 import M3Shapes
-import Caelestia
-import Caelestia.Config
-import Caelestia.I18n
+import Vaxison
+import Vaxison.Config
+import Vaxison.I18n
 import qs.components
 import qs.services
 import qs.utils

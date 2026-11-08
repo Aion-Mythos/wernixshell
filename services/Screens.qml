@@ -1,7 +1,7 @@
 pragma Singleton
 
 import Quickshell
-import Caelestia.Config
+import Vaxison.Config
 
 Singleton {
     id: root

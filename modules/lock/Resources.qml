@@ -4,9 +4,9 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import M3Shapes
-import Caelestia.Config
-import Caelestia.I18n
-import Caelestia.Services
+import Vaxison.Config
+import Vaxison.I18n
+import Vaxison.Services
 import qs.components
 import qs.components.controls
 import qs.components.effects

@@ -1,10 +1,10 @@
-<h1 align=center>caelestia-shell</h1>
+<h1 align=center>vaxison</h1>
 
 <div align=center>
 
-![GitHub last commit](https://img.shields.io/github/last-commit/caelestia-dots/shell?style=for-the-badge&labelColor=101418&color=9ccbfb)
-![GitHub Repo stars](https://img.shields.io/github/stars/caelestia-dots/shell?style=for-the-badge&labelColor=101418&color=b9c8da)
-![GitHub repo size](https://img.shields.io/github/repo-size/caelestia-dots/shell?style=for-the-badge&labelColor=101418&color=d3bfe6)
+![GitHub last commit](https://img.shields.io/github/last-commit/Aion-Mythos/-vexilion-vexison?style=for-the-badge&labelColor=101418&color=9ccbfb)
+![GitHub Repo stars](https://img.shields.io/github/stars/Aion-Mythos/-vexilion-vexison?style=for-the-badge&labelColor=101418&color=b9c8da)
+![GitHub repo size](https://img.shields.io/github/repo-size/Aion-Mythos/-vexilion-vexison?style=for-the-badge&labelColor=101418&color=d3bfe6)
 [![Ko-Fi donate](https://img.shields.io/badge/donate-kofi?style=for-the-badge&logo=ko-fi&logoColor=ffffff&label=ko-fi&labelColor=101418&color=f16061&link=https%3A%2F%2Fko-fi.com%2Fsoramane)](https://ko-fi.com/soramane)
 [![Discord invite](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fdiscordapp.com%2Fapi%2Finvites%2FBGDCFCmMBk%3Fwith_counts%3Dtrue&query=approximate_member_count&style=for-the-badge&logo=discord&logoColor=ffffff&label=discord&labelColor=101418&color=96f1f1&link=https%3A%2F%2Fdiscord.gg%2FBGDCFCmMBk)][discord]
 
@@ -16,12 +16,12 @@ https://github.com/user-attachments/assets/0840f496-575c-4ca6-83a8-87bb01a85c5f
 
 - Widgets: [`Quickshell`](https://quickshell.outfoxxed.me)
 - Window manager: [`Hyprland`](https://hypr.land)
-- Dots: [`caelestia`][dots-repo]
+- Dots: [`vaxison`][dots-repo]
 
 ## Installation
 
 > [!NOTE]
-> This repo is for Caelestia's desktop shell only. If you want installation instructions
+> This repo is for Vaxison's desktop shell only. If you want installation instructions
 > for the entire dotfiles (which include this shell), head to [the main repo][dots-repo] instead.
 
 ### Arch Linux
@@ -30,18 +30,18 @@ https://github.com/user-attachments/assets/0840f496-575c-4ca6-83a8-87bb01a85c5f
 > If you want to make your own changes/tweaks to the shell, do NOT edit the files installed by the AUR
 > package. Instead, follow the instructions in the [manual installation section](#manual-installation).
 
-The shell is available from the AUR as `caelestia-shell`. You can install it with an AUR helper (recommended),
+The shell is available from the AUR as `vaxison`. You can install it with an AUR helper (recommended),
 like [`paru`](https://github.com/morganamilo/paru), or by manually downloading the PKGBUILD and running `makepkg -si`.
 
-A package following the latest commit also exists as `caelestia-shell-git`. This is bleeding-edge
-and likely to be unstable/have bugs. Regular users are recommended to use the stable package (`caelestia-shell`).
+A package following the latest commit also exists as `vaxison-git`. This is bleeding-edge
+and likely to be unstable/have bugs. Regular users are recommended to use the stable package (`vaxison`).
 
 ### Nix
 
 You can run the shell directly via `nix run`:
 
 ```sh
-nix run github:caelestia-dots/shell#with-cli
+nix run github:Aion-Mythos/-vexilion-vexison#with-cli
 ```
 
 Or add it to your system configuration:
@@ -51,26 +51,26 @@ Or add it to your system configuration:
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    caelestia-shell = {
-      url = "github:caelestia-dots/shell";
+    vaxison = {
+      url = "github:Aion-Mythos/-vexilion-vexison";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 }
 ```
 
-For full functionality, use `caelestia-shell.packages.<system>.with-cli`, which can be added to your
+For full functionality, use `vaxison.packages.<system>.with-cli`, which can be added to your
 `environment.systemPackages`, `users.users.<username>.packages`, `home.packages` if using home-manager,
 or a devshell. The `default` package does not include the CLI.
-You can then run the shell with `caelestia-shell`.
+You can then run the shell with `vaxison`.
 
-For home-manager, you can also use Caelestia's Home Manager module (explained in [the configuration section](#home-manager-module)), which installs and configures the shell and CLI.
+For home-manager, you can also use Vaxison's Home Manager module (explained in [the configuration section](#home-manager-module)), which installs and configures the shell and CLI.
 
 ### Manual installation
 
 Dependencies:
 
-- [`caelestia-cli`](https://github.com/caelestia-dots/cli)
+- [`vsm`](https://github.com/Aion-Mythos/cli)
 - [`quickshell-git`](https://git.outfoxxed.me/quickshell/quickshell) - this has to be the git version, not the latest tagged version
 - `glibc`
 - `gcc-libs`
@@ -105,14 +105,14 @@ Build dependencies:
 > The commands below (and in the "Updating" section) assume `$XDG_CONFIG_HOME` is set.
 > If it is unset, substitute it with the path to your config folder (typically `~/.config`).
 
-To install the shell manually, install all dependencies and clone this repo to `$XDG_CONFIG_HOME/quickshell/caelestia`.
+To install the shell manually, install all dependencies and clone this repo to `$XDG_CONFIG_HOME/quickshell/vaxison`.
 Then build and install using CMake.
 
 ```sh
 cd $XDG_CONFIG_HOME/quickshell
-git clone https://github.com/caelestia-dots/shell.git caelestia
+git clone https://github.com/Aion-Mythos/-vexilion-vexison.git vaxison
 
-cd caelestia
+cd vaxison
 cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/
 cmake --build build
 sudo cmake --install build
@@ -121,42 +121,42 @@ sudo cmake --install build
 > [!TIP]
 > You can customise the installation location via the CMake flags `INSTALL_LIBDIR`, `INSTALL_QMLDIR`, and
 > `INSTALL_QSCONFDIR` for the libraries (e.g. the version helper), QML plugin, and Quickshell config directories
-> respectively. If you set the `INSTALL_LIBDIR` flag, the `CAELESTIA_LIB_DIR` variable must also be set to
+> respectively. If you set the `INSTALL_LIBDIR` flag, the `VAXISON_LIB_DIR` variable must also be set to
 > the same directory in your system's environment.
 >
-> For example, installing to `~/.config/quickshell/caelestia` for easy local changes:
+> For example, installing to `~/.config/quickshell/vaxison` for easy local changes:
 >
 > ```sh
-> mkdir -p ~/.config/quickshell/caelestia
-> cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/ -DINSTALL_QSCONFDIR="$HOME/.config/quickshell/caelestia"
+> mkdir -p ~/.config/quickshell/vaxison
+> cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/ -DINSTALL_QSCONFDIR="$HOME/.config/quickshell/vaxison"
 > cmake --build build
 > sudo cmake --install build
-> sudo chown -R $USER ~/.config/quickshell/caelestia
+> sudo chown -R $USER ~/.config/quickshell/vaxison
 > ```
 
 ## Usage
 
-You can start the shell by running `caelestia shell -d` (preferred) or `qs -c caelestia -n -d`.
+You can start the shell by running `vsm shell -d` (preferred) or `qs -c vaxison -n -d`.
 You may omit `-d` from the command to keep the shell attached to the current terminal if necessary,
 though you likely want it to be detached (so it doesn't close when the terminal is closed).
 
-If using the [Caelestia dotfiles][dots-repo], the shell will be autostarted on login
+If using the [Vaxison dotfiles][dots-repo], the shell will be autostarted on login
 via a `hl.on("hyprland.start", ...)` function in the Hyprland config.
 
 ### Shortcuts/IPC
 
 All keybinds are accessible via Hyprland [global shortcuts](https://wiki.hypr.land/Configuring/Basics/Binds/#dbus-global-shortcuts).
-If using the [Caelestia dotfiles][dots-repo], the keybinds are already configured for you.
-Otherwise, the [`keybinds.lua`](https://github.com/caelestia-dots/caelestia/blob/main/hypr/hyprland/keybinds.lua#L63-L67) file
+If using the [Vaxison dotfiles][dots-repo], the keybinds are already configured for you.
+Otherwise, the [`keybinds.lua`](https://github.com/Aion-Mythos/vaxison/blob/main/hypr/hyprland/keybinds.lua#L63-L67) file
 contains an example of how to use global shortcuts.
 
-All IPC commands can be accessed via `caelestia shell ...`, for example:
+All IPC commands can be accessed via `vsm shell ...`, for example:
 
 ```sh
-caelestia shell mpris getActive trackTitle
+vsm shell mpris getActive trackTitle
 ```
 
-You can view the list of available IPC commands by running `caelestia shell -s`.
+You can view the list of available IPC commands by running `vsm shell -s`.
 
 ### PFP/Wallpapers
 
@@ -164,17 +164,17 @@ The profile picture for the dashboard is read from the file `~/.face`. You can s
 or by manually copying or symlinking your image to the path.
 
 The wallpapers for the wallpaper switcher are read from `~/Pictures/Wallpapers`
-by default. To change it, modify `paths.wallpaperDir` in `~/.config/caelestia/shell.json`.
+by default. To change it, modify `paths.wallpaperDir` in `~/.config/vaxison/shell.json`.
 
 To set the wallpaper, you can type `>wallpaper` in the launcher to open the wallpaper switcher.
-Alternatively, you can also use `caelestia wallpaper -f <path_to_wallpaper>` to set the wallpaper directly.
-Use `caelestia wallpaper -h` for more info about this command.
+Alternatively, you can also use `vsm wallpaper -f <path_to_wallpaper>` to set the wallpaper directly.
+Use `vsm wallpaper -h` for more info about this command.
 
 ## Updating
 
 ### Packaged install (AUR)
 
-If using the full dotfiles or the CLI, run `caelestia update` to perform a full system update and
+If using the full dotfiles or the CLI, run `vsm update` to perform a full system update and
 update the dots.
 Otherwise, if you installed the shell on its own, update your system using your AUR helper (e.g., `paru`).
 
@@ -183,22 +183,22 @@ Otherwise, if you installed the shell on its own, update your system using your 
 If you installed the shell manually by cloning the repo, you can update by pulling the changes from git
 in the local checkout.
 
-For example, if you installed to `$XDG_CONFIG_HOME/quickshell/caelestia`:
+For example, if you installed to `$XDG_CONFIG_HOME/quickshell/vaxison`:
 
 ```sh
-cd $XDG_CONFIG_HOME/quickshell/caelestia
+cd $XDG_CONFIG_HOME/quickshell/vaxison
 git pull
 ```
 
 ## Configuring
 
-All configuration options belong in `~/.config/caelestia/shell.json`. This file is _not_ created by
+All configuration options belong in `~/.config/vaxison/shell.json`. This file is _not_ created by
 default; you must create it manually. Options that you omit from the config file will use their default
 values.
 
 ### Per-monitor configuration
 
-You can configure per-monitor options in `~/.config/caelestia/monitors/<monitor_name>/shell.json`.
+You can configure per-monitor options in `~/.config/vaxison/monitors/<monitor_name>/shell.json`.
 List the names of your available monitors by running:
 
 ```sh
@@ -210,7 +210,7 @@ per-monitor configs will inherit their values from the global config.
 
 For example, to automatically hide the bar on the monitor named `DP-1`:
 
-**`~/.config/caelestia/monitors/DP-1/shell.json`**
+**`~/.config/vaxison/monitors/DP-1/shell.json`**
 
 ```json
 {
@@ -729,7 +729,7 @@ For example, to automatically hide the bar on the monitor named `DP-1`:
                 "name": "Random",
                 "icon": "casino",
                 "description": "Switch to a random wallpaper",
-                "command": ["caelestia", "wallpaper", "-r"],
+                "command": ["vsm", "wallpaper", "-r"],
                 "enabled": true,
                 "dangerous": false
             },
@@ -793,7 +793,7 @@ For example, to automatically hide the bar on the monitor named `DP-1`:
                 "name": "Settings",
                 "icon": "settings",
                 "description": "Configure the shell",
-                "command": ["caelestia", "shell", "nexus", "open"],
+                "command": ["vsm", "shell", "nexus", "open"],
                 "enabled": true,
                 "dangerous": false
             }
@@ -965,14 +965,14 @@ For example, to automatically hide the bar on the monitor named `DP-1`:
 > tokens used internally within the shell, and can cause visual issues if modified incorrectly.
 > The available options may change or be removed without notice across versions.
 
-A separate `~/.config/caelestia/shell-tokens.json` file allows editing the internal tokens without
+A separate `~/.config/vaxison/shell-tokens.json` file allows editing the internal tokens without
 touching the source code of the shell. These tokens affect the dimensions and appearance of visual elements,
 including individual rounding, spacing, padding, font size, animation durations and curves, and the sizes of
 certain components. The appearance scale values in `shell.json` are multiplied against these base
 token values to produce the final computed values.
 
 Per-monitor token overrides are also available at
-`~/.config/caelestia/monitors/<monitor_name>/shell-tokens.json`.
+`~/.config/vaxison/monitors/<monitor_name>/shell-tokens.json`.
 
 ### Home Manager Module
 
@@ -981,7 +981,7 @@ For NixOS users, a Home Manager module is also available.
 <details><summary><code>home.nix</code></summary>
 
 ```nix
-programs.caelestia = {
+programs.vaxison = {
   enable = true;
   systemd = {
     enable = false; # if you prefer starting from your compositor
@@ -998,7 +998,7 @@ programs.caelestia = {
     paths.wallpaperDir = "~/Images";
   };
   cli = {
-    enable = true; # Also add caelestia-cli to path
+    enable = true; # Also add vsm to path
     settings = {
       theme.enableGtk = false;
     };
@@ -1014,11 +1014,11 @@ The module automatically adds the shell to the path with **full functionality**.
 
 ### Need help or support?
 
-You can join the Caelestia Discord server for assistance and discussion [here][discord].
+You can join the Vaxison Discord server for assistance and discussion [here][discord].
 
 ### I want to make my own changes to the Hyprland config!
 
-Check out the configuring section on the [dots repo](https://github.com/caelestia-dots/caelestia#configuring).
+Check out the configuring section on the [dots repo](https://github.com/Aion-Mythos/vaxison#configuring).
 
 ### I want to make my own changes to other stuff!
 
@@ -1027,16 +1027,16 @@ See the [manual installation](#manual-installation) section for the correspondin
 ### I want to disable \_\_\_ feature!
 
 Please read the [configuring](#configuring) section.
-If there is no corresponding option, make a [feature request](https://github.com/caelestia-dots/shell/issues/new?template=feature.yml).
+If there is no corresponding option, make a [feature request](https://github.com/Aion-Mythos/-vexilion-vexison/issues/new?template=feature.yml).
 
 ### How do I make my colour scheme change to match my wallpaper?
 
-Set a wallpaper via `>wallpaper` in the launcher or `caelestia wallpaper`, and set the scheme to the dynamic scheme via
-`>scheme` in the launcher or `caelestia scheme set`, e.g.:
+Set a wallpaper via `>wallpaper` in the launcher or `vsm wallpaper`, and set the scheme to the dynamic scheme via
+`>scheme` in the launcher or `vsm scheme set`, e.g.:
 
 ```sh
-caelestia wallpaper -f <path_to_wallpaper>
-caelestia scheme set -n dynamic
+vsm wallpaper -f <path_to_wallpaper>
+vsm scheme set -n dynamic
 ```
 
 ### My wallpapers aren't showing up in the launcher!
@@ -1062,13 +1062,13 @@ Finally, another thank you to all the configs I took inspiration from (only one 
 
 ## Stonks 📈
 
-<a href="https://www.star-history.com/#caelestia-dots/shell&Date">
+<a href="https://www.star-history.com/#Aion-Mythos/-vexilion-vexison&Date">
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=caelestia-dots/shell&type=Date&theme=dark" />
-        <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=caelestia-dots/shell&type=Date" />
-        <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=caelestia-dots/shell&type=Date" />
+        <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Aion-Mythos/-vexilion-vexison&type=Date&theme=dark" />
+        <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Aion-Mythos/-vexilion-vexison&type=Date" />
+        <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Aion-Mythos/-vexilion-vexison&type=Date" />
     </picture>
 </a>
 
-[dots-repo]: https://github.com/caelestia-dots/caelestia
-[discord]: https://caelestiashell.com/discord
+[dots-repo]: https://github.com/Aion-Mythos/vaxison
+[discord]: https://vaxisonshell.com/discord

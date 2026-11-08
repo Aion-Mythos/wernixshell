@@ -1,9 +1,9 @@
 import QtQuick
-import Caelestia
-import Caelestia.Config
-import Caelestia.Multimedia
-import Caelestia.Shaders
-import Caelestia.State
+import Vaxison
+import Vaxison.Config
+import Vaxison.Multimedia
+import Vaxison.Shaders
+import Vaxison.State
 import qs.services
 
 Item {

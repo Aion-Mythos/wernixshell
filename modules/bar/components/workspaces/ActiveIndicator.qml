@@ -1,8 +1,8 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
-import Caelestia.Components
-import Caelestia.Config
+import Vaxison.Components
+import Vaxison.Config
 import qs.components
 import qs.components.effects
 import qs.services

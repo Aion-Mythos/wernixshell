@@ -3,8 +3,8 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
-import Caelestia.Config
-import Caelestia.I18n
+import Vaxison.Config
+import Vaxison.I18n
 import qs.components
 import qs.components.controls
 import qs.services

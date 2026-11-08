@@ -4,9 +4,9 @@ import QtQuick
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Hyprland
-import Caelestia
-import Caelestia.Components
-import Caelestia.Config
+import Vaxison
+import Vaxison.Components
+import Vaxison.Config
 import qs.components
 import qs.services
 

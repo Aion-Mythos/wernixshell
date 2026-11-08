@@ -1,6 +1,6 @@
 import QtQuick
-import Caelestia.Blobs
-import Caelestia.Config
+import Vaxison.Blobs
+import Vaxison.Config
 import qs.components
 import qs.services
 

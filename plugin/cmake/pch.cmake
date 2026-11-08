@@ -1,5 +1,5 @@
-add_library(caelestia-pch INTERFACE)
-target_precompile_headers(caelestia-pch INTERFACE
+add_library(vaxison-pch INTERFACE)
+target_precompile_headers(vaxison-pch INTERFACE
     <qobject.h>
     <qqmlintegration.h>
     <qstring.h>

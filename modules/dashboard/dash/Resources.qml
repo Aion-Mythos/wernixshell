@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
-import Caelestia.Config
-import Caelestia.Services
+import Vaxison.Config
+import Vaxison.Services
 import qs.components
 import qs.components.controls
 import qs.services

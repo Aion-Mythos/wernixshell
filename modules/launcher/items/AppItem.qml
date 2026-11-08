@@ -1,7 +1,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Widgets
-import Caelestia.Config
+import Vaxison.Config
 import qs.components
 import qs.services
 import qs.utils

@@ -4,8 +4,8 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Services.UPower
-import Caelestia.Config
-import Caelestia.Services
+import Vaxison.Config
+import Vaxison.Services
 import qs.services
 import qs.modules.lock
 

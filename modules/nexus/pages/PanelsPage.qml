@@ -1,6 +1,6 @@
 import QtQuick.Layouts
-import Caelestia.Config
-import Caelestia.I18n
+import Vaxison.Config
+import Vaxison.I18n
 import qs.modules.nexus.common
 
 PageBase {

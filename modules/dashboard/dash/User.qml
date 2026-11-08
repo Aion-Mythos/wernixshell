@@ -2,9 +2,9 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import M3Shapes
-import Caelestia.Config
-import Caelestia.I18n
-import Caelestia.Multimedia
+import Vaxison.Config
+import Vaxison.I18n
+import Vaxison.Multimedia
 import qs.components
 import qs.components.effects
 import qs.components.filedialog
@@ -146,7 +146,7 @@ Item {
 
         Loader {
             anchors.centerIn: parent
-            sourceComponent: SysInfo.isDefaultLogo ? caelestiaLogo : osLogo
+            sourceComponent: SysInfo.isDefaultLogo ? vxsLogo : osLogo
         }
     }
 
@@ -163,7 +163,7 @@ Item {
     }
 
     Component {
-        id: caelestiaLogo
+        id: vxsLogo
 
         Logo {
             implicitWidth: Tokens.sizes.dashboard.logoSize

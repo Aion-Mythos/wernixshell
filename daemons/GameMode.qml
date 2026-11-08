@@ -1,10 +1,10 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import Caelestia
-import Caelestia.Config
-import Caelestia.I18n
-import Caelestia.State
+import Vaxison
+import Vaxison.Config
+import Vaxison.I18n
+import Vaxison.State
 import qs.services
 
 Scope {

@@ -17,6 +17,6 @@ jobs:
     concurrency:
       group: check-pr-title-${{ github.event.pull_request.number }}
       cancel-in-progress: true
-    uses: caelestia-dots/.github/.github/workflows/check-pr-title.yml@main
+    uses: Aion-Mythos/.github/.github/workflows/check-pr-title.yml@main
     with:
       scope_file: .github/scopes.txt
