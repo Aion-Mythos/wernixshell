@@ -66,7 +66,7 @@ ClipRect {
         return index % shown;
     }
 
-    implicitWidth: vertical ? Tokens.sizes.bar.innerWidth : horizontal.item?.implicitWidth ?? 0
+    implicitWidth: vertical ? Tokens.sizes.bar.innerWidth : hRow.implicitWidth + Tokens.padding.large * 2
     implicitHeight: vertical ? workspaces.layoutHeight + workspaces.anchors.margins * 2 : Tokens.sizes.bar.innerWidth
 
     color: Colours.tPalette.m3surfaceContainer
@@ -194,56 +194,6 @@ ClipRect {
         }
     }
 
-    // Horizontal bars use their own row-based content
-    Loader {
-        id: horizontal
-
-        anchors.fill: parent
-        active: !root.vertical
-        opacity: root.onSpecial || root.fullscreen ? 0 : 1
-        visible: opacity > 0
-
-        sourceComponent: HorizontalWorkspaces {
-            wsIds: root.wsIds
-            activeWsId: root.activeWsId
-            activeWsIdx: root.activeWsIdx
-            groupOffset: root.groupOffset
-            monitor: root.monitor
-        }
-
-        Behavior on opacity {
-            Anim {
-                type: Anim.DefaultEffects
-            }
-        }
-    }
-
-    Loader {
-        anchors.fill: parent
-        active: !root.vertical && opacity > 0
-        opacity: root.onSpecial && !root.fullscreen ? 1 : 0
-
-        sourceComponent: Item {
-            StyledRect {
-                anchors.fill: parent
-                radius: Tokens.rounding.full
-                color: Qt.alpha(Colours.palette.m3scrim, Colours.light ? 0 : 0.2)
-            }
-
-            HSpecialWorkspaces {
-                anchors.fill: parent
-                anchors.margins: Tokens.padding.extraSmall
-                monitor: root.monitor
-            }
-        }
-
-        Behavior on opacity {
-            Anim {
-                type: Anim.DefaultEffects
-            }
-        }
-    }
-
     Loader {
         id: specialWs
 
@@ -284,6 +234,57 @@ ClipRect {
     Behavior on blur {
         Anim {
             type: Anim.StandardSmall
+        }
+    }
+
+    // Horizontal bars use a plain row of pills (the animated indicator is vertical only)
+    Row {
+        id: hRow
+
+        anchors.centerIn: parent
+        visible: !root.vertical && !root.fullscreen
+        spacing: Tokens.spacing.small
+        opacity: root.onSpecial ? 0.5 : 1
+
+        Repeater {
+            model: root.wsIds
+
+            StyledRect {
+                id: pill
+
+                required property int index
+                required property int modelData
+                readonly property int ws: Config.bar.workspaces.showUnoccupied ? root.groupOffset + index + 1 : modelData
+                readonly property bool focused: root.activeWsId === ws
+                readonly property bool occupied: Hypr.toplevelsForWs(ws, GlobalConfig.bar.workspaces.ignoredTags).length > 0
+
+                implicitHeight: Tokens.padding.large
+                implicitWidth: focused ? implicitHeight * 2.5 : implicitHeight
+                radius: Tokens.rounding.full
+                color: focused ? Colours.palette.m3primary : occupied ? Colours.palette.m3onSurfaceVariant : Colours.palette.m3outlineVariant
+
+                MouseArea {
+                    anchors.fill: parent
+                    anchors.margins: -Tokens.spacing.extraSmall
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: {
+                        if (Hypr.activeWsId !== pill.ws)
+                            Hypr.focusWorkspace(pill.ws);
+                        else
+                            Hypr.toggleSpecial("special");
+                    }
+                }
+
+                Behavior on implicitWidth {
+                    Anim {}
+                }
+            }
+        }
+
+        Behavior on opacity {
+            Anim {
+                type: Anim.DefaultEffects
+            }
         }
     }
 

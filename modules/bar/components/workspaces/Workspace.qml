@@ -19,7 +19,6 @@ Item {
     required property int activeWsId
     required property int ws
     required property HyprlandMonitor monitor
-    property bool vertical: true // Fixed per delegate: vertical bars stack workspaces, horizontal ones row them
 
     required property int displayType
     required property bool showWindows
@@ -31,14 +30,6 @@ Item {
     readonly property list<HyprlandToplevel> toplevels: Hypr.toplevelsForWs(ws, GlobalConfig.bar.workspaces.ignoredTags)
     readonly property bool isOccupied: toplevels.length > 0
     readonly property bool hasWindows: isOccupied && showWindows && Config.bar.workspaces.maxWindowIcons > 0
-    readonly property var windowList: {
-        const maxIcons = Config.bar.workspaces.maxWindowIcons;
-        return maxIcons > 0 ? toplevels.slice(0, maxIcons) : toplevels;
-    }
-
-    // Size along the bar's axis this workspace wants, and its animated counterpart (horizontal only)
-    readonly property real preferredLength: (vertical ? layout.implicitHeight : layout.implicitWidth) + (hasWindows ? Tokens.padding.extraSmall : 0)
-    property real visibleLength: preferredLength
     readonly property bool focused: activeWsId === ws
     readonly property list<int> focusedShapeList: [MaterialShape.Slanted, MaterialShape.Oval, MaterialShape.Pill, MaterialShape.Triangle, MaterialShape.Arrow, MaterialShape.Diamond, MaterialShape.Pentagon, MaterialShape.Gem, MaterialShape.VerySunny, MaterialShape.Sunny, MaterialShape.Cookie4Sided, MaterialShape.Cookie6Sided, MaterialShape.Cookie7Sided, MaterialShape.Cookie9Sided, MaterialShape.Cookie12Sided, MaterialShape.Clover4Leaf, MaterialShape.SoftBurst, MaterialShape.Ghostish]
 
@@ -68,11 +59,7 @@ Item {
             shape.shape = Qt.binding(() => isOccupied ? MaterialShape.Square : MaterialShape.Circle);
     }
 
-    // Anchors are only set once, as the orientation of a delegate never changes
-    anchors.horizontalCenter: vertical ? parent?.horizontalCenter : undefined
-    anchors.verticalCenter: vertical ? undefined : parent?.verticalCenter
-    implicitWidth: vertical ? 0 : visibleLength
-    implicitHeight: vertical ? 0 : layout.implicitHeight
+    anchors.horizontalCenter: parent?.horizontalCenter
     LazyListView.preferredHeight: LazyListView.removing ? 0 : layout.implicitHeight + (hasWindows ? Tokens.padding.extraSmall : 0)
     LazyListView.visibleHeight: LazyListView.preferredHeight
 
@@ -82,12 +69,6 @@ Item {
     Component.onCompleted: updateShape()
 
     Behavior on LazyListView.visibleHeight {
-        Anim {}
-    }
-
-    Behavior on visibleLength {
-        enabled: !root.vertical
-
         Anim {}
     }
 
@@ -191,18 +172,16 @@ Item {
         }
     }
 
-    GridLayout {
+    ColumnLayout {
         id: layout
 
         anchors.fill: parent
-        columns: root.vertical ? 1 : 2
-        rowSpacing: 0
-        columnSpacing: 0
+        spacing: 0
 
         Loader {
             id: indicator
 
-            Layout.alignment: root.vertical ? Qt.AlignHCenter | Qt.AlignTop : Qt.AlignVCenter | Qt.AlignLeft
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
             Layout.preferredHeight: Tokens.sizes.bar.innerWidth - Tokens.padding.small
             sourceComponent: {
                 if (root.displayType === BarWorkspaceDisplay.Icons)
@@ -220,32 +199,25 @@ Item {
 
             asynchronous: true
 
-            Layout.fillWidth: root.vertical
-            Layout.alignment: root.vertical ? Qt.AlignTop : Qt.AlignVCenter
-            Layout.topMargin: root.vertical ? -Tokens.spacing.extraSmall / 2 : 0
-            Layout.leftMargin: root.vertical ? 0 : -Tokens.spacing.extraSmall / 2
-            Layout.preferredHeight: root.vertical && root.hasWindows && item ? (item as LazyListView).layoutHeight : root.vertical ? 0 : -1
-            Layout.preferredWidth: !root.vertical ? (root.hasWindows && item ? item.implicitWidth : 0) : -1
+            Layout.fillWidth: true
+            Layout.topMargin: -Tokens.spacing.extraSmall / 2
+            Layout.preferredHeight: root.hasWindows && item ? (item as LazyListView).layoutHeight : 0
 
             visible: active
             active: root.showWindows && Config.bar.workspaces.maxWindowIcons > 0
 
-            sourceComponent: root.vertical ? windowsList : windowsRow
-        }
-    }
-
-    // Window icons below the workspace indicator (vertical bars)
-    Component {
-        id: windowsList
-
-        LazyListView {
+            sourceComponent: LazyListView {
                 spacing: 0
                 implicitHeight: contentHeight
                 cullDelegates: false
                 removeDuration: Tokens.anim.durations.expressiveDefaultEffects
 
                 model: ScriptModel {
-                    values: root.windowList
+                    values: {
+                        const windows = root.toplevels;
+                        const maxIcons = root.Config.bar.workspaces.maxWindowIcons;
+                        return maxIcons > 0 ? windows.slice(0, maxIcons) : windows;
+                    }
                 }
 
                 delegate: MaterialIcon {
@@ -270,29 +242,6 @@ Item {
                     Behavior on y {
                         Anim {}
                     }
-                }
-        }
-    }
-
-    // Window icons next to the workspace indicator (horizontal bars)
-    Component {
-        id: windowsRow
-
-        Row {
-            spacing: 0
-
-            Repeater {
-                model: ScriptModel {
-                    values: root.windowList
-                }
-
-                MaterialIcon {
-                    required property var modelData
-
-                    grade: 0
-                    verticalAlignment: Text.AlignVCenter
-                    text: Icons.getAppCategoryIcon(modelData.lastIpcObject.class, "terminal")
-                    color: root.onOtherMonitor ? root.offMonitorColour : Colours.palette.m3onSurfaceVariant
                 }
             }
         }

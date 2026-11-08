@@ -37,10 +37,3 @@ by GPL-3.0 section 5(a).
 - Horizontal layouts for the clock, tray, status icons and active window; workspaces use a plain
   row of pills on horizontal bars (animated indicator is vertical only, see Phase 4b).
 - Hover triggers of panels that share the bar's edge are disabled (they stay reachable via shortcuts).
-
-## Phase 4b: horizontal workspaces
-
-- Workspaces on top/bottom bars now use the same widgets as vertical bars (shape/text/icon indicator,
-  window icons, animated active pill, occupied background, gap markers, special workspaces), laid out
-  in a row. Done in QML (`Horizontal*`/`H*` files in `modules/bar/components/workspaces/`), no C++
-  change; the vertical `LazyListView` is untouched.
