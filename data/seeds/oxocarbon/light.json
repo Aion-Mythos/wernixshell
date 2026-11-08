@@ -1,0 +1,19 @@
+{
+  "mode": "light",
+  "background": "f2f4f8",
+  "surface": "f2f4f8",
+  "primary": "0f62fe",
+  "secondary": "673ab7",
+  "tertiary": "08bdba",
+  "error": "ee5396",
+  "success": "42be65",
+  "warning": "ff6f00",
+  "text": "393939",
+  "overrides": {
+    "surfaceContainerLow": "e8ebf0",
+    "surfaceContainer": "dde1e6",
+    "outlineVariant": "dde1e6"
+  },
+  "strictContrast": true,
+  "source": "https://github.com/nyoom-engineering/base16-oxocarbon (MIT, nyoom-engineering/oxocarbon)"
+}

@@ -4,6 +4,8 @@
 data/seeds/<name>/<flavour>.json. Re-runnable; the output is committed.
 
 Seed keys: mode, background, surface, primary, secondary, tertiary, error, text (required);
+source (where the palette comes from) and flavour (default: the file name) are informational;
+strictContrast (optional) pushes text on coloured fills to at least 4.5:1;
 success, warning (optional); overrides {token: hex} (optional, replaces any generated token).
 To add a theme, add a seed and run this script. Every token the shell reads (the M3Palette in
 services/Colours.qml) is generated, and the script fails if one is missing."""
@@ -49,6 +51,15 @@ def build(seed):
     ok = seed.get("success", "6fcf97" if dark else "1b7f4c")
     warn = seed.get("warning", "e3b341" if dark else "9a6700")
     pick = lambda bg: max((b, t), key=lambda c: contrast(c, bg))  # Readable text on bg
+    if seed.get("strictContrast"):  # Text on coloured fills gets pushed towards white/black until it reaches 4.5:1
+
+        def pick(bg, base=pick):
+            fg = base(bg)
+            for _ in range(40):
+                if contrast(fg, bg) >= 4.6:
+                    break
+                fg = mix(fg, WHITE if lum(bg) < 0.4 else BLACK, 0.1)
+            return fg
     c = {
         "background": b, "onBackground": t, "surface": s, "onSurface": t,
         "surfaceDim": mix(s, BLACK, 0.25) if dark else mix(s, t, 0.12),
@@ -72,7 +83,7 @@ def build(seed):
         cap = role.capitalize()
         c[role] = col
         c[f"on{cap}"] = pick(col)
-        c[f"{role}Container"] = mix(col, b, 0.55 if dark else 0.75)
+        c[f"{role}Container"] = mix(col, b, (0.65 if dark else 0.8) if seed.get("strictContrast") else (0.55 if dark else 0.75))
         c[f"on{cap}Container"] = pick(c[f"{role}Container"])
         c[f"{role}_paletteKeyColor"] = c[f"{role}PaletteKeyColor"] = col
         if role in ("primary", "secondary", "tertiary"):
@@ -89,7 +100,21 @@ def build(seed):
     return c
 
 
+REPORT = [
+    ("onSurface", "surface"), ("onSurface", "surfaceContainerLowest"), ("onSurface", "surfaceContainerHighest"),
+    ("onSurfaceVariant", "surface"), ("primary", "background"), ("onPrimary", "primary"),
+    ("onPrimaryContainer", "primaryContainer"), ("secondary", "background"), ("tertiary", "background"),
+    ("error", "background"), ("success", "background"),
+]
+
+
+def report(name, colours):
+    """Prints the contrast ratio of the key text/background pairs."""
+    print(name + ": " + ", ".join(f"{a}/{b} {contrast(colours[a], colours[b]):.1f}" for a, b in REPORT))
+
+
 def main():
+    show_report = "--report" in sys.argv
     names = tokens()
     for seed_file in sorted((ROOT / "data/seeds").glob("*/*.json")):
         seed = json.loads(seed_file.read_text())
@@ -99,9 +124,11 @@ def main():
             sys.exit(f"{seed_file}: missing tokens {missing}")
         out = ROOT / "data/schemes" / seed_file.parent.name / seed_file.name
         out.parent.mkdir(parents=True, exist_ok=True)
-        scheme = {"name": seed_file.parent.name, "flavour": seed_file.stem, "mode": seed["mode"], "colours": {n: colours[n] for n in names}}
+        scheme = {"name": seed_file.parent.name, "flavour": seed.get("flavour", seed_file.stem), "mode": seed["mode"], "colours": {n: colours[n] for n in names}}
         out.write_text(json.dumps(scheme, indent=2) + "\n")
         low = [f"{a}/{b}={contrast(colours[a], colours[b]):.1f}" for a, b in (("onSurface", "surface"), ("onPrimary", "primary"), ("onSecondary", "secondary"), ("onTertiary", "tertiary"), ("onError", "error")) if contrast(colours[a], colours[b]) < 4.5]
+        if show_report:
+            report(f"{seed_file.parent.name}/{seed_file.stem}", colours)
         print(f"{out.relative_to(ROOT)}: {len(names)} tokens" + (f" (low contrast: {', '.join(low)})" if low else ""))
 
 

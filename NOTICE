@@ -8,3 +8,11 @@ and Vaxison is distributed under the same license (GPL-3.0, see LICENSE).
 The colour schemes catppuccin, gruvbox, rosepine, everforest, tokyonight, nord, dracula, onedark and
 solarized in data/schemes/ were copied from the data of caelestia-cli by the Caelestia contributors
 (https://github.com/caelestia-dots/cli, GPL-3.0).
+
+The palettes of these themes in data/schemes/ (seeds in data/seeds/) come from their official repositories,
+all MIT licensed: oxocarbon (https://github.com/nyoom-engineering/base16-oxocarbon, project
+https://github.com/nyoom-engineering/oxocarbon), kanagawa (https://github.com/rebelot/kanagawa.nvim),
+ayu (https://github.com/ayu-theme/ayu-colors), github (https://github.com/projekt0n/github-nvim-theme),
+monokai (https://github.com/sickill/vim-monokai), nightfox and carbonfox and dawnfox
+(https://github.com/EdenEast/nightfox.nvim), flexoki (https://github.com/kepano/flexoki) and
+material-palenight (https://github.com/whizkydee/vscode-palenight-theme).

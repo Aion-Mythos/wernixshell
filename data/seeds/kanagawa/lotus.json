@@ -1,0 +1,21 @@
+{
+  "mode": "light",
+  "background": "f2ecbc",
+  "surface": "f2ecbc",
+  "primary": "4d699b",
+  "secondary": "624c83",
+  "tertiary": "b35b79",
+  "error": "c84053",
+  "success": "6f894e",
+  "warning": "cc6d00",
+  "text": "545464",
+  "overrides": {
+    "surfaceContainerLow": "e7dba0",
+    "surfaceContainer": "e5ddb0",
+    "surfaceContainerHigh": "dcd5ac",
+    "surfaceContainerHighest": "d5cea3",
+    "outlineVariant": "8a8980"
+  },
+  "strictContrast": true,
+  "source": "https://github.com/rebelot/kanagawa.nvim lua/kanagawa/colors.lua (MIT)"
+}

@@ -1,0 +1,22 @@
+{
+  "mode": "dark",
+  "background": "161616",
+  "surface": "161616",
+  "primary": "78a9ff",
+  "secondary": "be95ff",
+  "tertiary": "3ddbd9",
+  "error": "ee5396",
+  "success": "42be65",
+  "warning": "ff6f00",
+  "text": "f2f4f8",
+  "overrides": {
+    "surfaceContainerLowest": "0f0f0f",
+    "surfaceContainerLow": "1c1c1c",
+    "surfaceContainer": "262626",
+    "surfaceContainerHigh": "393939",
+    "surfaceContainerHighest": "525252",
+    "outlineVariant": "525252"
+  },
+  "strictContrast": true,
+  "source": "https://github.com/nyoom-engineering/base16-oxocarbon (MIT, nyoom-engineering/oxocarbon)"
+}

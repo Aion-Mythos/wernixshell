@@ -1,0 +1,18 @@
+{
+  "mode": "dark",
+  "background": "22272e",
+  "surface": "22272e",
+  "primary": "539bf5",
+  "secondary": "986ee2",
+  "tertiary": "c96198",
+  "error": "e5534b",
+  "success": "57ab5a",
+  "warning": "c69026",
+  "text": "adbac7",
+  "overrides": {
+    "surfaceContainerLowest": "1c2128",
+    "surfaceContainer": "2d333b"
+  },
+  "strictContrast": true,
+  "source": "https://github.com/projekt0n/github-nvim-theme palette/primitives (MIT), Primer colours"
+}

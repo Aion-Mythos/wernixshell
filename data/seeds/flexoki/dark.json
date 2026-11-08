@@ -1,0 +1,23 @@
+{
+  "mode": "dark",
+  "background": "100f0f",
+  "surface": "100f0f",
+  "primary": "4385be",
+  "secondary": "8b7ec8",
+  "tertiary": "3aa99f",
+  "error": "d14d41",
+  "success": "879a39",
+  "warning": "d0a215",
+  "text": "cecdc3",
+  "overrides": {
+    "surfaceContainerLow": "151413",
+    "surfaceContainer": "1c1b1a",
+    "surfaceContainerHigh": "282726",
+    "surfaceContainerHighest": "343331",
+    "outline": "6f6e69",
+    "outlineVariant": "403e3c",
+    "onSurfaceVariant": "b7b5ac"
+  },
+  "strictContrast": true,
+  "source": "https://github.com/kepano/flexoki README (MIT)"
+}

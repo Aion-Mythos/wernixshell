@@ -1,0 +1,19 @@
+{
+  "mode": "dark",
+  "background": "292d3e",
+  "surface": "292d3e",
+  "primary": "82aaff",
+  "secondary": "c792ea",
+  "tertiary": "89ddff",
+  "error": "ff5572",
+  "success": "a9c77d",
+  "warning": "ffcb6b",
+  "text": "bfc7d5",
+  "overrides": {
+    "surfaceContainerLow": "282c3d",
+    "outline": "697098",
+    "outlineVariant": "676e95"
+  },
+  "strictContrast": true,
+  "source": "https://github.com/whizkydee/vscode-palenight-theme themes/palenight.json (MIT)"
+}

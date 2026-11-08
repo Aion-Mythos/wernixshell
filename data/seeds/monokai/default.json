@@ -1,0 +1,18 @@
+{
+  "mode": "dark",
+  "background": "272822",
+  "surface": "272822",
+  "primary": "66d9ef",
+  "secondary": "ae81ff",
+  "tertiary": "fd971f",
+  "error": "f92672",
+  "success": "a6e22e",
+  "warning": "e6db74",
+  "text": "f8f8f2",
+  "overrides": {
+    "surfaceContainer": "3e3d32",
+    "outlineVariant": "75715e"
+  },
+  "strictContrast": true,
+  "source": "https://github.com/sickill/vim-monokai colors/monokai.vim (MIT)"
+}

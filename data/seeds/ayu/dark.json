@@ -1,0 +1,20 @@
+{
+  "mode": "dark",
+  "background": "10141c",
+  "surface": "10141c",
+  "primary": "e6b450",
+  "secondary": "59c2ff",
+  "tertiary": "d2a6ff",
+  "error": "f07178",
+  "success": "aad94c",
+  "warning": "ffb454",
+  "text": "bfbdb6",
+  "overrides": {
+    "surfaceContainerLowest": "0d1017",
+    "surfaceContainerLow": "141821",
+    "surfaceContainer": "161a24",
+    "surfaceContainerHigh": "1b1f29"
+  },
+  "strictContrast": true,
+  "source": "https://github.com/ayu-theme/ayu-colors themes/*.yaml (MIT)"
+}

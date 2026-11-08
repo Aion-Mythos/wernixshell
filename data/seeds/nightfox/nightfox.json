@@ -1,0 +1,20 @@
+{
+  "mode": "dark",
+  "background": "192330",
+  "surface": "192330",
+  "primary": "719cd6",
+  "secondary": "9d79d6",
+  "tertiary": "63cdcf",
+  "error": "c94f6d",
+  "success": "81b29a",
+  "warning": "dbc074",
+  "text": "cdcecf",
+  "overrides": {
+    "surfaceContainerLowest": "131a24",
+    "surfaceContainer": "212e3f",
+    "surfaceContainerHigh": "29394f",
+    "surfaceContainerHighest": "39506d"
+  },
+  "strictContrast": true,
+  "source": "https://github.com/EdenEast/nightfox.nvim lua/nightfox/palette (MIT)"
+}

@@ -67,3 +67,11 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
   flavour when the scheme has the other mode (gruvbox hard dark <-> hard light), else switches to a flavour that has it.
 - Removed my generated catppuccin and tokyonight seeds; darkgreen, shadotheme, oldworld, everblush and the
   upstream default scheme are not included.
+
+## Calmer vexilion dark, more themes
+
+- vexilion dark is now soft and low-contrast (violet-tinted neutrals, muted lavender primary, softened status
+  colours); the light variant is unchanged. `gen-scheme.py --report` prints the contrast ratios.
+- Added oxocarbon, kanagawa (wave, dragon, lotus), ayu (dark, mirage, light), github (dark, dimmed, light),
+  monokai, nightfox (nightfox, carbonfox, dawnfox), flexoki and material-palenight, generated from their
+  official palettes (see NOTICE) by `scripts/gen-scheme.py`; 18 themes in total are now bundled.
