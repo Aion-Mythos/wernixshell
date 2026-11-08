@@ -43,7 +43,7 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
 
 ## Phase 1b: logo
 
-- The animated About-page logo now plays the vxs GIF (see below) instead of the original artwork; the `general.logo` config value for the default logo is now `vexilion`.
+- The About-page logo is the shared vxs logo component instead of the original artwork; the `general.logo` config value for the default logo is now `vexilion`.
 - README: removed leftover links to upstream repositories.
 
 - Removed the bundled upstream GIFs and picture (`kurukuru.gif`, `bongocat.gif`, `dino.png`); their config
@@ -51,11 +51,5 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
   shows nothing there. Users can still point them at their own files.
 - Replaced `assets/wallpaper.webp` with a generated VexilionOS-palette gradient.
 
-
-## Animated logo GIFs
-
-- `assets/logo.svg` is now a thin-line placeholder (paths with ids `v`, `x`, `s`).
-- `scripts/make-logo-gif.py` renders the line-draw animation to `assets/vxs-anim-512.gif`, `vxs-anim-128.gif`
-  and their `-light` variants (3 s, 25 fps, 75 frames, 1-bit transparency, looping).
-- The About page in Settings plays `vxs-anim-512.gif` (the `-light` file on light schemes). The dashboard
-  and power menu show no GIF: `paths.sessionGif` and `paths.mediaGif` are empty by default.
+- Restored the bundled `kurukuru.gif` (power menu) and `bongocat.gif` (dashboard media card) as the defaults of
+  `paths.sessionGif` and `paths.mediaGif`.

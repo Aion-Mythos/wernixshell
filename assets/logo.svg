@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Placeholder VexilionOS "vxs" logo (thin-line V, X, S); replace with the real art, keeping the ids v, x, s. -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" fill="none" stroke="#956bff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path id="v" d="M16.2 44 L30.1 84 L44 44"/>
-  <path id="x" d="M50.1 44 L77.9 84 M77.9 44 L50.1 84"/>
-  <path id="s" d="M111.8 52 C111.8 40 84 40 84 54 C84 64 111.8 64 111.8 74 C111.8 88 84 88 84 76"/>
+<!-- Placeholder VexilionOS "vxs" logo; replace with the real one. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <path d="M16 24 L40 24 L64 80 L88 24 L112 24 L72 108 L56 108 Z" fill="#9ccbfb"/>
 </svg>

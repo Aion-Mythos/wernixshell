@@ -1,6 +1,5 @@
 import QtQuick
 import QtQuick.Layouts
-import Quickshell
 import Quickshell.Io
 import Vaxison
 import Vaxison.Config
@@ -46,16 +45,10 @@ PageBase {
                 width: parent.width - Tokens.padding.largeIncreased * 2
                 spacing: Tokens.spacing.small
 
-                // The animated logo, shown only here
-                AnimatedImage {
+                Logo {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.preferredWidth: 160
-                    Layout.preferredHeight: 160
-                    source: Qt.resolvedUrl(`${Quickshell.shellDir}/assets/vxs-anim-512${Colours.light ? "-light" : ""}.gif`)
-                    fillMode: AnimatedImage.PreserveAspectFit
-                    sourceSize.width: 320
-                    playing: true
-                    asynchronous: true
+                    implicitWidth: 128
+                    implicitHeight: 90.38
                 }
 
                 StyledText {
