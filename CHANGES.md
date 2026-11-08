@@ -34,3 +34,9 @@ by GPL-3.0 section 5(a).
 ## Bar position (reverted)
 
 An experiment adding `bar.position` and horizontal bars was built and reverted; the bar stays on the left.
+
+## Phase 1b: logo
+
+- The animated About-page logo (`AnimatedLogo.qml`) now animates the shared vxs logo instead of the
+  original artwork; the `general.logo` config value for the default logo is now `vexilion`.
+- README: removed leftover links to upstream repositories.

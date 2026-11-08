@@ -82,13 +82,11 @@ sudo cmake --install build
 You can start the shell by running `vsm shell -d` (preferred) or `qs -c vaxison -n -d`.
 You may omit `-d` from the command to keep the shell attached to the current terminal if necessary,
 though you likely want it to be detached (so it doesn't close when the terminal is closed).
-via a `hl.on("hyprland.start", ...)` function in the Hyprland config.
 
 ### Shortcuts/IPC
 
 All keybinds are accessible via Hyprland [global shortcuts](https://wiki.hypr.land/Configuring/Basics/Binds/#dbus-global-shortcuts).
-Otherwise, the [`keybinds.lua`](https://github.com/Aion-Mythos/vaxison/blob/main/hypr/hyprland/keybinds.lua#L63-L67) file
-contains an example of how to use global shortcuts.
+The shell registers its shortcuts under the `vaxison` appid, e.g. `hl.dsp.global("vaxison:launcher")`.
 
 All IPC commands can be accessed via `vsm shell ...`, for example:
 
