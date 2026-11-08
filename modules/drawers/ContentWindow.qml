@@ -89,15 +89,15 @@ StyledWindow {
     Region {
         id: emptyRegion
 
-        x: panels.notifications.x + bar.leftInset
-        y: panels.notifications.y + bar.topInset
+        x: panels.notifications.x + bar.implicitWidth
+        y: panels.notifications.y + root.borderThickness
         width: panels.notifications.width
         height: panels.notifications.height
 
         Region {
             x: root.width - width
-            y: panels.osdWrapper.y + bar.topInset
-            width: panels.osdWrapper.width * (1 - panels.osd.offsetScale) + bar.rightInset
+            y: panels.osdWrapper.y + root.borderThickness
+            width: panels.osdWrapper.width * (1 - panels.osd.offsetScale) + root.borderThickness
             height: panels.osd.height
         }
     }
@@ -169,10 +169,10 @@ StyledWindow {
             anchors.margins: -50 // Make border thicker to smooth out bulge from closed drawers
             group: blobGroup
             radius: root.borderRounding
-            borderLeft: bar.leftInset - anchors.margins - root.sdfBorderOffset
-            borderRight: bar.rightInset - anchors.margins - root.sdfBorderOffset
-            borderTop: bar.topInset - anchors.margins - root.sdfBorderOffset
-            borderBottom: bar.bottomInset - anchors.margins - root.sdfBorderOffset
+            borderLeft: bar.implicitWidth - anchors.margins - root.sdfBorderOffset
+            borderRight: root.borderThickness - anchors.margins - root.sdfBorderOffset
+            borderTop: root.borderThickness - anchors.margins - root.sdfBorderOffset
+            borderBottom: root.borderThickness - anchors.margins - root.sdfBorderOffset
         }
 
         PanelBg {
@@ -194,7 +194,7 @@ StyledWindow {
 
             panel: panels.sessionWrapper
             deformAmount: 0.2
-            x: panels.sessionWrapper.x + panels.session.x + bar.leftInset
+            x: panels.sessionWrapper.x + panels.session.x + bar.implicitWidth
             implicitWidth: panels.session.width
         }
 
@@ -213,7 +213,7 @@ StyledWindow {
 
             panel: panels.osdWrapper
             deformAmount: 0.25
-            x: panels.osdWrapper.x + panels.osd.x + bar.leftInset
+            x: panels.osdWrapper.x + panels.osd.x + bar.implicitWidth
             implicitWidth: panels.osd.width
         }
 
@@ -235,17 +235,15 @@ StyledWindow {
         PanelBg {
             id: popoutBg
 
-            // Extra size on the bar's side to prevent movement along the bar partially detaching the panel from it
-            property real extra: panels.popouts.isDetached ? 0 : 0.2
+            // Extra width to prevent vertical movement deformation partially detaching panel from bar
+            property real extraWidth: panels.popouts.isDetached ? 0 : 0.2
 
             panel: panels.popoutsWrapper
             deformAmount: panels.popouts.isDetached ? 0.05 : panels.popouts.hasCurrent ? 0.15 : 0.1
-            x: panels.popoutsWrapper.x + panels.popouts.x + bar.leftInset - (bar.position === BarPosition.Left ? panels.popouts.width * extra : 0)
-            y: panels.popoutsWrapper.y + (bar.vertical ? 0 : panels.popouts.y) + bar.topInset - (bar.position === BarPosition.Top ? panels.popouts.height * extra : 0)
-            implicitWidth: panels.popouts.width * (1 + (bar.vertical ? extra : 0))
-            implicitHeight: panels.popouts.height * (1 + (bar.vertical ? 0 : extra))
+            x: panels.popoutsWrapper.x + panels.popouts.x + bar.implicitWidth - panels.popouts.width * extraWidth
+            implicitWidth: panels.popouts.width * (1 + extraWidth)
 
-            Behavior on extra {
+            Behavior on extraWidth {
                 Anim {}
             }
         }
@@ -302,16 +300,12 @@ StyledWindow {
         BarWrapper {
             id: bar
 
-            // Explicit geometry rather than anchors, which can't be reset when the position changes live
-            x: bar.position === BarPosition.Right ? parent.width - width : 0
-            y: bar.position === BarPosition.Bottom ? parent.height - height : 0
-            width: bar.vertical ? bar.size : parent.width
-            height: bar.vertical ? parent.height : bar.size
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
 
             screen: root.screen
             screenState: root.screenState
             popouts: panels.popouts
-            borderThickness: root.borderThickness
 
             fullscreen: root.hasFullscreen
         }
@@ -346,8 +340,8 @@ StyledWindow {
         property real deformAmount: 0.15
 
         group: blobGroup
-        x: panel.x + bar.leftInset
-        y: panel.y + bar.topInset
+        x: panel.x + bar.implicitWidth
+        y: panel.y + root.borderThickness
         implicitWidth: panel.width
         implicitHeight: panel.height
         radius: Tokens.rounding.extraLarge

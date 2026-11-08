@@ -28,12 +28,3 @@ by GPL-3.0 section 5(a).
   It drives `vsm scheme list|get|set`; no theming engine in the shell.
 - Added `scripts/vsm-shim`, a dev stand-in for `vsm` that forwards to another CLI and copies its state.
 - Bar nexus popout now maps pages by explicit index (the new page shifts the others).
-
-## Phase 4a: bar placement
-
-- New `bar.position` setting (left, right, top, bottom; default left) in Settings > Panels > Taskbar,
-  applied live. The bar acts as a thick border on its edge: panels stay on their own edges and move
-  inward; exclusive zones, drawers frame, input regions, popouts and background widgets follow the edge.
-- Horizontal layouts for the clock, tray, status icons and active window; workspaces use a plain
-  row of pills on horizontal bars (animated indicator is vertical only, see Phase 4b).
-- Hover triggers of panels that share the bar's edge are disabled (they stay reachable via shortcuts).
