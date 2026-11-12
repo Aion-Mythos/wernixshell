@@ -94,3 +94,13 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
   when locked or the screen is off, pause on battery, and a frame-rate limit (default 30 fps).
 - Dynamic colours for a video use one frame extracted with ffmpeg (cached under `~/.cache/vaxison/wallpaper-frames`).
 - A missing or undecodable video falls back to the bundled wallpaper with a toast.
+
+## Phase 6: volume boost
+
+- "Max volume" moved from Settings > Services to Settings > Audio as "Volume boost": a toggle
+  "Allow volume above 100%" (off by default, with a one-time warning) and a limit (105-200%, 150% when
+  first enabled). `services.maxVolume` stays the only stored setting.
+- The cap applies to the output, app volumes, the OSD, the bar popout and scroll; the microphone is capped
+  at 100%. Volume raised above the cap from outside the shell, or left above it when the cap is lowered,
+  is pulled back down.
+- Sliders and labels show the part above 100% in the error colour.

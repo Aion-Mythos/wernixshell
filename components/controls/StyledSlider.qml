@@ -22,6 +22,10 @@ Slider {
     property color fgColour: enabled ? Colours.palette.m3primary : Qt.alpha(Colours.palette.m3onSurface, 0.38)
     property color bgColour: enabled ? Colours.palette.m3secondaryContainer : Qt.alpha(Colours.palette.m3onSurface, 0.1)
 
+    // Values above this are drawn in the warning colour (e.g. volume above 100%)
+    property real warnAbove: Infinity
+    property color warnColour: Colours.palette.m3error
+
     property real pos: visualPosition
     property real filledWidth
 
@@ -110,6 +114,17 @@ Slider {
                 topRightRadius: Tokens.rounding.extraSmall / 2
                 bottomRightRadius: Tokens.rounding.extraSmall / 2
                 color: root.fgColour
+
+                StyledRect {
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    visible: root.value > root.warnAbove
+                    implicitWidth: parent.width * (root.value - root.warnAbove) / Math.max(root.value - root.from, 0.0001)
+                    topRightRadius: parent.topRightRadius
+                    bottomRightRadius: parent.bottomRightRadius
+                    color: root.warnColour
+                }
             }
         }
 

@@ -15,6 +15,8 @@ ConnectedRect {
     property alias label: label.text
     property alias valueLabel: valueLabel.text
     property real value
+    property real to: 1
+    property real warnAbove: Infinity // Values above this are shown in the warning colour
 
     signal moved(value: real)
 
@@ -55,7 +57,7 @@ ConnectedRect {
                 StyledText {
                     id: valueLabel
 
-                    color: Colours.palette.m3outline
+                    color: root.value > root.warnAbove ? Colours.palette.m3error : Colours.palette.m3outline
                     font: Tokens.font.body.small
                 }
             }
@@ -64,7 +66,7 @@ ConnectedRect {
                 function onWheel(event: WheelEvent): void {
                     const step = GlobalConfig.services.audioIncrement;
                     if (event.angleDelta.y > 0)
-                        root.moved(Math.min(1, root.value + step));
+                        root.moved(Math.min(root.to, root.value + step));
                     else if (event.angleDelta.y < 0)
                         root.moved(Math.max(0, root.value - step));
                 }
@@ -80,6 +82,8 @@ ConnectedRect {
 
                     radius: Tokens.rounding.small
                     value: root.value
+                    to: root.to
+                    warnAbove: root.warnAbove
                     enabled: root.enabled
                     onInteraction: v => root.moved(v)
                 }

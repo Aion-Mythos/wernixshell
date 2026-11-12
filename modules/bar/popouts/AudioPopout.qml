@@ -78,6 +78,7 @@ Item {
         StyledText {
             Layout.topMargin: Tokens.spacing.medium
             text: Audio.muted ? Tr.tr("Volume (muted)") : Tr.tr("Volume (%1%)").arg(Math.round(Audio.volume * 100))
+            color: !Audio.muted && Audio.volume > 1 ? Colours.palette.m3error : Colours.palette.m3onSurface
             font: Tokens.font.body.builders.medium.weight(Font.Medium).build()
         }
 
@@ -98,6 +99,8 @@ Item {
                 implicitHeight: parent.implicitHeight
 
                 value: Audio.volume
+                to: Audio.maxVolume
+                warnAbove: 1
                 onInteraction: value => Audio.setVolume(value)
             }
         }

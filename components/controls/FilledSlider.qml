@@ -11,6 +11,8 @@ Slider {
     required property string icon
     property real oldValue
     property bool initialized
+    // Values above this are drawn in the warning colour (e.g. volume above 100%)
+    property real warnAbove: Infinity
 
     orientation: Qt.Vertical
 
@@ -27,6 +29,16 @@ Slider {
 
             color: Colours.palette.m3secondary
             radius: parent.radius
+
+            StyledRect {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                visible: root.value > root.warnAbove
+                implicitHeight: parent.height * (root.value - root.warnAbove) / Math.max(root.value - root.from, 0.0001)
+                topLeftRadius: parent.radius
+                topRightRadius: parent.radius
+                color: Colours.palette.m3error
+            }
         }
     }
 

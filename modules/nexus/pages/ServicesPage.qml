@@ -162,6 +162,7 @@ PageBase {
         }
 
         StepperRow {
+            last: true
             label: Tr.tr("Brightness step")
             subtext: Tr.tr("Amount the brightness changes per scroll (%)")
             value: Math.round(GlobalConfig.services.brightnessIncrement * 100)
@@ -169,17 +170,6 @@ PageBase {
             to: 50
             stepSize: 1
             onMoved: v => GlobalConfig.services.brightnessIncrement = v / 100
-        }
-
-        StepperRow {
-            last: true
-            label: Tr.tr("Max volume")
-            subtext: Tr.tr("Upper limit for output volume (%)")
-            value: Math.round(GlobalConfig.services.maxVolume * 100)
-            from: 50
-            to: 200
-            stepSize: 5
-            onMoved: v => GlobalConfig.services.maxVolume = v / 100
         }
 
         // Service tuning

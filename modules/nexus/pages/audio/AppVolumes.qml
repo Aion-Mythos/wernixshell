@@ -63,6 +63,8 @@ PageBase {
                 label: Audio.getStreamName(stream.modelData)
                 valueLabel: Strings.percentOne(value)
                 value: stream.modelData?.audio?.volume ?? 0
+                to: Audio.maxVolume
+                warnAbove: 1
                 enabled: !stream.modelData?.audio?.muted
                 onMoved: v => Audio.setStreamVolume(stream.modelData, v)
             }

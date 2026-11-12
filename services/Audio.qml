@@ -25,6 +25,10 @@ Singleton {
     readonly property bool muted: !!sink?.audio?.muted
     readonly property real volume: sink?.audio?.volume ?? 0
 
+    // The single output cap: 1 unless volume boost is enabled in Settings > Audio
+    readonly property real maxVolume: GlobalConfig.services.maxVolume
+    readonly property bool overCap: !!sink?.ready && volume > maxVolume + 0.001
+
     readonly property bool sourceMuted: !!source?.audio?.muted
     readonly property real sourceVolume: source?.audio?.volume ?? 0
 
@@ -34,7 +38,7 @@ Singleton {
     function setVolume(newVolume: real): void {
         if (sink?.ready && sink?.audio) {
             sink.audio.muted = false;
-            sink.audio.volume = Math.max(0, Math.min(GlobalConfig.services.maxVolume, newVolume));
+            sink.audio.volume = Math.max(0, Math.min(maxVolume, newVolume));
         }
     }
 
@@ -49,7 +53,7 @@ Singleton {
     function setSourceVolume(newVolume: real): void {
         if (source?.ready && source?.audio) {
             source.audio.muted = false;
-            source.audio.volume = Math.max(0, Math.min(GlobalConfig.services.maxVolume, newVolume));
+            source.audio.volume = Math.max(0, Math.min(1, newVolume)); // The microphone is never boosted
         }
     }
 
@@ -81,7 +85,7 @@ Singleton {
     function setStreamVolume(stream: PwNode, newVolume: real): void {
         if (stream?.ready && stream?.audio) {
             stream.audio.muted = false;
-            stream.audio.volume = Math.max(0, Math.min(GlobalConfig.services.maxVolume, newVolume));
+            stream.audio.volume = Math.max(0, Math.min(maxVolume, newVolume));
         }
     }
 
@@ -125,6 +129,23 @@ Singleton {
         root.sinks = newSinks;
         root.sources = newSources;
         root.streams = newStreams;
+    }
+
+    // Pulls the output and app volumes down to the cap: when the cap is lowered, and when something
+    // outside the shell (volume keys, other mixers) raised the volume above it
+    function clampToMax(): void {
+        if (sink?.ready && sink.audio && sink.audio.volume > maxVolume + 0.001)
+            sink.audio.volume = maxVolume;
+        for (const stream of streams)
+            if (stream?.ready && stream.audio && stream.audio.volume > maxVolume + 0.001)
+                stream.audio.volume = maxVolume;
+    }
+
+    // Deferred: writing the volume from inside its own change notification is a binding loop
+    onMaxVolumeChanged: Qt.callLater(clampToMax)
+    onOverCapChanged: {
+        if (overCap)
+            Qt.callLater(clampToMax);
     }
 
     onSinkChanged: {
