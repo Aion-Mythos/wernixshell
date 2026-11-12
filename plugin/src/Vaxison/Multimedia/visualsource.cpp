@@ -1,5 +1,6 @@
 #include "visualsource.hpp"
 
+#include <qdatetime.h>
 #include <qmimedatabase.h>
 #include <qquickwindow.h>
 #include <qvideosink.h>
@@ -14,6 +15,10 @@ VisualSource::VisualSource(QObject* parent)
     : QObject(parent) {
     m_player.setLoops(QMediaPlayer::Infinite);
     QObject::connect(&m_player, &QMediaPlayer::mediaStatusChanged, this, &VisualSource::onMediaStatusChanged);
+    QObject::connect(&m_player, &QMediaPlayer::errorOccurred, this,
+        [this](QMediaPlayer::Error, const QString& message) { emit failed(message); });
+    // Frames go through our own sink so the rate can be capped before they reach the VideoOutput
+    m_player.setVideoSink(&m_sink);
 }
 
 VisualSource::Type VisualSource::type() const {
@@ -81,6 +86,18 @@ void VisualSource::setPlaying(bool playing) {
     syncPlayer();
 }
 
+int VisualSource::fpsLimit() const {
+    return m_fpsLimit;
+}
+
+void VisualSource::setFpsLimit(int fpsLimit) {
+    if (m_fpsLimit == fpsLimit)
+        return;
+
+    m_fpsLimit = fpsLimit;
+    emit fpsLimitChanged();
+}
+
 VisualSource::FillMode VisualSource::fillMode() const {
     return m_fillMode;
 }
@@ -106,23 +123,31 @@ void VisualSource::setVideoOutput(QObject* videoOutput) {
     m_videoOutput = videoOutput;
     emit videoOutputChanged();
 
-    m_player.setVideoOutput(m_videoOutput);
-    if (const auto* sink = m_player.videoSink())
-        m_sinkConn = QObject::connect(
-            sink, &QVideoSink::videoFrameChanged, this,
-            [this](const QVideoFrame& frame) {
-                if (!frame.isValid())
-                    return;
+    m_outSink = m_videoOutput ? m_videoOutput->property("videoSink").value<QVideoSink*>() : nullptr;
+    m_sinkConn = QObject::connect(
+        &m_sink, &QVideoSink::videoFrameChanged, this,
+        [this](const QVideoFrame& frame) {
+            if (!frame.isValid())
+                return;
 
-                QMetaObject::invokeMethod(
-                    this,
-                    [this, frame, generation = m_generation.load()] {
-                        if (generation == m_generation && m_type == Type::Live)
-                            onVideoFrame(frame);
-                    },
-                    Qt::QueuedConnection);
-            },
-            Qt::DirectConnection);
+            // Drop frames above the cap instead of drawing them
+            const auto now = QDateTime::currentMSecsSinceEpoch();
+            if (m_fpsLimit > 0 && now - m_lastFrameMs.load() < 1000 / m_fpsLimit - 2)
+                return;
+            m_lastFrameMs = now;
+
+            QMetaObject::invokeMethod(
+                this,
+                [this, frame, generation = m_generation.load()] {
+                    if (generation != m_generation || m_type != Type::Live)
+                        return;
+                    if (m_outSink)
+                        m_outSink->setVideoFrame(frame); // On the GUI thread, like the VideoOutput
+                    onVideoFrame(frame);
+                },
+                Qt::QueuedConnection);
+        },
+        Qt::DirectConnection);
 }
 
 QQuickItem* VisualSource::sizeSource() const {

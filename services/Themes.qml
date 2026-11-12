@@ -19,6 +19,8 @@ Singleton {
 
     // Why the last action failed (e.g. matugen missing), shown by the Theme Center
     property string error
+    property string wantVariant // The dynamic scheme requested while a video's frame was still being extracted
+    property string wantMode
 
     // Every bundled scheme flavour: { name, flavour, mode, colours }
     readonly property var flat: files.instances.filter(f => f.data).map(f => f.data)
@@ -64,18 +66,28 @@ Singleton {
 
     // Generate the dynamic scheme from the current wallpaper
     function applyDynamic(variant = "", mode = ""): void {
-        const image = Wallpapers.actualCurrent;
-        if (!image) {
+        const wall = Wallpapers.actualCurrent;
+        if (!wall) {
             error = Tr.tr("No wallpaper is set");
             return;
         }
         error = "";
-        dynamicProc.run(image, variant || Colours.variant, mode || activeMode);
+        wantVariant = variant || Colours.variant;
+        wantMode = mode || activeMode;
+        const image = Wallpapers.stillOf(wall);
+        if (image)
+            dynamicProc.run(image, wantVariant, wantMode);
+        else
+            Wallpapers.requestFrame(wall); // Videos: continues when the frame is ready
     }
 
     // Colours for the launcher and settings preview of an image, without applying them
-    function preview(image: string): void {
-        previewProc.run(image, Colours.variant, activeMode);
+    function preview(wall: string): void {
+        const image = Wallpapers.stillOf(wall);
+        if (image)
+            previewProc.run(image, Colours.variant, activeMode);
+        else
+            Wallpapers.requestFrame(wall);
     }
 
     function setVariant(variant: string): void {
@@ -178,6 +190,11 @@ Singleton {
         function onActualCurrentChanged(): void {
             if (root.dynamicActive)
                 root.applyDynamic();
+        }
+
+        function onFrameReady(path: string): void {
+            if (path === Wallpapers.actualCurrent && root.dynamicActive)
+                root.applyDynamic(root.wantVariant, root.wantMode);
         }
 
         target: Wallpapers

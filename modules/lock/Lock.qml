@@ -5,9 +5,16 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 import qs.components.misc
+import qs.services
 
 Scope {
     property alias lock: lock
+
+    Binding {
+        target: ShellState
+        property: "locked"
+        value: lock.locked
+    }
 
     WlSessionLock {
         id: lock

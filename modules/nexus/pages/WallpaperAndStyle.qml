@@ -14,6 +14,22 @@ import qs.modules.nexus.common
 PageBase {
     id: root
 
+    // There must be one for each value of the WallpaperFill enum
+    readonly property list<MenuItem> fillItems: [
+        MenuItem {
+            text: Tr.tr("Fill (crop)")
+            value: WallpaperFill.Fill
+        },
+        MenuItem {
+            text: Tr.tr("Fit")
+            value: WallpaperFill.Fit
+        },
+        MenuItem {
+            text: Tr.tr("Stretch")
+            value: WallpaperFill.Stretch
+        }
+    ]
+
     title: Tr.tr("Wallpaper & style")
 
     ColumnLayout {
@@ -123,6 +139,60 @@ PageBase {
             text: Tr.tr("Dark theme")
             checked: !Colours.light
             onToggled: Colours.setMode(checked ? "dark" : "light")
+        }
+
+        SelectRow {
+            Layout.topMargin: Tokens.spacing.large - parent.spacing
+
+            first: true
+            last: true
+            label: Tr.tr("Fill mode")
+            subtext: Tr.tr("How images and videos fit the screen")
+            menuItems: root.fillItems
+            active: root.fillItems.find(i => i.value === GlobalConfig.background.wallpaperFill)
+            onSelected: item => GlobalConfig.background.wallpaperFill = item.value
+        }
+
+        SectionHeader {
+            text: Tr.tr("Video wallpapers")
+        }
+
+        ToggleRow {
+            first: true
+            text: Tr.tr("Pause when covered")
+            subtext: Tr.tr("A fullscreen window, or windows filling the screen")
+            checked: Config.background.video.pauseWhenCovered
+            onToggled: GlobalConfig.background.video.pauseWhenCovered = checked
+        }
+
+        ToggleRow {
+            Layout.topMargin: Tokens.spacing.extraSmall / 2 - parent.spacing
+
+            text: Tr.tr("Pause when locked or idle")
+            subtext: Tr.tr("While the lock screen is shown or the screen is off")
+            checked: Config.background.video.pauseWhenLocked
+            onToggled: GlobalConfig.background.video.pauseWhenLocked = checked
+        }
+
+        ToggleRow {
+            Layout.topMargin: Tokens.spacing.extraSmall / 2 - parent.spacing
+
+            text: Tr.tr("Pause on battery")
+            checked: Config.background.video.pauseOnBattery
+            onToggled: GlobalConfig.background.video.pauseOnBattery = checked
+        }
+
+        StepperRow {
+            Layout.topMargin: Tokens.spacing.extraSmall / 2 - parent.spacing
+
+            last: true
+            label: Tr.tr("Frame rate limit")
+            subtext: Tr.tr("Frames per second for video wallpapers")
+            value: Config.background.video.fpsLimit
+            from: 5
+            to: 60
+            stepSize: 5
+            onMoved: v => GlobalConfig.background.video.fpsLimit = v
         }
     }
 }

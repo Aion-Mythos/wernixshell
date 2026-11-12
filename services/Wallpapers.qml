@@ -3,7 +3,9 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import Vaxison
 import Vaxison.Config
+import Vaxison.I18n
 import Vaxison.Models
 import qs.services
 import qs.utils
@@ -13,6 +15,15 @@ Searcher {
 
     readonly property string currentNamePath: `${Paths.state}/wallpaper/path.txt`
     readonly property string fallback: Quickshell.shellPath("assets/wallpaper.webp")
+    readonly property string framesDir: `${Paths.cache}/wallpaper-frames`
+    // Still frames extracted from video wallpapers (for colours), by video path
+    property var readyFrames: ({})
+    property int frameTick
+    // The current wallpaper as an image: the wallpaper itself, or for a video its extracted frame ("" until ready)
+    readonly property string currentStill: {
+        frameTick;
+        return stillOf(current);
+    }
 
     property bool showPreview: false
     readonly property string current: showPreview ? previewPath : actualCurrent
@@ -20,6 +31,16 @@ Searcher {
     property string actualCurrent
     property bool previewColourLock
     property bool pendingPreviewClear
+    property var framePending: []
+
+    signal frameReady(path: string)
+
+    function frameName(path: string): string {
+        let h = 0;
+        for (let i = 0; i < path.length; i++)
+            h = (h * 31 + path.charCodeAt(i)) | 0;
+        return `${(h >>> 0).toString(16)}.jpg`;
+    }
 
     function getCategoryFor(w: FileSystemEntry): string {
         let category = w.parentDir.slice(Paths.wallsdir.length + 1);
@@ -34,7 +55,35 @@ Searcher {
             setWallpaper(choices[Math.floor(Math.random() * choices.length)].path);
     }
 
+    // An image to take colours from: the path itself, or for a video its frame, or "" if it isn't extracted yet
+    function stillOf(path: string): string {
+        return Videos.needsFrame(path) ? (readyFrames[path] ?? "") : path;
+    }
+
+    function requestFrame(path: string): void {
+        if (!Videos.needsFrame(path) || path in readyFrames || framePending.includes(path))
+            return;
+        framePending = [...framePending, path];
+        nextFrame();
+    }
+
+    function nextFrame(): void {
+        if (frameProc.running || framePending.length === 0)
+            return;
+        frameProc.path = framePending[0];
+        frameProc.running = true;
+    }
+
+    // A video that can't be played or found is replaced by the bundled wallpaper
+    function videoFailed(path: string, message: string): void {
+        if (path !== actualCurrent || path === fallback)
+            return;
+        Toaster.toast(Tr.tr("Wallpaper unavailable"), message || Tr.tr("Could not play %1").arg(Paths.shortenHome(path)), "warning");
+        setWallpaper(fallback);
+    }
+
     function setWallpaper(path: string): void {
+        requestFrame(path);
         actualCurrent = path;
         Paths.writeText(pathFile, path); // The FileView below picks the change up, and the dynamic scheme follows
     }
@@ -100,11 +149,49 @@ Searcher {
             }
             root.actualCurrent = wall;
             root.previewColourLock = false;
+            root.requestFrame(wall);
+            if (wall !== root.fallback) {
+                missingProc.path = wall;
+                missingProc.running = true;
+            }
         }
         onLoadFailed: {
             root.actualCurrent = root.fallback;
             root.previewColourLock = false;
             Paths.writeText(pathFile, root.fallback);
+        }
+    }
+
+    Process {
+        id: missingProc
+
+        property string path
+
+        command: ["test", "-e", path]
+        onExited: code => {
+            if (code !== 0)
+                root.videoFailed(path, Tr.tr("%1 is missing").arg(Paths.shortenHome(path)));
+        }
+    }
+
+    Process {
+        id: frameProc
+
+        property string path
+        readonly property string out: `${root.framesDir}/${root.frameName(path)}`
+
+        // The frame at 1 s, or the first frame for clips that are shorter
+        command: ["sh", "-c", 'mkdir -p "$3" && { [ -s "$2" ] || ffmpeg -y -loglevel error -ss 1 -i "$1" -frames:v 1 -q:v 2 "$2" || ffmpeg -y -loglevel error -i "$1" -frames:v 1 -q:v 2 "$2"; }', "sh", path, out, root.framesDir]
+        onExited: code => {
+            root.framePending = root.framePending.slice(1);
+            if (code === 0) {
+                root.readyFrames[path] = out;
+                root.frameTick++;
+                root.frameReady(path);
+            } else {
+                Toaster.toast(Tr.tr("Video wallpaper"), Tr.tr("ffmpeg is needed to take colours from a video"), "warning");
+            }
+            root.nextFrame();
         }
     }
 

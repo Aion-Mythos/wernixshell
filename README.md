@@ -13,6 +13,8 @@ The Hyprland desktop shell of VexilionOS, built with Quickshell. Hard fork of an
 
 Dependencies:
 
+- [`qt6-multimedia-ffmpeg`](https://archlinux.org/packages/extra/x86_64/qt6-multimedia-ffmpeg/) (decodes video wallpapers; the `qt6-multimedia` backend for ffmpeg)
+- [`ffmpeg`](https://ffmpeg.org) (takes a still frame of a video wallpaper for the dynamic theme)
 - [`matugen`](https://github.com/InioX/matugen) (generates the dynamic, wallpaper-based theme)
 - [`quickshell-git`](https://git.outfoxxed.me/quickshell/quickshell) - this has to be the git version, not the latest tagged version
 - `glibc`

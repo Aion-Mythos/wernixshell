@@ -84,3 +84,13 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
   or `file://` URL if it exists, else the icon of the app's desktop entry (`Icons.notifIcon`), else the Material
   icon. Only symbolic icons are tinted. Used by the popups, the sidebar and the lock screen; sidebar action
   buttons fall back to text when their icon doesn't exist.
+
+## Phase 5: video wallpapers
+
+- mp4, webm, mkv, mov and gif wallpapers (`utils/Videos.qml`); the wallpaper picker and file dialogs accept them.
+  Videos play muted and looping through Qt Multimedia (the existing `VisualSource`); gifs play as animated images.
+- New `background.wallpaperFill` (fill / fit / stretch) for images and videos, and `background.video` settings in
+  Settings > Wallpaper & style: pause when covered (a fullscreen window or tiled windows filling the monitor), pause
+  when locked or the screen is off, pause on battery, and a frame-rate limit (default 30 fps).
+- Dynamic colours for a video use one frame extracted with ffmpeg (cached under `~/.cache/vaxison/wallpaper-frames`).
+- A missing or undecodable video falls back to the bundled wallpaper with a toast.

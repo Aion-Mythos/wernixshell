@@ -8,6 +8,8 @@ import qs.services
 
 Singleton {
     property ShellRoot shellRoot
+    property bool locked // The lock screen is shown
+    property bool screenOff // The idle action turned the screens off
 
     function anySidebarOpen(): bool {
         return states.instances.some(s => s.sidebar);

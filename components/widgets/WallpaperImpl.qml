@@ -20,6 +20,8 @@ Item {
     }
 
     property string source: Wallpapers.current
+    property bool playing: PersistentState.wallpaperPlaying
+    property bool reportFailures // Only the desktop background replaces a broken video
     property ShaderEffectSource currentCapture: capture1
     property real transitionProgress: 1
 
@@ -86,9 +88,16 @@ Item {
         id: live
 
         anchors.fill: parent
-        playing: PersistentState.wallpaperPlaying
+        playing: root.playing
+        fpsLimit: Config.background.video.fpsLimit
+        fillMode: [VisualSource.PreserveAspectCrop, VisualSource.PreserveAspectFit, VisualSource.Stretch][Config.background.wallpaperFill]
         animate: false
         layer.enabled: true
+
+        onErrorChanged: {
+            if (error && root.reportFailures)
+                Wallpapers.videoFailed(source, error);
+        }
 
         onReadyChanged: {
             if (ready && source === root.source)

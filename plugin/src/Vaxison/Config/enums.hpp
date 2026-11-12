@@ -18,6 +18,7 @@ namespace vaxison::shell::config {
                                                                                                                        \
     };
 
+ENUM(WallpaperFill, Fill, Fit, Stretch)
 ENUM(BarWorkspaceDisplay, Shapes, Text, Icons)
 ENUM(BarWorkspaceCapitalisation, Preserve, Upper, Lower)
 ENUM(LyricsBackend, Auto, Local, LRCLIB, NetEase)

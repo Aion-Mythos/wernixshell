@@ -31,9 +31,11 @@ Scope {
             lock.lock.locked = true;
         else if (action === "unlock")
             lock.lock.locked = false;
-        else if (typeof action === "string")
+        else if (typeof action === "string") {
+            if (action === "dpms off" || action === "dpms on")
+                ShellState.screenOff = action === "dpms off";
             Hypr.dispatch(Hypr.usingLua && ["dpms off", "dpms on"].includes(action) ? `hl.dsp.dpms({ action = "${action === "dpms off" ? "disable" : "enable"}" })` : action);
-        else if (!SessionManager.exec(action))
+        } else if (!SessionManager.exec(action))
             Quickshell.execDetached(action);
     }
 

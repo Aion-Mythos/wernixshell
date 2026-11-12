@@ -47,12 +47,23 @@ class BackgroundVisualiser : public settings::ObjectNode {
     CONFIG_PROPERTY(qreal, spacing, 1)
 };
 
+class BackgroundVideo : public settings::ObjectNode {
+    CONFIG_NODE(BackgroundVideo, settings::ObjectNode)
+
+    CONFIG_PROPERTY(bool, pauseWhenCovered, true)
+    CONFIG_PROPERTY(bool, pauseWhenLocked, true)
+    CONFIG_PROPERTY(bool, pauseOnBattery, true)
+    CONFIG_PROPERTY(int, fpsLimit, 30)
+};
+
 class BackgroundConfig : public settings::ObjectNode {
     CONFIG_NODE(BackgroundConfig, settings::ObjectNode)
 
     CONFIG_PROPERTY(bool, enabled, true)
     CONFIG_PROPERTY(bool, wallpaperEnabled, true)
     CONFIG_ENUM_PROPERTY(WallpaperTransition, wallpaperTransition, WallpaperTransition::Crossfade)
+    CONFIG_ENUM_PROPERTY(WallpaperFill, wallpaperFill, WallpaperFill::Fill)
+    CONFIG_SUBOBJECT(BackgroundVideo, video)
     CONFIG_SUBOBJECT(DesktopClock, desktopClock)
     CONFIG_SUBOBJECT(BackgroundVisualiser, visualiser)
 };

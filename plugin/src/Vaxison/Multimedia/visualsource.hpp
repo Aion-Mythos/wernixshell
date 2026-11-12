@@ -7,6 +7,9 @@
 #include <qsize.h>
 #include <qurl.h>
 #include <qvideoframe.h>
+#include <qvideosink.h>
+
+#include <qpointer.h>
 
 #include <atomic>
 
@@ -25,6 +28,8 @@ class VisualSource : public QObject {
     Q_PROPERTY(QUrl imagePath READ imagePath NOTIFY imagePathChanged)
     Q_PROPERTY(QString source READ source WRITE setSource NOTIFY sourceChanged)
     Q_PROPERTY(bool playing READ playing WRITE setPlaying NOTIFY playingChanged)
+    // Frame rate cap for videos, 0 for no cap
+    Q_PROPERTY(int fpsLimit READ fpsLimit WRITE setFpsLimit NOTIFY fpsLimitChanged)
     Q_PROPERTY(vaxison::shell::multimedia::VisualSource::FillMode fillMode READ fillMode WRITE setFillMode NOTIFY
             fillModeChanged)
     // A QML VideoOutput element from QtMultimedia
@@ -60,6 +65,9 @@ public:
     [[nodiscard]] bool playing() const;
     void setPlaying(bool playing);
 
+    [[nodiscard]] int fpsLimit() const;
+    void setFpsLimit(int fpsLimit);
+
     [[nodiscard]] FillMode fillMode() const;
     void setFillMode(FillMode fillMode);
 
@@ -76,6 +84,8 @@ signals:
     void imagePathChanged();
     void sourceChanged();
     void playingChanged();
+    void fpsLimitChanged();
+    void failed(const QString& message);
     void fillModeChanged();
     void videoOutputChanged();
     void sizeSourceChanged();
@@ -113,6 +123,10 @@ private:
     std::atomic<quint32> m_generation = 0;
     QMetaObject::Connection m_windowConn;
     QMetaObject::Connection m_sinkConn;
+    int m_fpsLimit = 0;
+    std::atomic<qint64> m_lastFrameMs = 0;
+    QPointer<QVideoSink> m_outSink;
+    QVideoSink m_sink;
     QMediaPlayer m_player;
 };
 

@@ -190,7 +190,7 @@ WlSessionLockSurface {
 
         Visual {
             source: Wallpapers.current
-            playing: PersistentState.wallpaperPlaying
+            playing: PersistentState.wallpaperPlaying && !Config.background.video.pauseWhenLocked
         }
     }
 
