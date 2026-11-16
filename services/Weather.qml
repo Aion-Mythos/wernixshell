@@ -180,7 +180,7 @@ Singleton {
 
         const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=geocodejson&accept-language=${lang}`;
         const nominatimHeaders = {
-            "User-Agent": `wernixshell/${CUtils.version} (+https://github.com/Aion-Mythos/-vexilion-vexison)`
+            "User-Agent": `wernixshell/${CUtils.version} (+https://github.com/Aion-Mythos/wernixshell)`
         };
 
         Requests.get(nominatimUrl, text => {

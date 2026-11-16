@@ -39,7 +39,7 @@ constexpr qreal k_indexFudge = 0.1;
 
 [[nodiscard]] const QHash<QByteArray, QByteArray>& lrclibHeaders() {
     static const QHash<QByteArray, QByteArray> k_h = {
-        { "User-Agent"_ba, "wernixshell (https://github.com/Aion-Mythos/-vexilion-vexison)"_ba },
+        { "User-Agent"_ba, "wernixshell (https://github.com/Aion-Mythos/wernixshell)"_ba },
     };
     return k_h;
 }

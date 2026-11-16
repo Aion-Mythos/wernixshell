@@ -82,7 +82,7 @@ Nothing outside the listed deletions is removed without asking.
 2. **History:** keep upstream git history (clone, drop `origin`, new initial branch) or squash
    to one initial commit? Recommended: keep history, so the NOTICE commit hash is verifiable.
 3. **Repo URL** for WernixShell (README/links currently point to `caelestia-dots/*`). Placeholder
-   `github.com/Aion-Mythos/-vexilion-vexison` until you tell me.
+   `github.com/Aion-Mythos/wernixshell` until you tell me.
 4. **`daemons/`, `extras/`, `assets/`** in upstream may contain caelestia-specific or
    non-Arch things. Rebrand them in place (default) unless you want something removed.
 5. Notify app names: `vsm` for former `caelestia-cli`, `wernixshell` for former `caelestia-shell`. OK?

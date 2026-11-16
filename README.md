@@ -55,7 +55,7 @@ Then build and install using CMake.
 
 ```sh
 cd $XDG_CONFIG_HOME/quickshell
-git clone https://github.com/Aion-Mythos/-vexilion-vexison.git wernixshell
+git clone https://github.com/Aion-Mythos/wernixshell.git wernixshell
 
 cd wernixshell
 cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/
@@ -916,7 +916,7 @@ See the [manual installation](#manual-installation) section for the correspondin
 ### I want to disable \_\_\_ feature!
 
 Please read the [configuring](#configuring) section.
-If there is no corresponding option, make a [feature request](https://github.com/Aion-Mythos/-vexilion-vexison/issues/new?template=feature.yml).
+If there is no corresponding option, make a [feature request](https://github.com/Aion-Mythos/wernixshell/issues/new?template=feature.yml).
 
 ### How do I make my colour scheme change to match my wallpaper?
 

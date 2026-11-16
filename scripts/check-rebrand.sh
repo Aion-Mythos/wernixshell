@@ -7,8 +7,8 @@ KEEP=(LICENSE NOTICE CHANGES.md scripts/rebrand.sh scripts/check-rebrand.sh docs
 excl=(); for f in "${KEEP[@]}"; do excl+=(":!$f"); done
 bad=$(git grep -Iin caelestia -- . "${excl[@]}" || true)
 names=$(git ls-files | grep -i caelestia | grep -vxF -f <(printf '%s\n' "${KEEP[@]}") || true)
-# The fork's own former names (Vaxison / VexilionOS); the repository URL still carries them.
-old=$(git grep -Iin -e vaxison -e vexilion -e vxs -- . ':!CHANGES.md' ':!scripts/check-rebrand.sh' | grep -v 'Aion-Mythos/-vexilion-vexison' || true)
+# The fork's own former names (Vaxison / VexilionOS).
+old=$(git grep -Iin -e vaxison -e vexilion -e vxs -- . ':!CHANGES.md' ':!scripts/check-rebrand.sh' || true)
 bad+=$old
 [ -z "$bad$names" ] && { echo "rebrand check: OK"; exit 0; }
 printf '%s\n%s\n' "$bad" "$names"; exit 1

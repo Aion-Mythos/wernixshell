@@ -15,7 +15,7 @@ git rm -rq --ignore-unmatch flake.nix flake.lock nix
 mapfile -t files < <(git grep -Ilie caelestia -- . "${excl[@]}")
 if ((${#files[@]})); then sed -E -i \
   -e 's#the caelestia shell#the wernixshell shell#g' \
-  -e 's#caelestia-dots/shell#Aion-Mythos/-vexilion-vexison#g' \
+  -e 's#caelestia-dots/shell#Aion-Mythos/wernixshell#g' \
   -e 's#caelestia-dots#Aion-Mythos#g' \
   -e 's#\["caelestia"#["vsm"#g' \
   -e 's#QStringList\{ u"caelestia"_s#QStringList{ u"vsm"_s#g' \
