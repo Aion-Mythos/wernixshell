@@ -1,0 +1,4 @@
+[submodule "third_party/hyprglass"]
+	path = third_party/hyprglass
+	url = https://github.com/hyprnux/hyprglass
+	branch = hyprland-0.57

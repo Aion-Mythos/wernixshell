@@ -270,6 +270,14 @@ class AppearanceTransparency : public settings::ObjectNode {
     CONFIG_GLOBAL_PROPERTY(qreal, layers, 0.4)
 };
 
+// Liquid glass on every window and the shell's panels, drawn by the bundled hyprglass Hyprland plugin
+class AppearanceGlass : public settings::ObjectNode {
+    CONFIG_NODE(AppearanceGlass, settings::ObjectNode)
+
+    CONFIG_GLOBAL_PROPERTY(bool, enabled, false)
+    CONFIG_GLOBAL_PROPERTY(qreal, opacity, 0.8) // Of app windows, so the glass shows through opaque apps
+};
+
 class AppearanceConfig : public settings::ObjectNode {
     CONFIG_NODE(AppearanceConfig, settings::ObjectNode)
 
@@ -280,6 +288,7 @@ class AppearanceConfig : public settings::ObjectNode {
     CONFIG_SUBOBJECT(AppearanceFont, font)
     CONFIG_SUBOBJECT(AppearanceAnim, anim)
     CONFIG_SUBOBJECT(AppearanceTransparency, transparency)
+    CONFIG_SUBOBJECT(AppearanceGlass, glass)
 };
 
 } // namespace wernixshell::shell::config

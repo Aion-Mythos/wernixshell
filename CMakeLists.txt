@@ -67,6 +67,28 @@ if("plugin" IN_LIST ENABLE_MODULES)
     add_subdirectory(plugin)
 endif()
 
+option(ENABLE_GLASS "Build the bundled hyprglass Hyprland plugin (the Liquid glass setting)" ON)
+if(ENABLE_GLASS)
+    # hyprglass builds inside its source tree, so build a copy of the submodule
+    set(GLASS_SRC "${CMAKE_SOURCE_DIR}/third_party/hyprglass")
+    set(GLASS_SO "${CMAKE_BINARY_DIR}/lib/hyprglass.so")
+    if(NOT EXISTS "${GLASS_SRC}/Makefile")
+        message(FATAL_ERROR "third_party/hyprglass is missing: run git submodule update --init, or pass -DENABLE_GLASS=OFF")
+    endif()
+    include(ProcessorCount)
+    ProcessorCount(GLASS_JOBS)
+    add_custom_command(
+        OUTPUT "${GLASS_SO}"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory "${GLASS_SRC}" "${CMAKE_BINARY_DIR}/hyprglass"
+        COMMAND make -C "${CMAKE_BINARY_DIR}/hyprglass" -j${GLASS_JOBS} HYPRGLASS_VERSION=wernixshell
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/hyprglass/hyprglass.so" "${GLASS_SO}"
+        DEPENDS "${GLASS_SRC}/Makefile"
+        VERBATIM
+    )
+    add_custom_target(hyprglass ALL DEPENDS "${GLASS_SO}")
+    install(FILES "${GLASS_SO}" DESTINATION "${INSTALL_LIBDIR}")
+endif()
+
 if("shell" IN_LIST ENABLE_MODULES)
     foreach(dir assets components daemons data modules services utils)
         install(DIRECTORY ${dir} DESTINATION "${INSTALL_QSCONFDIR}")

@@ -111,6 +111,7 @@ Singleton {
 
     Component.onCompleted: {
         root.requestReloadHyprRules();
+        Glass.enabled; // Same for Glass, so it is applied at startup
         Themes.error; // Singletons load lazily; this keeps Themes (its IPC handler, wallpaper hook) alive from startup
     }
 

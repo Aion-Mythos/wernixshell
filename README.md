@@ -15,6 +15,7 @@ Dependencies:
 
 - [`qt6-multimedia-ffmpeg`](https://archlinux.org/packages/extra/x86_64/qt6-multimedia-ffmpeg/) (decodes video wallpapers; the `qt6-multimedia` backend for ffmpeg)
 - [`ffmpeg`](https://ffmpeg.org) (takes a still frame of a video wallpaper for the dynamic theme)
+- [`hyprland`](https://hypr.land) headers, `make`, `wayland-scanner` (build the bundled [hyprglass](https://github.com/hyprnux/hyprglass) plugin for the Liquid glass setting; skip with `-DENABLE_GLASS=OFF`; clone with `--recurse-submodules`)
 - [`matugen`](https://github.com/InioX/matugen) (generates the dynamic, wallpaper-based theme)
 - [`quickshell-git`](https://git.outfoxxed.me/quickshell/quickshell) - this has to be the git version, not the latest tagged version
 - `glibc`
@@ -346,6 +347,10 @@ For example, to automatically hide the bar on the monitor named `DP-1`:
             "enabled": false,
             "base": 0.85,
             "layers": 0.4
+        },
+        "glass": {
+            "enabled": false,
+            "opacity": 0.8
         }
     },
     "general": {

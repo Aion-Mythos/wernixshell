@@ -135,6 +135,16 @@ PageBase {
         ToggleRow {
             Layout.topMargin: Tokens.spacing.extraSmall / 2 - parent.spacing
 
+            visible: Hypr.usingLua
+            text: Tr.tr("Liquid glass")
+            subtext: Tr.tr("Glass behind every window and panel; costs some GPU")
+            checked: GlobalConfig.appearance.glass.enabled
+            onToggled: GlobalConfig.appearance.glass.enabled = checked
+        }
+
+        ToggleRow {
+            Layout.topMargin: Tokens.spacing.extraSmall / 2 - parent.spacing
+
             last: true
             text: Tr.tr("Dark theme")
             checked: !Colours.light

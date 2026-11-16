@@ -114,3 +114,9 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
   neutrals with Verdigris as the one brand hue. It replaces the earlier default theme.
 - The logo is the WernixOS hexagon logo (`assets/logo.svg`); `scripts/make-logo-gif.py` renders
   `assets/wernix-anim.gif` and `wernix-anim-light.gif` from it for the About page.
+
+## Liquid glass
+
+- New "Liquid glass" toggle in Settings > Wallpaper & style (`appearance.glass.enabled`, `appearance.glass.opacity`).
+  `services/Glass.qml` loads the bundled hyprglass Hyprland plugin (git submodule `third_party/hyprglass`, built
+  by CMake into the library dir) and applies an opacity rule to every window, so the glass is compositor wide.
