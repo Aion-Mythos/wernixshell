@@ -3,9 +3,9 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Services.Notifications
-import Vaxison
-import Vaxison.Config
-import Vaxison.I18n
+import WernixShell
+import WernixShell.Config
+import WernixShell.I18n
 import qs.services
 import qs.utils
 

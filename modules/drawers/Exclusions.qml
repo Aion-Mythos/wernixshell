@@ -2,7 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
-import Vaxison.Config
+import WernixShell.Config
 import qs.components.containers
 import qs.modules.bar as Bar
 

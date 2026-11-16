@@ -3,8 +3,8 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import Vaxison
-import Vaxison.Config
+import WernixShell
+import WernixShell.Config
 
 Singleton {
     id: root
@@ -13,16 +13,16 @@ Singleton {
     readonly property string pictures: Quickshell.env("XDG_PICTURES_DIR") || `${home}/Pictures`
     readonly property string videos: Quickshell.env("XDG_VIDEOS_DIR") || `${home}/Videos`
 
-    readonly property string data: `${Quickshell.env("XDG_DATA_HOME") || `${home}/.local/share`}/vaxison`
-    readonly property string state: `${Quickshell.env("XDG_STATE_HOME") || `${home}/.local/state`}/vaxison`
-    readonly property string cache: `${Quickshell.env("XDG_CACHE_HOME") || `${home}/.cache`}/vaxison`
-    readonly property string config: `${Quickshell.env("XDG_CONFIG_HOME") || `${home}/.config`}/vaxison`
+    readonly property string data: `${Quickshell.env("XDG_DATA_HOME") || `${home}/.local/share`}/wernixshell`
+    readonly property string state: `${Quickshell.env("XDG_STATE_HOME") || `${home}/.local/state`}/wernixshell`
+    readonly property string cache: `${Quickshell.env("XDG_CACHE_HOME") || `${home}/.cache`}/wernixshell`
+    readonly property string config: `${Quickshell.env("XDG_CONFIG_HOME") || `${home}/.config`}/wernixshell`
 
     readonly property string imagecache: `${cache}/imagecache`
     readonly property string notifimagecache: `${imagecache}/notifs`
-    readonly property string wallsdir: Quickshell.env("VAXISON_WALLPAPERS_DIR") || absolutePath(GlobalConfig.paths.wallpaperDir)
-    readonly property string recsdir: Quickshell.env("VAXISON_RECORDINGS_DIR") || `${videos}/Recordings`
-    readonly property string libdir: Quickshell.env("VAXISON_LIB_DIR") || "/usr/lib/vaxison"
+    readonly property string wallsdir: Quickshell.env("WERNIXSHELL_WALLPAPERS_DIR") || absolutePath(GlobalConfig.paths.wallpaperDir)
+    readonly property string recsdir: Quickshell.env("WERNIXSHELL_RECORDINGS_DIR") || `${videos}/Recordings`
+    readonly property string libdir: Quickshell.env("WERNIXSHELL_LIB_DIR") || "/usr/lib/wernixshell"
 
     property var pendingWrites: []
 

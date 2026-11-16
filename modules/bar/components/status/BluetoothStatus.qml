@@ -4,7 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Bluetooth
-import Vaxison.Config
+import WernixShell.Config
 import qs.components
 import qs.utils
 

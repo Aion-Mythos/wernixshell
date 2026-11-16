@@ -1,9 +1,9 @@
 import QtQuick
-import Vaxison
-import Vaxison.Config
-import Vaxison.Multimedia
-import Vaxison.Shaders
-import Vaxison.State
+import WernixShell
+import WernixShell.Config
+import WernixShell.Multimedia
+import WernixShell.Shaders
+import WernixShell.State
 import qs.services
 
 Item {

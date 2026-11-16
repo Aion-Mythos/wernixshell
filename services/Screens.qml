@@ -1,7 +1,7 @@
 pragma Singleton
 
 import Quickshell
-import Vaxison.Config
+import WernixShell.Config
 
 Singleton {
     id: root

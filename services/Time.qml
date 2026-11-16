@@ -2,7 +2,7 @@ pragma Singleton
 
 import QtQuick
 import Quickshell
-import Vaxison.I18n
+import WernixShell.I18n
 
 Singleton {
     property alias enabled: clock.enabled

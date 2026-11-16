@@ -4,9 +4,9 @@ import QtQml
 import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Mpris
-import Vaxison
-import Vaxison.Config
-import Vaxison.I18n
+import WernixShell
+import WernixShell.Config
+import WernixShell.I18n
 import qs.components.misc
 
 Singleton {

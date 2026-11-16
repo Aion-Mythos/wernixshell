@@ -4,8 +4,8 @@ import QtQuick
 import QtQuick.Shapes
 import Quickshell
 import Quickshell.Services.Notifications
-import Vaxison.Components
-import Vaxison.Config
+import WernixShell.Components
+import WernixShell.Config
 import qs.components
 import qs.components.controls
 import qs.components.effects

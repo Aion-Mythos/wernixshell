@@ -1,0 +1,12 @@
+{
+  "mode": "light", "source": "Wernix OS Colour System", "background": "f2f0ec", "surface": "f2f0ec",
+  "primary": "337774", "secondary": "206060", "tertiary": "615d57",
+  "error": "bb4844", "success": "457b25", "warning": "966303", "text": "13100d",
+  "overrides": {
+    "surfaceDim": "e4e2dc", "surfaceBright": "faf9f6",
+    "surfaceContainerLowest": "faf9f6", "surfaceContainerLow": "faf9f6", "surfaceContainer": "e9e7e2",
+    "surfaceContainerHigh": "e4e2dc", "surfaceContainerHighest": "cfccc6", "surfaceVariant": "e4e2dc",
+    "onSurfaceVariant": "44403c", "outline": "7f7b75", "outlineVariant": "cfccc6",
+    "onPrimary": "faf9f6", "primaryContainer": "d5ece9", "onPrimaryContainer": "0a3637"
+  }
+}

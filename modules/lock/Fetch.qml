@@ -3,9 +3,9 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.UPower
-import Vaxison
-import Vaxison.Config
-import Vaxison.I18n
+import WernixShell
+import WernixShell.Config
+import WernixShell.I18n
 import qs.components
 import qs.components.effects
 import qs.services
@@ -54,7 +54,7 @@ StyledRect {
 
             MonoText {
                 Layout.fillWidth: true
-                text: "vaxisonfetch.sh"
+                text: "wernixshellfetch.sh"
                 elide: Text.ElideRight
             }
 
@@ -64,7 +64,7 @@ StyledRect {
                 Layout.preferredHeight: 0
                 active: !iconLoader.active
 
-                sourceComponent: SysInfo.isDefaultLogo ? vxsLogo : distroIcon
+                sourceComponent: SysInfo.isDefaultLogo ? wernixLogo : distroIcon
             }
         }
 
@@ -79,7 +79,7 @@ StyledRect {
                 Layout.fillHeight: true
                 active: root.width > Tokens.sizes.lock.largeLogoWidth
 
-                sourceComponent: SysInfo.isDefaultLogo ? vxsLogo : distroIcon
+                sourceComponent: SysInfo.isDefaultLogo ? wernixLogo : distroIcon
             }
 
             ColumnLayout {
@@ -159,7 +159,7 @@ StyledRect {
     }
 
     Component {
-        id: vxsLogo
+        id: wernixLogo
 
         Logo {
             width: height * designWidth / designHeight

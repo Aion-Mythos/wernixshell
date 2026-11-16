@@ -5,8 +5,8 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Services.Pam
-import Vaxison.Config
-import Vaxison.Services
+import WernixShell.Config
+import WernixShell.Services
 
 Scope {
     id: root

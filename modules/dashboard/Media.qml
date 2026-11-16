@@ -2,8 +2,8 @@ import "media"
 import QtQuick
 import QtQuick.Layouts
 import M3Shapes
-import Vaxison.Config
-import Vaxison.I18n
+import WernixShell.Config
+import WernixShell.I18n
 import qs.components
 import qs.services
 

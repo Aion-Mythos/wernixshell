@@ -16,8 +16,8 @@ include(cmake/pch.cmake)
 include(cmake/qml-module.cmake)
 
 # Header only helpers
-add_library(vaxison-util INTERFACE)
-target_include_directories(vaxison-util INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+add_library(wernixshell-util INTERFACE)
+target_include_directories(wernixshell-util INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 add_subdirectory(3rdparty/rgbcx)
-add_subdirectory(src/Vaxison)
+add_subdirectory(src/WernixShell)

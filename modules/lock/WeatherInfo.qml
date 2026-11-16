@@ -1,6 +1,6 @@
 import "weather"
 import QtQuick
-import Vaxison.Config
+import WernixShell.Config
 import qs.components
 import qs.services
 

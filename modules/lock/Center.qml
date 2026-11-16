@@ -1,7 +1,7 @@
 import "center"
 import QtQuick
 import QtQuick.Layouts
-import Vaxison.Config
+import WernixShell.Config
 import qs.components
 import qs.services
 

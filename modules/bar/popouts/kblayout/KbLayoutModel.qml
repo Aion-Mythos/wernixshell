@@ -2,9 +2,9 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell.Io
-import Vaxison
-import Vaxison.Config
-import Vaxison.I18n
+import WernixShell
+import WernixShell.Config
+import WernixShell.I18n
 
 // TODO: handle this better later
 

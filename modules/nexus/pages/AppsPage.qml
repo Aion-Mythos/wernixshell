@@ -4,9 +4,9 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Widgets
-import Vaxison
-import Vaxison.Config
-import Vaxison.I18n
+import WernixShell
+import WernixShell.Config
+import WernixShell.I18n
 import qs.components
 import qs.components.containers
 import qs.services

@@ -3,8 +3,8 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import Vaxison.Config
-import Vaxison.I18n
+import WernixShell.Config
+import WernixShell.I18n
 import qs.utils
 
 Singleton {
@@ -61,7 +61,7 @@ Singleton {
             root.osIdLike = fd("ID_LIKE").split(" ");
 
             const logo = Quickshell.iconPath(fd("LOGO"), true);
-            if (GlobalConfig.general.logo === "vexilion") {
+            if (GlobalConfig.general.logo === "wernixos") {
                 root.osLogo = Qt.resolvedUrl(`${Quickshell.shellDir}/assets/logo.svg`);
                 root.isDefaultLogo = true;
             } else if (GlobalConfig.general.logo) {

@@ -1,7 +1,7 @@
 pragma Singleton
 
 import Quickshell
-import Vaxison.I18n
+import WernixShell.I18n
 
 Singleton {
     property var _regexCache: ({})

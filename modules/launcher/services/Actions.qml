@@ -3,9 +3,9 @@ pragma Singleton
 import ".."
 import QtQuick
 import Quickshell
-import Vaxison.Config
-import Vaxison.I18n
-import Vaxison.Services
+import WernixShell.Config
+import WernixShell.I18n
+import WernixShell.Services
 import qs.services
 import qs.utils
 import qs.modules.nexus

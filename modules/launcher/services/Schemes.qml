@@ -3,7 +3,7 @@ pragma Singleton
 import ".."
 import QtQuick
 import Quickshell
-import Vaxison.Config
+import WernixShell.Config
 import qs.services
 import qs.utils
 

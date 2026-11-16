@@ -1,5 +1,5 @@
-add_library(vaxison-pch INTERFACE)
-target_precompile_headers(vaxison-pch INTERFACE
+add_library(wernixshell-pch INTERFACE)
+target_precompile_headers(wernixshell-pch INTERFACE
     <qobject.h>
     <qqmlintegration.h>
     <qstring.h>

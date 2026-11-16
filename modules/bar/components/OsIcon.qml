@@ -1,5 +1,5 @@
 import QtQuick
-import Vaxison.Config
+import WernixShell.Config
 import qs.components
 import qs.components.effects
 import qs.services
@@ -8,9 +8,8 @@ import qs.utils
 Item {
     id: root
 
-    // The wide vxs logo fills the bar's width; distro icons are square
-    implicitWidth: SysInfo.isDefaultLogo ? Tokens.sizes.bar.innerWidth - Tokens.padding.small : Math.round(Tokens.font.body.large.pointSize * 1.2)
-    implicitHeight: SysInfo.isDefaultLogo ? Math.round(implicitWidth * 52 / 160) : Math.round(Tokens.font.body.large.pointSize * 1.2)
+    implicitWidth: Math.round(Tokens.font.body.large.pointSize * (SysInfo.isDefaultLogo ? 1.6 : 1.2))
+    implicitHeight: implicitWidth
 
     MouseArea {
         anchors.fill: parent
@@ -24,11 +23,11 @@ Item {
     Loader {
         asynchronous: true
         anchors.centerIn: parent
-        sourceComponent: SysInfo.isDefaultLogo ? vxsLogo : distroIcon
+        sourceComponent: SysInfo.isDefaultLogo ? wernixLogo : distroIcon
     }
 
     Component {
-        id: vxsLogo
+        id: wernixLogo
 
         Logo {
             implicitWidth: root.implicitWidth

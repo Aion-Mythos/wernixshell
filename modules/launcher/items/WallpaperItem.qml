@@ -1,8 +1,8 @@
 import QtQuick
-import Vaxison.Config
-import Vaxison.Models
-import Vaxison.Multimedia
-import Vaxison.State
+import WernixShell.Config
+import WernixShell.Models
+import WernixShell.Multimedia
+import WernixShell.State
 import qs.components
 import qs.components.effects
 import qs.services

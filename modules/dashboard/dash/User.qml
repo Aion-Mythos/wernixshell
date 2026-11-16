@@ -2,9 +2,9 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import M3Shapes
-import Vaxison.Config
-import Vaxison.I18n
-import Vaxison.Multimedia
+import WernixShell.Config
+import WernixShell.I18n
+import WernixShell.Multimedia
 import qs.components
 import qs.components.effects
 import qs.components.filedialog
@@ -146,7 +146,7 @@ Item {
 
         Loader {
             anchors.centerIn: parent
-            sourceComponent: SysInfo.isDefaultLogo ? vxsLogo : osLogo
+            sourceComponent: SysInfo.isDefaultLogo ? wernixLogo : osLogo
         }
     }
 
@@ -163,14 +163,13 @@ Item {
     }
 
     Component {
-        id: vxsLogo
+        id: wernixLogo
 
         Logo {
             implicitWidth: Tokens.sizes.dashboard.logoSize
             implicitHeight: implicitWidth * designHeight / designWidth
             topColour: Colours.palette.m3primary
             bottomColour: Colours.palette.m3onPrimaryContainer
-            holeColour: Colours.palette.m3primaryContainer
         }
     }
 

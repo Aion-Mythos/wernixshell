@@ -4,8 +4,8 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Services.UPower
-import Vaxison.Config
-import Vaxison.Services
+import WernixShell.Config
+import WernixShell.Services
 import qs.services
 import qs.modules.lock
 

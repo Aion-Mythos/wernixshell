@@ -1,9 +1,9 @@
-Vaxison is a hard fork of caelestia-shell by the Caelestia contributors,
+WernixShell is a hard fork of caelestia-shell by the Caelestia contributors,
 forked at commit f80a98079b19f91f7d8a24218d068e77acc00025
 (https://github.com/caelestia-dots/shell).
 
 Upstream is not tracked after the fork. Original copyright notices are kept,
-and Vaxison is distributed under the same license (GPL-3.0, see LICENSE).
+and WernixShell is distributed under the same license (GPL-3.0, see LICENSE).
 
 The colour schemes catppuccin, gruvbox, rosepine, everforest, tokyonight, nord, dracula, onedark and
 solarized in data/schemes/ were copied from the data of caelestia-cli by the Caelestia contributors

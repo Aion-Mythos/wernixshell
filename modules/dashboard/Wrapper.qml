@@ -2,9 +2,9 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
-import Vaxison
-import Vaxison.Config
-import Vaxison.I18n
+import WernixShell
+import WernixShell.Config
+import WernixShell.I18n
 import qs.components
 import qs.components.filedialog
 import qs.utils
@@ -20,10 +20,10 @@ Item {
         onAccepted: path => {
             if (CUtils.copyFile(Qt.resolvedUrl(path), Qt.resolvedUrl(`${Paths.home}/.face`)))
                 // TRANSLATORS: %1 = a file path
-                Quickshell.execDetached(["notify-send", "-a", "vaxison", "-u", "low", "-h", `STRING:image-path:${path}`, Tr.tr("Profile picture changed"), Tr.tr("Profile picture changed to %1").arg(Paths.shortenHome(path))]);
+                Quickshell.execDetached(["notify-send", "-a", "wernixshell", "-u", "low", "-h", `STRING:image-path:${path}`, Tr.tr("Profile picture changed"), Tr.tr("Profile picture changed to %1").arg(Paths.shortenHome(path))]);
             else
                 // TRANSLATORS: %1 = a file path
-                Quickshell.execDetached(["notify-send", "-a", "vaxison", "-u", "critical", Tr.tr("Unable to change profile picture"), Tr.tr("Failed to change profile picture to %1").arg(Paths.shortenHome(path))]);
+                Quickshell.execDetached(["notify-send", "-a", "wernixshell", "-u", "critical", Tr.tr("Unable to change profile picture"), Tr.tr("Failed to change profile picture to %1").arg(Paths.shortenHome(path))]);
         }
     }
 

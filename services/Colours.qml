@@ -4,8 +4,8 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import Vaxison.Config
-import Vaxison.Images
+import WernixShell.Config
+import WernixShell.Images
 import qs.services
 import qs.utils
 
@@ -91,10 +91,10 @@ Singleton {
     function reloadHyprRules(): void {
         let rule, trEnabled;
         if (Hypr.usingLua) {
-            rule = `eval hl.layer_rule({ match = { namespace = "vaxison-drawers" }, %1 = %2 })`;
+            rule = `eval hl.layer_rule({ match = { namespace = "wernixshell-drawers" }, %1 = %2 })`;
             trEnabled = transparency.enabled;
         } else {
-            rule = "keyword layerrule %1 %2, match:namespace vaxison-drawers";
+            rule = "keyword layerrule %1 %2, match:namespace wernixshell-drawers";
             trEnabled = transparency.enabled ? 1 : 0;
         }
         Hypr.extras.batchMessage([rule.arg("blur").arg(trEnabled), rule.arg("ignore_alpha").arg(Math.max(0, transparency.base - 0.03))]);
@@ -130,7 +130,7 @@ Singleton {
         printErrors: false
         onFileChanged: reload()
         onLoaded: root.load(text(), false)
-        onLoadFailed: fallbackScheme.path = `${Quickshell.shellDir}/data/schemes/vexilion/dark.json` // First run, before a scheme was applied
+        onLoadFailed: fallbackScheme.path = `${Quickshell.shellDir}/data/schemes/wernixos/dark.json` // First run, before a scheme was applied
     }
 
     // The bundled default scheme: used until the scheme file exists

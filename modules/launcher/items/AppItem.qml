@@ -1,7 +1,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Widgets
-import Vaxison.Config
+import WernixShell.Config
 import qs.components
 import qs.services
 import qs.utils

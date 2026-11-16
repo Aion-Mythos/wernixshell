@@ -1,7 +1,7 @@
 pragma Singleton
 
 import QtQuick
-import Vaxison.I18n
+import WernixShell.I18n
 
 QtObject {
     id: root

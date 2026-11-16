@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.UPower
-import Vaxison.Config
-import Vaxison.I18n
-import Vaxison.Services
+import WernixShell.Config
+import WernixShell.I18n
+import WernixShell.Services
 import qs.components
 import qs.services
 import qs.utils

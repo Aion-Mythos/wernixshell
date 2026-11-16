@@ -3,8 +3,8 @@ pragma Singleton
 import ".."
 import QtQuick
 import Quickshell
-import Vaxison.Config
-import Vaxison.I18n
+import WernixShell.Config
+import WernixShell.I18n
 import qs.services
 import qs.utils
 

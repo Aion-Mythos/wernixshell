@@ -3,8 +3,8 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
-import Vaxison
-import Vaxison.Config
+import WernixShell
+import WernixShell.Config
 import qs.components
 import qs.components.effects
 import qs.services

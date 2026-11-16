@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
-import Vaxison.Config
-import Vaxison.I18n
-import Vaxison.Services
+import WernixShell.Config
+import WernixShell.I18n
+import WernixShell.Services
 import qs.components
 import qs.components.controls
 import qs.services

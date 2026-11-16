@@ -4,10 +4,10 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Pipewire
-import Vaxison
-import Vaxison.Config
-import Vaxison.I18n
-import Vaxison.Services
+import WernixShell
+import WernixShell.Config
+import WernixShell.I18n
+import WernixShell.Services
 
 Singleton {
     id: root

@@ -2,9 +2,9 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
-import Vaxison.Config
-import Vaxison.I18n
-import Vaxison.State
+import WernixShell.Config
+import WernixShell.I18n
+import WernixShell.State
 import qs.components
 import qs.components.controls
 import qs.services

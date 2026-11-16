@@ -2,13 +2,13 @@
 # SPDX-License-Identifier: GPL-3.0-only
 """Renders the line-draw animation of the official logo (assets/logo.svg) to GIFs. Re-runnable.
 
-Writes assets/vxs-anim.gif (for dark themes) and vxs-anim-light.gif: 3.00 s at 25 fps (75 frames of 4 cs),
+Writes assets/wernix-anim.gif (for dark themes) and wernix-anim-light.gif: 3.00 s at 25 fps (75 frames of 4 cs),
 looping forever, 1-bit transparency, disposal 2, no blur or glow, drawn at 4x and downscaled with Lanczos,
 and a small shared palette without dithering. Needs only Pillow.
 
-V, X and S draw on one after another (the V's dot and the X's ring come with them), hold with one pulse of
-the accent colour, then erase in the same order. Reads the logo's own shapes from the SVG: polyline, line,
-circle (a filled circle is a dot, a stroked one is a ring) and path elements inside translated groups."""
+The three rings draw on from the outside in (the core grows in with the last one), hold with one pulse of
+the accent colour, then erase in the same order. Reads the logo's own polygons from the SVG: a stroked
+polygon is a ring, the filled one is the core."""
 import math
 import re
 import xml.etree.ElementTree as ET
@@ -20,138 +20,18 @@ ROOT = Path(__file__).resolve().parent.parent
 FPS, DURATION = 25, 3.0
 FRAMES = int(FPS * DURATION)
 SUPERSAMPLE = 4
-WIDTH = 512  # Output width in px; the height follows the logo's proportions
+WIDTH = 320  # Output width in px; the height follows the logo's proportions
 PULSE_STEPS = 12  # Distinct pulse colours, keeps the palette small
-# (draw start, draw end) per letter, then the erase windows, in seconds
-DRAW = {"v": (0.00, 0.60), "x": (0.45, 1.05), "s": (0.90, 1.50)}
-ERASE = {"v": (2.40, 2.70), "x": (2.55, 2.85), "s": (2.70, 3.00)}
+# (draw start, draw end) per ring, then the erase windows, in seconds
+DRAW = {"outer": (0.00, 0.60), "middle": (0.45, 1.05), "inner": (0.90, 1.50)}
+ERASE = {"outer": (2.40, 2.70), "middle": (2.55, 2.85), "inner": (2.70, 3.00)}
 PULSE = (1.50, 2.40)
-# letters, accent, accent at the pulse's peak
-VARIANTS = {"": ("fafaff", "956bff", "b14dff"), "-light": ("1c1c1c", "5936d6", "647cff")}
+# rings, core, core at the pulse's peak
+VARIANTS = {"": ("f2f0ec", "63a19c", "8dc0bb"), "-light": ("13100d", "337774", "63a19c")}
 SVG = "{http://www.w3.org/2000/svg}"
 def ease(t):
     t = min(1.0, max(0.0, t))
     return t * t * (3 - 2 * t)
-
-
-
-def arc_points(p0, rx, ry, phi_deg, large, sweep, p1, steps=32):
-    """Points along an SVG elliptical arc (endpoint parameterisation to centre parameterisation)."""
-    if (p0 == p1) or rx == 0 or ry == 0:
-        return [p1]
-    phi = math.radians(phi_deg)
-    cp, sp = math.cos(phi), math.sin(phi)
-    dx, dy = (p0[0] - p1[0]) / 2, (p0[1] - p1[1]) / 2
-    x1, y1 = cp * dx + sp * dy, -sp * dx + cp * dy
-    rx, ry = abs(rx), abs(ry)
-    lam = x1 * x1 / (rx * rx) + y1 * y1 / (ry * ry)
-    if lam > 1:
-        rx, ry = rx * math.sqrt(lam), ry * math.sqrt(lam)
-    num = rx * rx * ry * ry - rx * rx * y1 * y1 - ry * ry * x1 * x1
-    den = rx * rx * y1 * y1 + ry * ry * x1 * x1
-    coef = math.sqrt(max(0, num / den)) * (-1 if large == sweep else 1)
-    cxp, cyp = coef * rx * y1 / ry, -coef * ry * x1 / rx
-    cx, cy = cp * cxp - sp * cyp + (p0[0] + p1[0]) / 2, sp * cxp + cp * cyp + (p0[1] + p1[1]) / 2
-    ang = lambda ux, uy, vx, vy: math.atan2(ux * vy - uy * vx, ux * vx + uy * vy)
-    t1 = ang(1, 0, (x1 - cxp) / rx, (y1 - cyp) / ry)
-    dt = ang((x1 - cxp) / rx, (y1 - cyp) / ry, (-x1 - cxp) / rx, (-y1 - cyp) / ry)
-    if not sweep and dt > 0:
-        dt -= 2 * math.pi
-    elif sweep and dt < 0:
-        dt += 2 * math.pi
-    out = []
-    for k in range(1, steps + 1):
-        t = t1 + dt * k / steps
-        out.append((cx + rx * math.cos(t) * cp - ry * math.sin(t) * sp, cy + rx * math.cos(t) * sp + ry * math.sin(t) * cp))
-    return out
-
-
-def sample_path(d, steps=48):
-    """Polylines (lists of points in viewBox units) for the path data."""
-    tokens = re.findall(r"[MmLlHhVvCcSsQqTtZzAa]|-?\d*\.?\d+(?:e-?\d+)?", d)
-    lines, cur, start, pos, last_ctrl, cmd, i = [], [], (0, 0), (0, 0), None, "", 0
-
-    def take(n):
-        nonlocal i
-        vals = [float(t) for t in tokens[i : i + n]]
-        i += n
-        return vals
-
-    def bezier(p0, pts):
-        n = len(pts)
-        out = []
-        for k in range(1, steps + 1):
-            t = k / steps
-            pts_all = [p0, *pts]
-            while len(pts_all) > 1:
-                pts_all = [((1 - t) * a[0] + t * b[0], (1 - t) * a[1] + t * b[1]) for a, b in zip(pts_all, pts_all[1:])]
-            out.append(pts_all[0])
-        return out
-
-    while i < len(tokens):
-        if re.fullmatch(r"[A-Za-z]", tokens[i]):
-            cmd = tokens[i]
-            i += 1
-        rel = cmd.islower()
-        c = cmd.upper()
-        ox, oy = pos if rel else (0, 0)
-        if c == "M":
-            x, y = take(2)
-            pos = start = (x + ox, y + oy)
-            if cur:
-                lines.append(cur)
-            cur = [pos]
-            cmd = "l" if rel else "L"
-            last_ctrl = None
-        elif c == "L":
-            x, y = take(2)
-            pos = (x + ox, y + oy)
-            cur.append(pos)
-            last_ctrl = None
-        elif c == "H":
-            (x,) = take(1)
-            pos = (x + ox, pos[1])
-            cur.append(pos)
-            last_ctrl = None
-        elif c == "V":
-            (y,) = take(1)
-            pos = (pos[0], y + oy)
-            cur.append(pos)
-            last_ctrl = None
-        elif c in "CS":
-            if c == "C":
-                x1, y1, x2, y2, x, y = take(6)
-                p1 = (x1 + ox, y1 + oy)
-            else:
-                x2, y2, x, y = take(4)
-                p1 = (2 * pos[0] - last_ctrl[0], 2 * pos[1] - last_ctrl[1]) if last_ctrl else pos
-            p2, p3 = (x2 + ox, y2 + oy), (x + ox, y + oy)
-            cur += bezier(pos, [p1, p2, p3])
-            pos, last_ctrl = p3, p2
-        elif c in "QT":
-            if c == "Q":
-                x1, y1, x, y = take(4)
-                p1 = (x1 + ox, y1 + oy)
-            else:
-                x, y = take(2)
-                p1 = (2 * pos[0] - last_ctrl[0], 2 * pos[1] - last_ctrl[1]) if last_ctrl else pos
-            p2 = (x + ox, y + oy)
-            cur += bezier(pos, [p1, p2])
-            pos, last_ctrl = p2, p1
-        elif c == "A":
-            rx, ry, rot, large, sweep, x, y = take(7)
-            end = (x + ox, y + oy)
-            cur += arc_points(pos, rx, ry, rot, int(large), int(sweep), end)
-            pos, last_ctrl = end, None
-        elif c == "Z":
-            cur.append(start)
-            pos = start
-            last_ctrl = None
-        else:
-            raise SystemExit(f"Unsupported path command {cmd!r}")
-    if cur:
-        lines.append(cur)
-    return lines
 
 
 
@@ -169,70 +49,17 @@ def num(value):
     return [float(v) for v in re.findall(r"-?\d*\.?\d+", value)]
 
 
-def circle_points(cx, cy, r, steps=96):
-    # Starts at the top and runs clockwise
-    return [(cx + r * math.sin(2 * math.pi * k / steps), cy - r * math.cos(2 * math.pi * k / steps)) for k in range(steps + 1)]
-
-
-def clip_outside(p0, p1, rings):
-    """The parts of a segment that lie outside every ring (circles of the same glyph)."""
-    parts = [(p0, p1)]
-    for cx, cy, r in rings:
-        nxt = []
-        for a, b in parts:
-            dx, dy = b[0] - a[0], b[1] - a[1]
-            fx, fy = a[0] - cx, a[1] - cy
-            qa, qb, qc = dx * dx + dy * dy, 2 * (fx * dx + fy * dy), fx * fx + fy * fy - r * r
-            disc = qb * qb - 4 * qa * qc
-            if disc <= 0 or qa == 0:
-                nxt.append((a, b))
-                continue
-            t1, t2 = (-qb - math.sqrt(disc)) / (2 * qa), (-qb + math.sqrt(disc)) / (2 * qa)
-            at = lambda t: (a[0] + dx * t, a[1] + dy * t)
-            if t1 > 0:
-                nxt.append((a, at(min(t1, 1))))
-            if t2 < 1:
-                nxt.append((at(max(t2, 0)), b))
-        parts = nxt
-    return parts
-
-
 def parse_logo(path):
-    """{glyph: {"strokes": [(kind, polyline)], "dots": [(x, y, r)]}} and the viewBox, from the logo SVG."""
+    """{ring: {"strokes": [(kind, polyline)], "dots": [polygon]}} and the viewBox, from the logo SVG."""
     root = ET.parse(path).getroot()
     view = num(root.get("viewBox"))
-    width = float(root.find(SVG + "g").get("stroke-width"))
-    glyphs = {}
-    for name, group in zip(DRAW, root.findall(SVG + "g")):
-        tx, ty = (num(group.get("transform", "")) + [0, 0])[:2]
-        shift = lambda p: (p[0] + tx, p[1] + ty)
-        lines, rings, dots, ring_strokes = [], [], [], []
-        for el in group:
-            tag = el.tag.replace(SVG, "")
-            if tag == "polyline":
-                v = num(el.get("points"))
-                lines.append([shift(p) for p in zip(v[0::2], v[1::2])])
-            elif tag == "line":
-                x1, y1, x2, y2 = (float(el.get(k)) for k in ("x1", "y1", "x2", "y2"))
-                lines.append([shift((x1, y1)), shift((x2, y2))])
-            elif tag == "path":
-                lines += [[shift(p) for p in line] for line in sample_path(el.get("d"))]
-            elif tag == "circle":
-                cx, cy = shift((float(el.get("cx")), float(el.get("cy"))))
-                r = float(el.get("r"))
-                if el.get("stroke") == "none":
-                    dots.append((cx, cy, r))
-                else:
-                    rings.append((cx, cy, r))
-        strokes = []
-        for line in lines:
-            if len(line) == 2 and rings:  # Lines stop at the ring instead of crossing it
-                strokes += [("letter", [a, b]) for a, b in clip_outside(line[0], line[1], rings)]
-            else:
-                strokes.append(("letter", line))
-        strokes += [("accent", circle_points(*ring)) for ring in rings]
-        glyphs[name] = {"strokes": strokes, "dots": dots}
-    return glyphs, view, width
+    polys = [(el, list(zip(*[iter(num(el.get("points")))] * 2))) for el in root.findall(SVG + "polygon")]
+    rings = [(el, pts) for el, pts in polys if el.get("fill") == "none"]
+    cores = [pts for el, pts in polys if el.get("fill") != "none"]
+    assert len(rings) == len(DRAW) and cores, "expected three rings and a core"
+    glyphs = {name: {"strokes": [("letter", pts + [pts[0]])], "dots": []} for name, (_, pts) in zip(DRAW, rings)}
+    glyphs[list(DRAW)[-1]]["dots"] = cores
+    return glyphs, view, float(rings[0][0].get("stroke-width"))
 
 
 def prefix(strokes, fraction):
@@ -285,11 +112,10 @@ def render_masks(glyphs, view, stroke_width, t):
                 d.line(px, fill=255, width=round(lw), joint="curve")
             for x, y in (px[0], px[-1]):  # Round caps
                 d.ellipse((x - lw / 2, y - lw / 2, x + lw / 2, y + lw / 2), fill=255)
-        pop = ease((f - 0.5) / 0.25)  # Dots grow in as their letter is half drawn
+        pop = ease((f - 0.5) / 0.25)  # The core grows in as its ring is half drawn
         if pop > 0:
-            for cx, cy, r in glyph["dots"]:
-                x, y = to_px((cx, cy))
-                draws["accent"].ellipse((x - r * ss * pop, y - r * ss * pop, x + r * ss * pop, y + r * ss * pop), fill=255)
+            for poly in glyph["dots"]:  # Scaled about the centre of the logo
+                draws["accent"].polygon([to_px((x * pop, y * pop)) for x, y in poly], fill=255)
     return [m.resize((w, h), Image.LANCZOS).point(lambda v: 255 if v >= 128 else 0) for m in (masks["letter"], masks["accent"])]
 
 
@@ -400,7 +226,7 @@ def main():
             images.append(img)
             box = img.getbbox() or (0, 0, 1, 1)  # Empty frame: one transparent pixel
             frames.append((box, img.crop(box).tobytes()))
-        out = ROOT / f"assets/vxs-anim{suffix}.gif"
+        out = ROOT / f"assets/wernix-anim{suffix}.gif"
         write_gif(out, images[0].size, palette, frames)
         verify(out, palette, images)
         print(f"{out.relative_to(ROOT)}: {len(frames)} frames, {images[0].size[0]}x{images[0].size[1]}, {len(palette) + 1} colours, {out.stat().st_size / 1024:.0f} KB")

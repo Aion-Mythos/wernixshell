@@ -1,6 +1,0 @@
-{
-  "mode": "light", "background": "fafaff", "surface": "fafaff",
-  "primary": "5936d6", "secondary": "647cff", "tertiary": "b14dff",
-  "error": "d72638", "success": "008f62", "warning": "c77700", "text": "1c1c1c",
-  "overrides": { "surfaceContainerLow": "eef0f2", "surfaceContainer": "eef0f2", "surfaceContainerHigh": "ecebe4", "surfaceContainerHighest": "daddd8", "outlineVariant": "daddd8" }
-}

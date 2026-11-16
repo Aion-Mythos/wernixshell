@@ -1,13 +1,13 @@
 import Quickshell
 import Quickshell.Wayland
-import Vaxison.Config
+import WernixShell.Config
 
 // qmllint disable uncreatable-type
 PanelWindow {
     // qmllint enable uncreatable-type
     required property string name
 
-    WlrLayershell.namespace: `vaxison-${name}`
+    WlrLayershell.namespace: `wernixshell-${name}`
     color: "transparent"
 
     contentItem.Config.screen: screen.name

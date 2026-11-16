@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
-cat ~/.local/state/vaxison/sequences.txt 2>/dev/null
+cat ~/.local/state/wernixshell/sequences.txt 2>/dev/null
 
 exec "$@"

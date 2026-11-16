@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Templates
-import Vaxison.Components
-import Vaxison.Config
+import WernixShell.Components
+import WernixShell.Config
 import qs.components
 import qs.services
 

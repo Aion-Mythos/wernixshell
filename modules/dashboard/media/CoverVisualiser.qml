@@ -4,9 +4,9 @@ import QtQuick
 import QtQuick.Shapes
 import Quickshell
 import M3Shapes
-import Vaxison
-import Vaxison.Config
-import Vaxison.Services
+import WernixShell
+import WernixShell.Config
+import WernixShell.Services
 import qs.components
 import qs.components.widgets
 import qs.services

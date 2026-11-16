@@ -1,6 +1,6 @@
-<h1 align=center>Vaxison</h1>
+<h1 align=center>WernixShell</h1>
 
-The Hyprland desktop shell of VexilionOS, built with Quickshell. Hard fork of an upstream project (see [NOTICE](NOTICE)).
+The Hyprland desktop shell of WernixOS, built with Quickshell. Hard fork of an upstream project (see [NOTICE](NOTICE)).
 
 ## Components
 
@@ -50,14 +50,14 @@ Build dependencies:
 > The commands below (and in the "Updating" section) assume `$XDG_CONFIG_HOME` is set.
 > If it is unset, substitute it with the path to your config folder (typically `~/.config`).
 
-To install the shell manually, install all dependencies and clone this repo to `$XDG_CONFIG_HOME/quickshell/vaxison`.
+To install the shell manually, install all dependencies and clone this repo to `$XDG_CONFIG_HOME/quickshell/wernixshell`.
 Then build and install using CMake.
 
 ```sh
 cd $XDG_CONFIG_HOME/quickshell
-git clone https://github.com/Aion-Mythos/-vexilion-vexison.git vaxison
+git clone https://github.com/Aion-Mythos/-vexilion-vexison.git wernixshell
 
-cd vaxison
+cd wernixshell
 cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/
 cmake --build build
 sudo cmake --install build
@@ -66,37 +66,37 @@ sudo cmake --install build
 > [!TIP]
 > You can customise the installation location via the CMake flags `INSTALL_LIBDIR`, `INSTALL_QMLDIR`, and
 > `INSTALL_QSCONFDIR` for the libraries (e.g. the version helper), QML plugin, and Quickshell config directories
-> respectively. If you set the `INSTALL_LIBDIR` flag, the `VAXISON_LIB_DIR` variable must also be set to
+> respectively. If you set the `INSTALL_LIBDIR` flag, the `WERNIXSHELL_LIB_DIR` variable must also be set to
 > the same directory in your system's environment.
 >
-> For example, installing to `~/.config/quickshell/vaxison` for easy local changes:
+> For example, installing to `~/.config/quickshell/wernixshell` for easy local changes:
 >
 > ```sh
-> mkdir -p ~/.config/quickshell/vaxison
-> cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/ -DINSTALL_QSCONFDIR="$HOME/.config/quickshell/vaxison"
+> mkdir -p ~/.config/quickshell/wernixshell
+> cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/ -DINSTALL_QSCONFDIR="$HOME/.config/quickshell/wernixshell"
 > cmake --build build
 > sudo cmake --install build
-> sudo chown -R $USER ~/.config/quickshell/vaxison
+> sudo chown -R $USER ~/.config/quickshell/wernixshell
 > ```
 
 ## Usage
 
-You can start the shell by running `qs -c vaxison -n -d`.
+You can start the shell by running `qs -c wernixshell -n -d`.
 You may omit `-d` from the command to keep the shell attached to the current terminal if necessary,
 though you likely want it to be detached (so it doesn't close when the terminal is closed).
 
 ### Shortcuts/IPC
 
 All keybinds are accessible via Hyprland [global shortcuts](https://wiki.hypr.land/Configuring/Basics/Binds/#dbus-global-shortcuts).
-The shell registers its shortcuts under the `vaxison` appid, e.g. `hl.dsp.global("vaxison:launcher")`.
+The shell registers its shortcuts under the `wernixshell` appid, e.g. `hl.dsp.global("wernixshell:launcher")`.
 
-All IPC commands can be accessed via `qs -c vaxison ipc call ...`, for example:
+All IPC commands can be accessed via `qs -c wernixshell ipc call ...`, for example:
 
 ```sh
-qs -c vaxison ipc call mpris getActive trackTitle
+qs -c wernixshell ipc call mpris getActive trackTitle
 ```
 
-You can view the list of available IPC commands by running `qs -c vaxison ipc show`.
+You can view the list of available IPC commands by running `qs -c wernixshell ipc show`.
 
 ### PFP/Wallpapers
 
@@ -104,10 +104,10 @@ The profile picture for the dashboard is read from the file `~/.face`. You can s
 or by manually copying or symlinking your image to the path.
 
 The wallpapers for the wallpaper switcher are read from `~/Pictures/Wallpapers`
-by default. To change it, modify `paths.wallpaperDir` in `~/.config/vaxison/shell.json`.
+by default. To change it, modify `paths.wallpaperDir` in `~/.config/wernixshell/shell.json`.
 
 To set the wallpaper, you can type `>wallpaper` in the launcher to open the wallpaper switcher.
-Alternatively, you can also use `qs -c vaxison ipc call wallpaper set <path_to_wallpaper>` to set the wallpaper directly.
+Alternatively, you can also use `qs -c wernixshell ipc call wallpaper set <path_to_wallpaper>` to set the wallpaper directly.
 
 ## Updating
 
@@ -116,22 +116,22 @@ Alternatively, you can also use `qs -c vaxison ipc call wallpaper set <path_to_w
 If you installed the shell manually by cloning the repo, you can update by pulling the changes from git
 in the local checkout.
 
-For example, if you installed to `$XDG_CONFIG_HOME/quickshell/vaxison`:
+For example, if you installed to `$XDG_CONFIG_HOME/quickshell/wernixshell`:
 
 ```sh
-cd $XDG_CONFIG_HOME/quickshell/vaxison
+cd $XDG_CONFIG_HOME/quickshell/wernixshell
 git pull
 ```
 
 ## Configuring
 
-All configuration options belong in `~/.config/vaxison/shell.json`. This file is _not_ created by
+All configuration options belong in `~/.config/wernixshell/shell.json`. This file is _not_ created by
 default; you must create it manually. Options that you omit from the config file will use their default
 values.
 
 ### Per-monitor configuration
 
-You can configure per-monitor options in `~/.config/vaxison/monitors/<monitor_name>/shell.json`.
+You can configure per-monitor options in `~/.config/wernixshell/monitors/<monitor_name>/shell.json`.
 List the names of your available monitors by running:
 
 ```sh
@@ -143,7 +143,7 @@ per-monitor configs will inherit their values from the global config.
 
 For example, to automatically hide the bar on the monitor named `DP-1`:
 
-**`~/.config/vaxison/monitors/DP-1/shell.json`**
+**`~/.config/wernixshell/monitors/DP-1/shell.json`**
 
 ```json
 {
@@ -349,7 +349,7 @@ For example, to automatically hide the bar on the monitor named `DP-1`:
         }
     },
     "general": {
-        "logo": "vexilion",
+        "logo": "wernixos",
         "showOverFullscreen": false,
         "mediaGifSpeedAdjustment": 300,
         "sessionGifSpeed": 0.7,
@@ -898,14 +898,14 @@ For example, to automatically hide the bar on the monitor named `DP-1`:
 > tokens used internally within the shell, and can cause visual issues if modified incorrectly.
 > The available options may change or be removed without notice across versions.
 
-A separate `~/.config/vaxison/shell-tokens.json` file allows editing the internal tokens without
+A separate `~/.config/wernixshell/shell-tokens.json` file allows editing the internal tokens without
 touching the source code of the shell. These tokens affect the dimensions and appearance of visual elements,
 including individual rounding, spacing, padding, font size, animation durations and curves, and the sizes of
 certain components. The appearance scale values in `shell.json` are multiplied against these base
 token values to produce the final computed values.
 
 Per-monitor token overrides are also available at
-`~/.config/vaxison/monitors/<monitor_name>/shell-tokens.json`.
+`~/.config/wernixshell/monitors/<monitor_name>/shell-tokens.json`.
 
 ## FAQ
 
@@ -920,18 +920,18 @@ If there is no corresponding option, make a [feature request](https://github.com
 
 ### How do I make my colour scheme change to match my wallpaper?
 
-Set a wallpaper via `>wallpaper` in the launcher or `qs -c vaxison ipc call wallpaper set <path>`, and pick the
+Set a wallpaper via `>wallpaper` in the launcher or `qs -c wernixshell ipc call wallpaper set <path>`, and pick the
 "Dynamic" scheme in Settings > Theme Center, via `>scheme` in the launcher, or over IPC (needs `matugen`), e.g.:
 
 ```sh
-qs -c vaxison ipc call wallpaper set <path_to_wallpaper>
-qs -c vaxison ipc call theme set dynamic x
+qs -c wernixshell ipc call wallpaper set <path_to_wallpaper>
+qs -c wernixshell ipc call theme set dynamic x
 ```
 
 Bundled schemes live in `data/schemes/<name>/<flavour>.json`, generated by `scripts/gen-scheme.py` from the
 seeds in `data/seeds/`. Other IPC commands: `theme set <name> <flavour>`, `theme mode <dark|light>`,
 `theme variant <tonalspot|vibrant|expressive|neutral|monochrome|fidelity>`, `theme get`, `theme list`.
-If `~/.config/vaxison/hooks/on-theme-change` exists and is executable, it runs after every theme change with the
+If `~/.config/wernixshell/hooks/on-theme-change` exists and is executable, it runs after every theme change with the
 scheme name, flavour and mode as arguments.
 
 ### My wallpapers aren't showing up in the launcher!

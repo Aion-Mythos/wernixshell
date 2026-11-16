@@ -2,8 +2,8 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
-import Vaxison.Config
-import Vaxison.Multimedia
+import WernixShell.Config
+import WernixShell.Multimedia
 import qs.components
 import qs.components.controls
 import qs.services

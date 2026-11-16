@@ -4,8 +4,8 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
-import Vaxison
-import Vaxison.I18n
+import WernixShell
+import WernixShell.I18n
 import qs.components
 import qs.components.effects
 import qs.services
@@ -81,11 +81,11 @@ MouseArea {
     }
 
     function save(): void {
-        const tmpfile = Qt.resolvedUrl(`/tmp/vaxison-picker-${Quickshell.processId}-${Date.now()}.png`);
+        const tmpfile = Qt.resolvedUrl(`/tmp/wernixshell-picker-${Quickshell.processId}-${Date.now()}.png`);
         CUtils.saveItem(screencopy, tmpfile, Qt.rect(Math.ceil(rsx), Math.ceil(rsy), Math.floor(sw), Math.floor(sh)), path => {
             if (root.loader.clipboardOnly) {
                 Quickshell.execDetached(["sh", "-c", "wl-copy --type image/png < " + path]);
-                Quickshell.execDetached(["notify-send", "-a", "vaxison", "-i", path, Tr.tr("Screenshot taken"), Tr.tr("Screenshot copied to clipboard")]);
+                Quickshell.execDetached(["notify-send", "-a", "wernixshell", "-i", path, Tr.tr("Screenshot taken"), Tr.tr("Screenshot copied to clipboard")]);
             } else {
                 Quickshell.execDetached(["swappy", "-f", path]);
             }

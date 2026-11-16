@@ -1,10 +1,10 @@
 import QtQuick
 import Quickshell
 import Quickshell.Services.UPower
-import Vaxison
-import Vaxison.Config
-import Vaxison.I18n
-import Vaxison.Services
+import WernixShell
+import WernixShell.Config
+import WernixShell.I18n
+import WernixShell.Services
 
 Scope {
     id: root

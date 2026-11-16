@@ -2,7 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell.Services.SystemTray
-import Vaxison.Config
+import WernixShell.Config
 import qs.components.effects
 import qs.services
 import qs.utils

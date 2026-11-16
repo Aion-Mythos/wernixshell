@@ -1,10 +1,10 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import Vaxison
-import Vaxison.Config
-import Vaxison.I18n
-import Vaxison.State
+import WernixShell
+import WernixShell.Config
+import WernixShell.I18n
+import WernixShell.State
 import qs.services
 
 Scope {

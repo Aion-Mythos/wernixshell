@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
-import Vaxison
-import Vaxison.Config
-import Vaxison.I18n
+import WernixShell
+import WernixShell.Config
+import WernixShell.I18n
 import qs.components
 import qs.services
 import qs.utils
@@ -49,9 +49,9 @@ PageBase {
                 // The animated logo (scripts/make-logo-gif.py), shown only here
                 AnimatedImage {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.preferredWidth: 280
-                    Layout.preferredHeight: 91
-                    source: Qt.resolvedUrl(`${Quickshell.shellDir}/assets/vxs-anim${Colours.light ? "-light" : ""}.gif`)
+                    Layout.preferredWidth: 140
+                    Layout.preferredHeight: 140
+                    source: Qt.resolvedUrl(`${Quickshell.shellDir}/assets/wernix-anim${Colours.light ? "-light" : ""}.gif`)
                     fillMode: AnimatedImage.PreserveAspectFit
                     playing: true
                     asynchronous: true
@@ -59,7 +59,7 @@ PageBase {
 
                 StyledText {
                     Layout.alignment: Qt.AlignHCenter
-                    text: "VexilionOS"
+                    text: "WernixOS"
                     color: Colours.palette.m3primary
                     font: Tokens.font.body.large
                 }
@@ -113,7 +113,7 @@ PageBase {
 
         InfoRow {
             first: true
-            label: Tr.trCtx("Shell", "the vaxison shell itself, not a unix shell")
+            label: Tr.trCtx("Shell", "the wernixshell shell itself, not a unix shell")
             value: CUtils.version || "…"
         }
 

@@ -2,9 +2,9 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import M3Shapes
-import Vaxison
-import Vaxison.Config
-import Vaxison.Multimedia
+import WernixShell
+import WernixShell.Config
+import WernixShell.Multimedia
 import qs.components
 import qs.components.effects
 import qs.services

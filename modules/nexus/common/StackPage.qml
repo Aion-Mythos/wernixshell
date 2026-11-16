@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import Vaxison.Config
+import WernixShell.Config
 import qs.components
 import qs.modules.nexus
 
@@ -100,7 +100,7 @@ StackView {
     LoggingCategory {
         id: logCat
 
-        name: "vaxison.nexus"
+        name: "wernixshell.nexus"
         defaultLogLevel: LoggingCategory.Info
     }
 

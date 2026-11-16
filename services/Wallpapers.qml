@@ -3,10 +3,10 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import Vaxison
-import Vaxison.Config
-import Vaxison.I18n
-import Vaxison.Models
+import WernixShell
+import WernixShell.Config
+import WernixShell.I18n
+import WernixShell.Models
 import qs.services
 import qs.utils
 

@@ -2,7 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell.Widgets
-import Vaxison.Images
+import WernixShell.Images
 
 IconImage {
     id: root

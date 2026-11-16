@@ -30,9 +30,9 @@ jobs:
           nix profile install 'nixpkgs#sway'
           sway &
           sleep 3  # Give Sway some time to start
-          result/bin/vaxison -d
+          result/bin/wernixshell -d
           sleep 3  # Give the shell some time to start (and die)
           pgrep .quickshell-wra  # Fail job if shell died
 
-          result/bin/vaxison kill
+          result/bin/wernixshell kill
           killall sway  # Screw using IPC

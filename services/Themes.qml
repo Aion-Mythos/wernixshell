@@ -4,8 +4,8 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import Vaxison.I18n
-import Vaxison.Models
+import WernixShell.I18n
+import WernixShell.Models
 import qs.utils
 
 // Bundled colour schemes (data/schemes/<name>/<flavour>.json) and the dynamic, wallpaper-derived scheme.
@@ -24,7 +24,7 @@ Singleton {
 
     // Every bundled scheme flavour: { name, flavour, mode, colours }
     readonly property var flat: files.instances.filter(f => f.data).map(f => f.data)
-    // The same grouped by scheme: { name, flavours: [flat entries] }, "vexilion" first. A flavour that
+    // The same grouped by scheme: { name, flavours: [flat entries] }, "wernixos" first. A flavour that
     // has both a dark and a light version (e.g. gruvbox hard) appears once, as the one for the active mode.
     readonly property var themes: {
         const byName = {};
@@ -33,7 +33,7 @@ Singleton {
                 byName[s.name] = [];
             byName[s.name].push(s);
         }
-        const pin = n => n === "vexilion" ? 0 : 1;
+        const pin = n => n === "wernixos" ? 0 : 1;
         const pick = (name, flavour) => {
             const matches = byName[name].filter(s => s.flavour === flavour);
             return matches.find(s => s.mode === activeMode) ?? matches[0];
@@ -131,7 +131,7 @@ Singleton {
             throw new Error(Tr.tr("matugen output has no colours"));
 
         // Roles matugen doesn't have (success, terminal colours) come from the default scheme
-        const base = flat.find(f => f.name === "vexilion" && f.mode === mode)?.colours ?? {};
+        const base = flat.find(f => f.name === "wernixos" && f.mode === mode)?.colours ?? {};
         for (const [token, value] of Object.entries(base))
             if (!(token in colours))
                 colours[token] = value;

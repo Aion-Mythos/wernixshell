@@ -3,9 +3,9 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import Vaxison
-import Vaxison.Config
-import Vaxison.I18n
+import WernixShell
+import WernixShell.Config
+import WernixShell.I18n
 
 Singleton {
     id: root
@@ -812,7 +812,7 @@ Singleton {
     LoggingCategory {
         id: lc
 
-        name: "vaxison.qml.services.vpn"
+        name: "wernixshell.qml.services.vpn"
         defaultLogLevel: LoggingCategory.Info
     }
 

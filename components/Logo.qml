@@ -2,16 +2,15 @@ import QtQuick
 import QtQuick.Shapes
 import qs.services
 
-// The VexilionOS vxs logo (assets/logo.svg), drawn with theme colours
+// The WernixOS logo (assets/logo.svg), drawn with theme colours
 Item {
     id: root
 
-    readonly property real designWidth: 160
-    readonly property real designHeight: 52
+    readonly property real designWidth: 228
+    readonly property real designHeight: 228
 
-    property color topColour: Colours.palette.m3primary // The accents
-    property color bottomColour: Colours.palette.m3onSurface // The letters
-    property color holeColour: Colours.palette.m3surface // Behind the ring of the X
+    property color topColour: Colours.palette.m3primary // The core
+    property color bottomColour: Colours.palette.m3onSurface // The rings
 
     implicitWidth: designWidth
     implicitHeight: designHeight
@@ -24,61 +23,27 @@ Item {
         transformOrigin: Item.Center
         preferredRendererType: Shape.CurveRenderer
 
-        // V
+        // The three rings (the SVG's points, moved by +114 into this item)
         ShapePath {
             fillColor: "transparent"
             strokeColor: root.bottomColour
-            strokeWidth: 3
-            capStyle: ShapePath.RoundCap
+            strokeWidth: 10
             joinStyle: ShapePath.RoundJoin
 
             PathSvg {
-                path: "M6,6 L26,46 L46,6 M2,6 L15,6"
+                path: "M114,14 L200.6,64 L200.6,164 L114,214 L27.4,164 L27.4,64 Z M126.16,45.06 L179.78,90.06 L167.62,159 L101.84,182.94 L48.22,137.94 L60.38,69 Z M129.05,72.65 L157.33,106.36 L142.28,147.71 L98.95,155.35 L70.67,121.64 L85.72,80.29 Z"
             }
         }
 
+        // The core
         ShapePath {
             fillColor: root.topColour
-            strokeColor: "transparent"
-
-            PathSvg {
-                path: "M22.85,46 A3.15,3.15 0 1 0 29.15,46 A3.15,3.15 0 1 0 22.85,46 Z"
-            }
-        }
-
-        // X
-        ShapePath {
-            fillColor: "transparent"
-            strokeColor: root.bottomColour
-            strokeWidth: 3
-            capStyle: ShapePath.RoundCap
-            joinStyle: ShapePath.RoundJoin
-
-            PathSvg {
-                path: "M60,6 L100,46 M100,6 L60,46"
-            }
-        }
-
-        ShapePath {
-            fillColor: root.holeColour
             strokeColor: root.topColour
-            strokeWidth: 3
-
-            PathSvg {
-                path: "M74,26 A6,6 0 1 0 86,26 A6,6 0 1 0 74,26 Z"
-            }
-        }
-
-        // S
-        ShapePath {
-            fillColor: "transparent"
-            strokeColor: root.bottomColour
-            strokeWidth: 3
-            capStyle: ShapePath.RoundCap
+            strokeWidth: 2
             joinStyle: ShapePath.RoundJoin
 
             PathSvg {
-                path: "M154,6 H123 A9,9 0 0 0 114,15 V17 A9,9 0 0 0 123,26 H145 A9,9 0 0 1 154,35 V37 A9,9 0 0 1 145,46 H114"
+                path: "M126,93.22 L138,114 L126,134.78 L102,134.78 L90,114 L102,93.22 Z"
             }
         }
     }

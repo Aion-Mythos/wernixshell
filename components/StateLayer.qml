@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Shapes
-import Vaxison
-import Vaxison.Config
+import WernixShell
+import WernixShell.Config
 import qs.services
 
 MouseArea {

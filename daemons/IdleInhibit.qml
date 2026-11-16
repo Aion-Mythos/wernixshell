@@ -2,7 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
-import Vaxison.State
+import WernixShell.State
 
 Scope {
     id: root

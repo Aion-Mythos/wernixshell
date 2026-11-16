@@ -4,7 +4,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import Vaxison.I18n
+import WernixShell.I18n
 
 Singleton {
     id: root
@@ -1725,7 +1725,7 @@ Singleton {
     LoggingCategory {
         id: lc
 
-        name: "vaxison.qml.services.nmcli"
+        name: "wernixshell.qml.services.nmcli"
         defaultLogLevel: LoggingCategory.Info
     }
 

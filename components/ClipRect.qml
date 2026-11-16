@@ -1,5 +1,5 @@
 import QtQuick
-import Vaxison.Components
+import WernixShell.Components
 
 Item {
     id: root

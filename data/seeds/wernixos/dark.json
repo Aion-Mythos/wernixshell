@@ -1,0 +1,12 @@
+{
+  "mode": "dark", "source": "Wernix OS Colour System", "background": "070504", "surface": "070504",
+  "primary": "63a19c", "secondary": "8dc0bb", "tertiary": "a6a29c",
+  "error": "bb4844", "success": "457b25", "warning": "966303", "text": "f2f0ec",
+  "overrides": {
+    "surfaceDim": "070504", "surfaceBright": "44403c",
+    "surfaceContainerLowest": "070504", "surfaceContainerLow": "0d0a08", "surfaceContainer": "13100d",
+    "surfaceContainerHigh": "1c1916", "surfaceContainerHighest": "25221f", "surfaceVariant": "25221f",
+    "onSurfaceVariant": "cfccc6", "outline": "7f7b75", "outlineVariant": "44403c",
+    "onPrimary": "052223", "primaryContainer": "0a3637", "onPrimaryContainer": "b4dad6"
+  }
+}

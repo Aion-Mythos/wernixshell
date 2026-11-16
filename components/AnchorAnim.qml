@@ -1,5 +1,5 @@
 import QtQuick
-import Vaxison.Config
+import WernixShell.Config
 
 AnchorAnimation {
     enum Type {

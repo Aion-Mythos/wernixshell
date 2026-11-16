@@ -6,8 +6,8 @@ import QtQuick.Effects
 import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Wayland
-import Vaxison.Blobs
-import Vaxison.Config
+import WernixShell.Blobs
+import WernixShell.Config
 import qs.components
 import qs.components.containers
 import qs.services

@@ -1,8 +1,8 @@
 pragma Singleton
 
 import Quickshell
-import Vaxison.Config
-import Vaxison.Models
+import WernixShell.Config
+import WernixShell.Models
 import qs.utils
 
 Searcher {
