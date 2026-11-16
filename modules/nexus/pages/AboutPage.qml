@@ -55,6 +55,10 @@ PageBase {
                     fillMode: AnimatedImage.PreserveAspectFit
                     playing: true
                     asynchronous: true
+                    onCurrentFrameChanged: {
+                        if (currentFrame >= 59) // Plays once: stops on the finished logo, before the GIF erases it
+                            playing = false;
+                    }
                 }
 
                 StyledText {
