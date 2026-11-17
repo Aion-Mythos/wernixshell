@@ -49,10 +49,17 @@ Searcher {
         return category;
     }
 
-    function setRandom(): void {
-        const choices = list.filter(w => w.path !== actualCurrent);
+    function setRandom(videoMode: var): void {
+        const choices = list.filter(w => (videoMode === undefined || Videos.isVideo(w.path) === videoMode) && w.path !== actualCurrent);
         if (choices.length > 0)
             setWallpaper(choices[Math.floor(Math.random() * choices.length)].path);
+    }
+
+    function remove(path: string): void {
+        if (!path.startsWith(`${Paths.wallsdir}/`) || path === fallback || removeProc.running)
+            return;
+        removeProc.path = path;
+        removeProc.running = true;
     }
 
     // An image to take colours from: the path itself, or for a video its frame, or "" if it isn't extracted yet
@@ -171,6 +178,22 @@ Searcher {
         onExited: code => {
             if (code !== 0)
                 root.videoFailed(path, Tr.tr("%1 is missing").arg(Paths.shortenHome(path)));
+        }
+    }
+
+    Process {
+        id: removeProc
+
+        property string path
+
+        command: ["gio", "trash", path]
+        onExited: code => {
+            if (code === 0) {
+                if (path === root.actualCurrent)
+                    root.setWallpaper(root.fallback);
+            } else {
+                Toaster.toast(Tr.tr("Wallpaper"), Tr.tr("Could not remove %1").arg(Paths.shortenHome(path)), "warning");
+            }
         }
     }
 

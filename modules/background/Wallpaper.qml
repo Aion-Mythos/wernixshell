@@ -25,6 +25,8 @@ Item {
         const windows = monitor?.activeWorkspace?.toplevels.values ?? [];
         if (windows.some(t => t.lastIpcObject.fullscreen > 0))
             return true;
+        if (Glass.enabled) // Liquid glass makes windows see-through, so a paused video would show frozen behind them
+            return false;
         const area = (monitor?.width ?? 0) * (monitor?.height ?? 0);
         const tiled = windows.filter(t => !t.lastIpcObject.floating && !t.lastIpcObject.hidden).reduce((sum, t) => sum + (t.lastIpcObject.size?.[0] ?? 0) * (t.lastIpcObject.size?.[1] ?? 0), 0);
         return area > 0 && tiled / area >= 0.75; // The bar, border and gaps keep tiled windows below 100%

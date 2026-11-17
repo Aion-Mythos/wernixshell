@@ -5,6 +5,7 @@ import QtQuick.Layouts
 import WernixShell.Config
 import WernixShell.Models
 import qs.services
+import qs.utils
 import qs.modules.nexus.common
 
 PageBase {
@@ -27,7 +28,7 @@ PageBase {
 
         Repeater {
             model: {
-                const walls = Wallpapers.list.filter(w => Wallpapers.getCategoryFor(w) === root.nState.selectedWallpaperCategory).sort((a, b) => a.name.localeCompare(b.name));
+                const walls = Wallpapers.list.filter(w => Videos.isVideo(w.path) === root.nState.selectedWallpaperVideoMode && Wallpapers.getCategoryFor(w) === root.nState.selectedWallpaperCategory).sort((a, b) => a.name.localeCompare(b.name));
                 while (walls.length < Config.nexus.wallpapersPerRow)
                     walls.push(null);
                 return walls;
@@ -42,6 +43,8 @@ PageBase {
 
                 source: String(modelData?.path ?? "")
                 text: modelData?.name ?? ""
+                removable: !!modelData
+                onRemoveRequested: Wallpapers.remove(modelData.path)
                 onClicked: {
                     Wallpapers.setWallpaper(modelData.path);
                     root.nState.closeSubPage();

@@ -16,8 +16,10 @@ Item {
     property alias radius: imgWrapper.radius
     property alias imgHeight: imgWrapper.implicitHeight
     property bool fillLabel: true
+    property bool removable: false
 
     signal clicked
+    signal removeRequested
 
     Layout.fillWidth: true
     implicitHeight: layout.implicitHeight
@@ -90,5 +92,18 @@ Item {
 
         anchors.bottomMargin: root.fillLabel ? 0 : layout.implicitHeight - imgWrapper.implicitHeight
         onClicked: root.clicked()
+    }
+
+    IconButton {
+        id: removeButton
+
+        anchors.top: imgWrapper.top
+        anchors.right: imgWrapper.right
+        anchors.margins: Tokens.padding.small
+        z: 1
+        visible: root.removable && (stateLayer.containsMouse || hovered)
+        icon: "delete_outline"
+        type: IconButton.Filled
+        onClicked: root.removeRequested()
     }
 }

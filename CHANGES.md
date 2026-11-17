@@ -120,3 +120,11 @@ An experiment adding `bar.position` and horizontal bars was built and reverted; 
 - New "Liquid glass" toggle in Settings > Wallpaper & style (`appearance.glass.enabled`, `appearance.glass.opacity`).
   `services/Glass.qml` loads the bundled hyprglass Hyprland plugin (git submodule `third_party/hyprglass`, built
   by CMake into the library dir) and applies an opacity rule to every window, so the glass is compositor wide.
+
+## WernixOS wallpapers, live wallpaper picker
+
+- `scripts/make-wallpaper.py` renders the default wallpaper `assets/wallpaper.webp` (the logo's hexagon rings
+  continued outward, in the WernixOS colours) and a looping live version, `assets/wallpaper-live.mp4`.
+- Settings > Wallpaper & style has a separate "Live wallpapers" page (videos only, with the bundled live
+  wallpaper featured); wallpapers in the wallpaper folder can be moved to the trash from the picker.
+- With Liquid glass on, tiled windows no longer pause a video wallpaper, since it stays visible behind them.

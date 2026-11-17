@@ -111,7 +111,20 @@ PageBase {
                 horizontalPadding: Tokens.padding.extraLarge
                 verticalPadding: Tokens.padding.medium
                 disabled: !Config.background.wallpaperEnabled
-                onClicked: root.nState.openSubPage(1) // Wallpaper page
+                onClicked: root.nState.openSubPage(1) // Still wallpapers
+            }
+
+            IconTextButton {
+                icon: "motion_photos_on"
+                text: Tr.tr("Live wallpapers")
+                font: Tokens.font.body.large
+                isRound: true
+                shapeMorph: true
+                type: IconTextButton.Tonal
+                horizontalPadding: Tokens.padding.extraLarge
+                verticalPadding: Tokens.padding.medium
+                disabled: !Config.background.wallpaperEnabled
+                onClicked: root.nState.openSubPage(2) // Live wallpapers
             }
         }
 

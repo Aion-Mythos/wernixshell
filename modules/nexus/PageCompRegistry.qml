@@ -32,6 +32,11 @@ QtObject {
                     WallpaperSelect {}
                 }
                 Component {
+                    WallpaperSelect {
+                        videoMode: true
+                    }
+                }
+                Component {
                     WallpaperCategory {}
                 }
             }

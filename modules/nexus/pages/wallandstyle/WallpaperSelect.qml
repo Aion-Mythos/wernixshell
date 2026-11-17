@@ -17,7 +17,9 @@ import qs.modules.nexus.common
 PageBase {
     id: root
 
-    title: Tr.tr("Wallpapers")
+    property bool videoMode: false
+
+    title: videoMode ? Tr.tr("Live wallpapers") : Tr.tr("Wallpapers")
     isSubPage: true
 
     ColumnLayout {
@@ -32,8 +34,8 @@ PageBase {
             spacing: Tokens.spacing.small
 
             IconTextButton {
-                icon: "photo_library"
-                text: Tr.tr("Browse")
+                icon: "add"
+                text: Tr.tr("Add")
                 font: Tokens.font.body.large
                 isRound: true
                 shapeMorph: true
@@ -44,9 +46,9 @@ PageBase {
                 FileDialog {
                     id: browseDialog
 
-                    title: Tr.tr("Select an image or video")
-                    filterLabel: Tr.tr("Images and videos")
-                    filters: [...Images.validImageExtensions, ...Videos.validVideoExtensions]
+                    title: root.videoMode ? Tr.tr("Select a video wallpaper") : Tr.tr("Select a wallpaper")
+                    filterLabel: root.videoMode ? Tr.tr("Videos") : Tr.tr("Images")
+                    filters: root.videoMode ? Videos.validVideoExtensions : Images.validImageExtensions
                     onAccepted: path => {
                         Wallpapers.setWallpaper(path);
                         root.nState.closeSubPage();
@@ -64,27 +66,29 @@ PageBase {
                 verticalPadding: Tokens.padding.medium
                 type: IconTextButton.Tonal
                 onClicked: {
-                    Wallpapers.setRandom();
+                    Wallpapers.setRandom(root.videoMode);
                     root.nState.closeSubPage();
                 }
             }
         }
 
         WallItem {
+            readonly property string path: Quickshell.shellPath(root.videoMode ? "assets/wallpaper-live.mp4" : "assets/wallpaper.webp")
+
             imgHeight: Math.round(width * 0.3)
             radius: Tokens.rounding.extraLarge
-            source: Quickshell.shellPath("assets/wallpaper.webp")
-            text: Tr.tr("Featured wallpaper")
+            source: path
+            text: root.videoMode ? Tr.tr("Featured live wallpaper") : Tr.tr("Featured wallpaper")
             fillLabel: false
             onClicked: {
-                Wallpapers.setWallpaper(Quickshell.shellPath("assets/wallpaper.webp"));
+                Wallpapers.setWallpaper(path);
                 root.nState.closeSubPage();
             }
         }
 
         StyledText {
             Layout.topMargin: Tokens.spacing.large
-            text: Tr.tr("Local wallpapers")
+            text: root.videoMode ? Tr.tr("Local videos") : Tr.tr("Local wallpapers")
             font: Tokens.font.title.small
         }
 
@@ -100,7 +104,7 @@ PageBase {
                 id: localWalls
 
                 model: {
-                    const walls = Wallpapers.list;
+                    const walls = Wallpapers.list.filter(w => Videos.isVideo(w.path) === root.videoMode);
                     const baseDir = Paths.wallsdir;
                     const categories = {};
                     const list = [];
@@ -138,10 +142,13 @@ PageBase {
                         }
                         return modelData.name;
                     }
+                    removable: !!modelData && modelData.parentDir === Paths.wallsdir
+                    onRemoveRequested: Wallpapers.remove(modelData.path)
                     onClicked: {
                         if (modelData.parentDir !== Paths.wallsdir) {
                             root.nState.selectedWallpaperCategory = Wallpapers.getCategoryFor(modelData);
-                            root.nState.openSubPage(2); // Category page
+                            root.nState.selectedWallpaperVideoMode = root.videoMode;
+                            root.nState.openSubPage(3); // Category page
                         } else {
                             Wallpapers.setWallpaper(modelData.path);
                             root.nState.closeSubPage();
@@ -178,7 +185,7 @@ PageBase {
 
                     StyledText {
                         Layout.alignment: Qt.AlignHCenter
-                        text: Tr.tr("No local wallpapers found")
+                        text: root.videoMode ? Tr.tr("No local videos found") : Tr.tr("No local wallpapers found")
                         color: Colours.palette.m3outline
                         font: Tokens.font.title.small
                     }
