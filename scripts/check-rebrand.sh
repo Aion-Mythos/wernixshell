@@ -3,7 +3,7 @@
 # Fails if "caelestia" (any case) remains outside the allowed files.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
-KEEP=(LICENSE NOTICE CHANGES.md scripts/rebrand.sh scripts/check-rebrand.sh docs/specs/wernixshell-fork.md)
+KEEP=(LICENSE NOTICE CHANGES.md README.md scripts/rebrand.sh scripts/check-rebrand.sh docs/specs/wernixshell-fork.md)
 excl=(); for f in "${KEEP[@]}"; do excl+=(":!$f"); done
 bad=$(git grep -Iin caelestia -- . "${excl[@]}" || true)
 names=$(git ls-files | grep -i caelestia | grep -vxF -f <(printf '%s\n' "${KEEP[@]}") || true)

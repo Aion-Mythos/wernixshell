@@ -5,7 +5,7 @@ set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
 # Files allowed to keep the old name (also used by scripts/check-rebrand.sh).
-KEEP=(LICENSE NOTICE CHANGES.md scripts/rebrand.sh scripts/check-rebrand.sh docs/specs/wernixshell-fork.md)
+KEEP=(LICENSE NOTICE CHANGES.md README.md scripts/rebrand.sh scripts/check-rebrand.sh docs/specs/wernixshell-fork.md)
 excl=(); for f in "${KEEP[@]}"; do excl+=(":!$f"); done
 
 # Nix is out of scope (Arch only).
