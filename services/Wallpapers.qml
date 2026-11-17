@@ -7,6 +7,7 @@ import WernixShell
 import WernixShell.Config
 import WernixShell.I18n
 import WernixShell.Models
+import WernixShell.State
 import qs.services
 import qs.utils
 
@@ -90,6 +91,8 @@ Searcher {
     }
 
     function setWallpaper(path: string): void {
+        if (Videos.isVideo(path))
+            PersistentState.wallpaperPlaying = true; // Picking a live wallpaper plays it, even if the quick toggle paused it
         requestFrame(path);
         actualCurrent = path;
         Paths.writeText(pathFile, path); // The FileView below picks the change up, and the dynamic scheme follows
