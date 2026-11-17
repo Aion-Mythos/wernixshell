@@ -150,7 +150,7 @@ PageBase {
 
             visible: Hypr.usingLua
             text: Tr.tr("Liquid glass")
-            subtext: Tr.tr("Glass behind every window and panel; costs some GPU")
+            subtext: Tr.tr("Glass behind every window; costs some GPU")
             checked: GlobalConfig.appearance.glass.enabled
             onToggled: GlobalConfig.appearance.glass.enabled = checked
         }

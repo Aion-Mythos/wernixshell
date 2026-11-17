@@ -27,8 +27,9 @@ Singleton {
 
     function configure(): void {
         const hg = "eval hl.plugin.hyprglass";
+        // Windows only: glass on the shell's own layer draws a grey bezel along the screen frame.
         // The rule and the plugin's settings last until Hyprland reloads its config, see onConfigReloaded
-        Hypr.extras.batchMessage([`${hg}.config({ skip_opaque_windows = false, layers = { enabled = true } })`, `${hg}.layer("wernixshell-drawers", { mask_mode = "contour" })`, `eval hl.window_rule({ match = { fullscreen = false }, opacity = "${opacity} override" })`]);
+        Hypr.extras.batchMessage([`${hg}.config({ skip_opaque_windows = false, layers = { enabled = false } })`, `eval hl.window_rule({ match = { fullscreen = false }, opacity = "${opacity} override" })`]);
     }
 
     onEnabledChanged: {

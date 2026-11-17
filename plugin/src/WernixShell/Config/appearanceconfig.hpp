@@ -270,7 +270,7 @@ class AppearanceTransparency : public settings::ObjectNode {
     CONFIG_GLOBAL_PROPERTY(qreal, layers, 0.4)
 };
 
-// Liquid glass on every window and the shell's panels, drawn by the bundled hyprglass Hyprland plugin
+// Liquid glass on every window, drawn by the bundled hyprglass Hyprland plugin
 class AppearanceGlass : public settings::ObjectNode {
     CONFIG_NODE(AppearanceGlass, settings::ObjectNode)
 
